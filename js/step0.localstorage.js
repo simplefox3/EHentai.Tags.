@@ -1,0 +1,1 @@
+// localstorage 数据方法，迁入 indexdb 

@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>网页大致页面</title>
+    <link href="../css/ex.css" rel="stylesheet" />
+    <script src="../js/a.js"></script>
+    <script src="../js/b.js"></script>
+</head>
+<body style="margin: 0;padding: 0;background-color: #4F535B;">
+    <div id="div_ee8413b2">
+        <span></span>
+
+        <div id="search_wrapper">
+            <div id="search_close">收起</div>
+            <div id="search_top">
+                <div id="category_all_button">全部类别</div>
+                <div id="category_favorites_button">本地收藏</div>
+                <div id="category_search_input">
+                    <div id="input_info"></div>
+                    <div id="category_enter_button">搜索</div>
+                    <div id="input_clear">X</div>
+                </div>
+                <div id="category_addFavorites_button">加入收藏</div>
+                <div id="category_addFavorites_button_disabled">加入收藏</div>
+            </div>
+            <div id="category_all_div">
+                <div id="category_editor">
+                    <div id="all_collapse">折叠</div>
+                    <div id="all_expand">展开</div>
+                    <div id="category_input_div">
+                        <input type="text" id="category_input">
+                        <div id="category_input_btn">添加</div>
+                        <div id="category_input_recommend">
+                            <div class="category_input_recommend_items">秋衣</div>
+                            <div class="category_input_recommend_items">秋裤</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="category_list">
+                    <h4>服装<span data-category="cloth" class="category_extend">-</span></h4>
+                    <div id="cloth" class="category_items_div">
+                        <span class="c_item" data-item="qy" data-favorite_parent_en="localFavorites" data-favorite_parent_zh="本地" title="[qy] 文字描述">秋衣</span>
+                        <span class="c_item" data-item="dk">短裤</span>
+                        <span class="c_item" data-item="yrf">羽绒服</span>
+                    </div>
+                    <h4>服装1<span data-category="cloth1" class="category_extend">-</span></h4>
+                    <div id="cloth1" class="category_items_div">
+                        <span class="c_item" data-item="yrf1">羽绒服1</span>
+                        <span class="c_item" data-item="yrf2">羽绒服2</span>
+                        <span class="c_item" data-item="yrf3">羽绒服3</span>
+                    </div>
+                </div>
+            </div>
+            <div id="category_favorites_div">
+                <div id="favorites_editor">
+                    <div id="favorites_all_collapse">折叠</div>
+                    <div id="favorites_all_expand">展开</div>
+                    <div id="favorites_edit">编辑</div>
+                    <div id="favorites_clear">清空</div>
+                    <div id="favorites_save">保存</div>
+                    <div id="favorites_cancel">取消</div>
+                </div>
+                <div id="favorites_list">
+                    <h4 id="favorite_h4_localFavorites">本地<span data-category="localFavorite" class="favorite_extend">-</span></h4>
+                    <div id="favorite_div_localFavorite" class="favorite_items_div">
+                        <span class="c_item" data-item="qy" title="[qy]">秋衣</span>
+                        <span class="c_item" data-item="dk">短裤</span>
+                        <span class="c_item" data-item="yrf">羽绒服</span>
+                    </div>
+                </div>
+                <div id="favorites_edit_list"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,414 @@
+﻿#searchbox #div_old_hidden_btn {
+    position: absolute;
+    right: 20px;
+    top: 22px;
+    width: 100px;
+    height: 48px;
+    line-height: 48px;
+    background-color: #34353b;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+#searchbox #div_old_show_btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40px;
+    height: 15px;
+    line-height: 15px;
+    background-color: #34353b;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    font-size: 10px;
+    display: none;
+}
+
+    #searchbox #div_old_hidden_btn:hover,
+    #searchbox #div_old_show_btn:hover {
+        background-color: #43464e;
+    }
+
+#div_ee8413b2 {
+    padding-right: 3px;
+    text-align: left;
+    margin-top: 10px;
+}
+
+    #div_ee8413b2 #search_wrapper {
+        width: calc(100% - 20px);
+        min-height: 50px;
+        background-color: #40454B;
+        border: 1px solid black;
+        margin: 0 auto;
+        padding: 10px;
+        color: #F1F1F1;
+    }
+
+        #div_ee8413b2 #search_wrapper #search_close {
+            background-color: #40454B;
+            border: 1px solid black;
+            float: right;
+            margin-top: -11px;
+            margin-right: -38px;
+            width: 20px;
+            height: 41px;
+            line-height: 20px;
+            text-align: center;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 3px;
+        }
+
+        /* 头部按钮 */
+        #div_ee8413b2 #search_wrapper #search_top {
+            width: 100%;
+            height: 50px;
+        }
+
+    #div_ee8413b2 #search_top #category_all_button,
+    #div_ee8413b2 #search_top #category_favorites_button {
+        width: 100px;
+        height: 48px;
+        line-height: 48px;
+        border: 1px solid #F1F1F1;
+        text-align: center;
+        vertical-align: middle;
+        float: left;
+        cursor: pointer;
+        font-size: 18px;
+    }
+
+    #div_ee8413b2 #search_top #category_favorites_button {
+        border-left: 0;
+    }
+
+    #div_ee8413b2 #search_top #category_addFavorites_button {
+        width: 100px;
+        height: 48px;
+        line-height: 48px;
+        border: 1px solid #F1F1F1;
+        text-align: center;
+        vertical-align: middle;
+        float: right;
+        cursor: pointer;
+        font-size: 18px;
+        display: none;
+    }
+
+    #div_ee8413b2 #search_top #category_addFavorites_button_disabled {
+        width: 100px;
+        height: 48px;
+        line-height: 48px;
+        border: 1px solid #f1f1f145;
+        text-align: center;
+        vertical-align: middle;
+        float: right;
+        cursor: not-allowed;
+        font-size: 18px;
+        color: #f1f1f145;
+    }
+
+    #div_ee8413b2 #search_top #category_search_input {
+        width: calc(100% - 392px);
+        height: 48px;
+        border: 1px solid #F1F1F1;
+        float: left;
+        margin: 0 10px 0 40px;
+    }
+
+    #div_ee8413b2 #category_search_input #input_info {
+        width: calc(100% - 104px);
+        height: 40px;
+        float: left;
+        padding: 4px;
+    }
+
+        #div_ee8413b2 #category_search_input #input_info .input_item,
+        #div_ee8413b2 #category_favorites_div #favorites_edit_list .f_edit_item {
+            display: inline-block;
+            padding: 3px 6px;
+            font-size: 10px;
+            background-color: #f5cc9c;
+            cursor: pointer;
+            border: 1px solid #f5cc9c;
+            color: black;
+        }
+
+        #div_ee8413b2 #category_search_input #input_info .input_item {
+            margin-right: 5px;
+        }
+
+    #div_ee8413b2 #category_favorites_div #favorites_edit_list .f_edit_item {
+        margin-left: 5px;
+    }
+
+
+        #div_ee8413b2 #category_search_input #input_info .input_item:hover,
+        #div_ee8413b2 #category_favorites_div #favorites_edit_list .f_edit_item:hover {
+            border: 1px solid red;
+        }
+
+    #div_ee8413b2 #category_search_input #category_enter_button,
+    #div_ee8413b2 #category_search_input #input_clear {
+        width: 47px;
+        height: 48px;
+        line-height: 48px;
+        float: right;
+        cursor: pointer;
+        font-size: 18px;
+        text-align: center;
+        border-left: 1px solid #F1F1F1;
+        display: none;
+    }
+
+    #div_ee8413b2 #search_wrapper #category_favorites_div,
+    #div_ee8413b2 #search_wrapper #category_all_div {
+        width: calc(100% - 2px);
+        min-height: 100px;
+        border: 1px solid #F1F1F1;
+        margin-top: 10px;
+    }
+
+    #div_ee8413b2 #search_wrapper #search_close,
+    #div_ee8413b2 #search_wrapper #category_all_div,
+    #div_ee8413b2 #search_wrapper #category_favorites_div {
+        display: none;
+    }
+
+    #div_ee8413b2 #category_all_div h4,
+    #div_ee8413b2 #favorites_list h4,
+    #div_ee8413b2 #favorites_edit_list h4 {
+        padding: 0;
+        margin: 10px;
+        color: #fadfc0;
+    }
+
+    #div_ee8413b2 #category_all_div .c_item,
+    #div_ee8413b2 #category_favorites_div #favorites_list .c_item {
+        margin: 3px 0 3px 10px;
+        font-size: 15px;
+        cursor: pointer;
+        display: inline-block;
+        color: #F5CC9C;
+    }
+
+        #div_ee8413b2 #category_all_div .c_item:hover,
+        #div_ee8413b2 #category_favorites_div #favorites_list .c_item:hover {
+            color: gold;
+        }
+
+    #div_ee8413b2 #category_all_div .category_extend,
+    #div_ee8413b2 #favorites_list .favorite_extend,
+    #div_ee8413b2 #favorites_edit_list .favorite_edit_clear {
+        margin: 3px 0 3px 10px;
+        border: 1px solid #F5CC9C;
+        width: 13px;
+        display: inline-block;
+        text-align: center;
+        line-height: 13px;
+        height: 13px;
+        font-size: 12px;
+        cursor: pointer;
+        color: #F5CC9C;
+    }
+
+.chooseTab {
+    background-color: #7b7e85c2;
+}
+
+#div_ee8413b2 #category_all_div #category_editor,
+#div_ee8413b2 #category_favorites_div #favorites_editor {
+    width: 100%;
+    height: 25px;
+}
+
+#div_ee8413b2 #category_editor #all_expand,
+#div_ee8413b2 #category_editor #all_collapse,
+#div_ee8413b2 #category_editor #category_input_div #category_input_btn,
+#div_ee8413b2 #favorites_editor #favorites_all_collapse,
+#div_ee8413b2 #favorites_editor #favorites_all_expand,
+#div_ee8413b2 #favorites_editor #favorites_edit,
+#div_ee8413b2 #favorites_editor #favorites_clear,
+#div_ee8413b2 #favorites_editor #favorites_save,
+#div_ee8413b2 #favorites_editor #favorites_cancel {
+    border-bottom: 1px solid #F1F1F1;
+    border-right: 1px solid #F1F1F1;
+    width: 49.5px;
+    float: left;
+    text-align: center;
+    height: 24px;
+    line-height: 24px;
+    cursor: pointer;
+}
+
+#div_ee8413b2 #category_editor #category_input_div {
+    height: 24px;
+    float: left;
+    margin-left: 140px;
+}
+
+    #div_ee8413b2 #category_editor #category_input_div #category_input {
+        width: 175px;
+        float: left;
+        height: 22px;
+        background-color: #40454B;
+        color: white;
+        border: 1px solid #F1F1F1;
+        border-top: 0;
+    }
+
+    #div_ee8413b2 #category_editor #category_input_div #category_input_recommend {
+        width: 179px;
+        border: 1px solid #F1F1F1;
+        border-top: 0;
+        padding-top: 24px;
+    }
+
+    #div_ee8413b2 #category_editor #category_input_div #category_input:focus {
+        outline: none;
+    }
+
+    #div_ee8413b2 #category_editor #category_input_div .category_input_recommend_items {
+        font-size: 10px;
+        cursor: pointer;
+        padding: 2px 5px;
+    }
+
+        #div_ee8413b2 #category_editor #category_input_div .category_input_recommend_items:hover {
+            background-color: #7b7e85c2;
+        }
+
+#div_ee8413b2 #favorites_editor #favorites_save,
+#div_ee8413b2 #favorites_editor #favorites_cancel {
+    display: none;
+}
+
+#div_ee8413b2 #category_favorites_div #favorites_list,
+#div_ee8413b2 #category_favorites_div #favorites_edit_list {
+    min-height: 90px;
+}
+
+#div_ee8413b2 #category_favorites_div #favorites_edit_list {
+    display: none;
+}
+
+#div_ee8413b2 #category_all_div #category_list {
+    min-height: 100px;
+}
+
+    #div_ee8413b2 #category_all_div #category_list h4,
+    #div_ee8413b2 #category_favorites_div #favorites_list h4,
+    #div_ee8413b2 #category_favorites_div #favorites_edit_list h4 {
+        font-size: 16px;
+    }
+
+#div_ee8413b2 #category_all_div #category_list,
+#div_ee8413b2 #category_favorites_div #favorites_list,
+#div_ee8413b2 #category_favorites_div #favorites_edit_list {
+    max-height: 500px;
+    overflow-y: auto;
+    transition: all 1s;
+}
+
+    #div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar,
+    #div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar,
+    #div_ee8413b2 #category_favorites_div #favorites_edit_list::-webkit-scrollbar {
+        width: 10px;
+        height: 1px;
+    }
+
+    #div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar-track,
+    #div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar-track,
+    #div_ee8413b2 #category_favorites_div #favorites_edit_list::-webkit-scrollbar-track {
+        background-color: #2d2e32;
+        border-radius: 10px;
+    }
+
+    #div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar-thumb,
+    #div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar-thumb,
+    #div_ee8413b2 #category_favorites_div #favorites_edit_list::-webkit-scrollbar-thumb {
+        background-color: #a5a5a5;
+        border-radius: 10px;
+    }
+
+#div_ee8413b2 #search_top #category_all_button,
+#div_ee8413b2 #search_top #category_favorites_button,
+#div_ee8413b2 #category_search_input #input_clear,
+#div_ee8413b2 #category_search_input #category_enter_button,
+#div_ee8413b2 #search_top #category_addFavorites_button,
+#div_ee8413b2 #category_editor #all_collapse,
+#div_ee8413b2 #category_editor #all_expand,
+#div_ee8413b2 #favorites_editor #favorites_all_collapse,
+#div_ee8413b2 #favorites_editor #favorites_all_expand,
+#div_ee8413b2 #favorites_editor #favorites_edit,
+#div_ee8413b2 #favorites_editor #favorites_clear,
+#div_ee8413b2 #favorites_editor #favorites_save,
+#div_ee8413b2 #favorites_editor #favorites_cancel,
+#div_ee8413b2 #category_list .category_extend,
+#div_ee8413b2 #favorites_list .favorite_extend,
+#div_ee8413b2 #favorites_edit_list .favorite_edit_clear,
+#div_ee8413b2 #category_search_input #input_info .input_item,
+#div_ee8413b2 #favorites_edit_list .f_edit_item {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+    #div_ee8413b2 #search_wrapper #search_close:hover,
+    #div_ee8413b2 #search_top #category_all_button:hover,
+    #div_ee8413b2 #search_top #category_favorites_button:hover,
+    #div_ee8413b2 #category_search_input #input_clear:hover,
+    #div_ee8413b2 #category_search_input #category_enter_button:hover,
+    #div_ee8413b2 #search_top #category_addFavorites_button:hover,
+    #div_ee8413b2 #category_editor #all_collapse:hover,
+    #div_ee8413b2 #category_editor #all_expand:hover,
+    #div_ee8413b2 #favorites_editor #favorites_all_collapse:hover,
+    #div_ee8413b2 #favorites_editor #favorites_all_expand:hover,
+    #div_ee8413b2 #favorites_editor #favorites_edit:hover,
+    #div_ee8413b2 #favorites_editor #favorites_clear:hover,
+    #div_ee8413b2 #favorites_editor #favorites_save:hover,
+    #div_ee8413b2 #favorites_editor #favorites_cancel:hover {
+        background-color: rgba(255, 246, 246, 0.397);
+    }
+
+    #div_ee8413b2 #category_list .category_extend:hover,
+    #div_ee8413b2 #favorites_list .favorite_extend:hover,
+    #div_ee8413b2 #favorites_edit_list .favorite_edit_clear:hover,
+    #div_ee8413b2 #category_list .c_item:hover,
+    #div_ee8413b2 #favorites_list .c_item:hover {
+        transform: scale(1.2);
+    }
+
+.div_ee8413b2_category_checked {
+    background-color: darkred !important;
+}
+
+#div_ee8413b2_detail_clearBtn {
+    margin-top: -5px;
+}
+
+#div_ee8413b2_detail_clearBtn,
+#div_ee8413b2_detail_addFavoriteBtn,
+#div_ee8413b2_detail_searchBtn {
+    width: 100px;
+    height: 25px;
+    line-height: 25px;
+    border: 1px solid #F1F1F1;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    margin: 0 auto;
+    margin-bottom: 6px;
+    display: none;
+}
+
+    #div_ee8413b2_detail_clearBtn:hover,
+    #div_ee8413b2_detail_addFavoriteBtn:hover,
+    #div_ee8413b2_detail_searchBtn:hover {
+        background-color: rgba(255, 246, 246, 0.397);
+    }
