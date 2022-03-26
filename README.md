@@ -1,1 +1,1 @@
-# ExHentai-
+# ExHentai.Tags.CN
