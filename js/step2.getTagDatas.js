@@ -33,7 +33,7 @@ function getEhTagGitHubReleaseVersion(func) {
 
 function getFetishListTranslate(version, func) {
     var httpRequest = new XMLHttpRequest();
-    var url = `https://cdn.jsdelivr.net/gh/SunBrook/ehWiki.fetishListing.translate.zh_CN@${version}/fetish.oneLevel.withoutLang.json`;
+    var url = `https://cdn.jsdelivr.net/gh/SunBrook/ehWiki.fetishListing.translate.zh_CN@${version}/fetish.oneLevel.withoutLang.searchKey.json`;
     httpRequest.open("GET", url);
     httpRequest.send();
 
@@ -72,6 +72,8 @@ const table_Settings_key_FetishListVersion = "f_fetishListVersion";
 const table_Settings_key_EhTagVersion = "f_ehTagVersion";
 const table_Settings_key_FetishList_ParentEnArray = "f_fetish_parentEnArray";
 const table_Settings_key_EhTag_ParentEnArray = "f_ehTag_parentEnArray";
+const table_Settings_key_FetishList_Html = "f_fetishListHtml";
+const table_Settings_key_EhTag_Html = "f_ehTagHtml";
 
 // fetishList 父子信息表
 const table_fetishListSubItems = "t_fetishListSubItems";
@@ -116,19 +118,21 @@ request.onupgradeneeded = function (event) {
     // FetishList 父子标签表
     if (!db.objectStoreNames.contains(table_fetishListSubItems)) {
         objectStore = db.createObjectStore(table_fetishListSubItems, { keyPath: table_fetishListSubItems_key });
-        objectStore.createIndex('parent_en', 'parent_en', { unique: false });
-        objectStore.createIndex('parent_zh', 'parent_zh', { unique: false });
-        objectStore.createIndex('sub_en', 'sub_en', { unique: false });
-        objectStore.createIndex('sub_zh', 'sub_zh', { unique: false });
+        // objectStore.createIndex('parent_en', 'parent_en', { unique: false });
+        // objectStore.createIndex('parent_zh', 'parent_zh', { unique: false });
+        // objectStore.createIndex('sub_en', 'sub_en', { unique: false });
+        // objectStore.createIndex('sub_zh', 'sub_zh', { unique: false });
+        objectStore.createIndex('search_key', 'search_key', { unique: true });
     }
 
     // EhTag 父子标签表
     if (!db.objectStoreNames.contains(table_EhTagSubItems)) {
         objectStore = db.createObjectStore(table_EhTagSubItems, { keyPath: table_EhTagSubItems_key });
-        objectStore.createIndex('parent_en', 'parent_en', { unique: false });
-        objectStore.createIndex('parent_zh', 'parent_zh', { unique: false });
-        objectStore.createIndex('sub_en', 'sub_en', { unique: false });
-        objectStore.createIndex('sub_zh', 'sub_zh', { unique: false });
+        // objectStore.createIndex('parent_en', 'parent_en', { unique: false });
+        // objectStore.createIndex('parent_zh', 'parent_zh', { unique: false });
+        // objectStore.createIndex('sub_en', 'sub_en', { unique: false });
+        // objectStore.createIndex('sub_zh', 'sub_zh', { unique: false });
+        objectStore.createIndex('search_key', 'search_key', { unique: true });
     }
 }
 
@@ -175,6 +179,26 @@ function readByIndex(tableName, indexName, indexValue, func_success, func_none) 
             func_none();
         }
     }
+}
+
+function readByCursorIndex(tableName, indexName, indexValue, func_success) {
+    const IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange;
+    var transaction = db.transaction([tableName], 'readonly');
+    var store = transaction.objectStore(tableName);
+    var index = store.index(indexName);
+    var c = index.openCursor(IDBKeyRange.only(indexValue));
+    var data = [];
+    c.onsuccess = function (event) {
+        var cursor = event.target.result;
+        if (cursor) {
+            data.push(cursor.value);
+            cursor.continue();
+        }
+        else {
+            func_success(data);
+        }
+    }
+
 }
 
 function fuzzySearch(tableName, field, keyword, func_success) {
@@ -252,6 +276,30 @@ function remove(tableName, key, func_success, func_error) {
     }
 }
 
+function checkTableEmpty(tableName, func_empty, func_hasData) {
+    var transaction = db.transaction(tableName);
+    var objectStore = transaction.objectStore(tableName);
+    var request = objectStore.count();
+
+    request.onsuccess = function (event) {
+        if (request.result == 0) {
+            // 数量为空
+            func_empty();
+        } else {
+            // 存在数据
+            func_hasData();
+        }
+    }
+}
+
+function clearTable(tableName, func_clear) {
+    var transaction = db.transaction(tableName);
+    var objectStore = transaction.objectStore(tableName);
+    var request = objectStore.clear();
+    request.onsuccess = function (event) {
+        func_clear();
+    }
+}
 //#endregion
 
 function fetishListDataInit(update_func, local_func) {
@@ -303,113 +351,178 @@ function ehTagDataInit(update_func, local_func) {
     });
 }
 
+// 验证数据完整性
+function checkDataIntact(func_compelete) {
+    // 如果数据表数据为空，则清空存储数据
 
-window.onload = function () {
-    // 全部类别按钮
-    var categoryAllDiv = document.getElementById("category_all_div");
-    var categoryList = document.getElementById("category_list");
-    categoryAllDiv.style.display = "block";
-    categoryList.style.display = "block";
+    var complete1 = false;
+    var complete2 = false;
 
+    checkTableEmpty(table_fetishListSubItems, () => {
+        // 为空
+        remove(table_Settings, table_Settings_key_FetishListVersion, () => { complete1 = true; }, () => { complete1 = true; });
+    }, () => {
+        // 存在数据
+        complete1 = true;
+    });
+    checkTableEmpty(table_EhTagSubItems, () => {
+        // 为空
+        remove(table_Settings, table_Settings_key_EhTagVersion, () => { complete2 = true; }, () => { complete2 = true; });
+    }, () => {
+        // 存在数据
+        complete2 = true;
+    });
+
+    var t = setInterval(() => {
+        if (complete1 && complete2) {
+            t && clearInterval(t);
+            func_compelete();
+        }
+    }, 60);
+}
+
+function tagDataDispose() {
     // 获取数据
     indexDbInit(() => {
-        // TODO 验证数据完整性，如果数据不完整，则清空版本号数据
 
+        // 验证数据完整性
+        checkDataIntact(() => {
 
+            // 获取并更新恋物的父子项、父级信息
+            fetishListDataInit(newData => {
 
-        // 获取并更新恋物的父子项、父级信息
-        fetishListDataInit(newData => {
+                // 批量添加父子项
+                batchAdd(table_fetishListSubItems, table_fetishListSubItems_key, newData.data);
 
-            // 批量添加父子项
-            batchAdd(table_fetishListSubItems, table_fetishListSubItems_key, newData.data);
+                // 更新父级信息
+                var settings_fetishList_parentEnArray = {
+                    item: table_Settings_key_FetishList_ParentEnArray,
+                    value: newData.parent_en_array
+                };
+                update(table_Settings, settings_fetishList_parentEnArray, () => { }, error => { });
 
-            // 更新父级信息
-            var settings_fetishList_parentEnArray = {
-                item: table_Settings_key_FetishList_ParentEnArray,
-                value: newData.parent_en_array
-            };
-            update(table_Settings, settings_fetishList_parentEnArray, () => { }, error => { });
-
-            // 生成页面 html
-
-            read(table_Settings, table_Settings_key_FetishList_ParentEnArray, parentData => {
+                // 生成页面 html，并保存
                 var categoryFetishListHtml = ``;
-                const parent_en = parentData.value[0];
-                readByCursorIndex(table_fetishListSubItems, "parent_en", parent_en, subItems => {
-                    console.log(subItems);
-                });
-                
-                // 添加到页面
-                // 保存页面 html
-            }, error => {
-                console.log('fetish 获取 父级列表失败');
+                var lastParentEn = '';
+                for (const i in newData.data) {
+                    if (Object.hasOwnProperty.call(newData.data, i)) {
+                        const item = newData.data[i];
+                        if (item.parent_en != lastParentEn) {
+                            if (lastParentEn != '') {
+                                categoryFetishListHtml += `</div>`;
+                            }
+                            lastParentEn = item.parent_en;
+                            // 新建父级
+                            categoryFetishListHtml += `<h4>${item.parent_zh}<span data-category="${item.parent_en}" class="category_extend">-</span></h4>`;
+                            categoryFetishListHtml += `<div id="items_div_${item.parent_en}" class="category_items_div">`;
+                        }
+
+                        // 添加子级
+                        categoryFetishListHtml += `<span class="c_item" data-item="${item.sub_en}" data-favorite_parent_en="${item.parent_en}" data-favorite_parent_zh="${item.parent_zh}" title="[${item.sub_en}] ${item.sub_desc}">${item.sub_zh}</span>`;
+                    }
+                }
+                if (categoryFetishListHtml != ``) {
+                    categoryFetishListHtml += `</div>`;
+                }
+
+                // 存储恋物列表Html
+                var settings_fetish_html = {
+                    item: table_Settings_key_FetishList_Html,
+                    value: categoryFetishListHtml
+                };
+                update(table_Settings, settings_fetish_html, () => { }, error => { });
+
+                var category_list_fetishList = document.getElementById("category_list_fetishList");
+                category_list_fetishList.innerHTML = categoryFetishListHtml;
+
+            }, () => {
+                console.log('fet', "没有新数据");
             });
 
+            // 获取并更新EhTag的父子项、父级信息
+            ehTagDataInit(newData => {
+                // 更新本地数据库 indexDB
+                // 存储完成之后，更新版本号
 
+                // 需要过滤的项
+                var filterParents = ["rows", "reclass"];
 
-        }, () => {
-            console.log('fet', "没有新数据");
-            // 读取页面 html
-            // 添加到页面
-        });
+                var psDict = {};
+                var parentEnArray = [];
 
+                for (const index in newData) {
+                    if (Object.hasOwnProperty.call(newData, index)) {
+                        // var example = { ps_en: "male:bo", search_key: "male,男性,bo,波", parent_en: "male", parent_zh: "男性", sub_en: "bo", sub_zh: "波", sub_desc: "波波" };
 
-        ehTagDataInit(newData => {
-            // 更新本地数据库 indexDB
-            // 存储完成之后，更新版本号
+                        const element = newData[index];
+                        var parent_en = element.namespace;
+                        if (filterParents.indexOf(parent_en) != -1) continue;
+                        parentEnArray.push(parent_en);
 
-            // 需要过滤的项
-            var filterParents = ["rows", "reclass"];
+                        var parent_zh = element.frontMatters.name;
 
-            var psDict = {};
-            var parentEnArray = [];
-
-            for (const index in newData) {
-                if (Object.hasOwnProperty.call(newData, index)) {
-                    // var example = { ps_en: "male:bo", parent_en: "male", parent_zh: "男性", sub_en: "bo", sub_zh: "波", sub_desc: "波波" };
-
-                    const element = newData[index];
-                    var parent_en = element.namespace;
-                    if (filterParents.indexOf(parent_en) != -1) continue;
-                    parentEnArray.push(parent_en);
-
-                    var parent_zh = element.frontMatters.name;
-
-                    var subItems = element.data;
-                    for (const sub_en in subItems) {
-                        if (Object.hasOwnProperty.call(subItems, sub_en)) {
-                            const subItem = subItems[sub_en];
-                            var sub_zh = subItem.name;
-                            var sub_desc = subItem.intro;
-                            var ps_en = `${parent_en}:${sub_en}`;
-                            psDict[ps_en] = { parent_en, parent_zh, sub_en, sub_zh, sub_desc };
+                        var subItems = element.data;
+                        for (const sub_en in subItems) {
+                            if (Object.hasOwnProperty.call(subItems, sub_en)) {
+                                const subItem = subItems[sub_en];
+                                var sub_zh = subItem.name;
+                                var sub_desc = subItem.intro;
+                                var search_key = `${parent_en},${parent_zh},${sub_en},${sub_zh}`;
+                                var ps_en = `${parent_en}:${sub_en}`;
+                                psDict[ps_en] = { search_key, parent_en, parent_zh, sub_en, sub_zh, sub_desc };
+                            }
                         }
                     }
                 }
-            }
 
-            // 批量添加父子项
-            batchAdd(table_EhTagSubItems, table_EhTagSubItems_key, psDict);
+                // 批量添加父子项
+                batchAdd(table_EhTagSubItems, table_EhTagSubItems_key, psDict);
 
-            var settings_ehTag_parentEnArray = {
-                item: table_Settings_key_EhTag_ParentEnArray,
-                value: parentEnArray
-            };
+                var settings_ehTag_parentEnArray = {
+                    item: table_Settings_key_EhTag_ParentEnArray,
+                    value: parentEnArray
+                };
 
-            // 更新父级信息
-            update(table_Settings, settings_ehTag_parentEnArray, () => { }, error => { });
+                // 更新父级信息
+                update(table_Settings, settings_ehTag_parentEnArray, () => { }, error => { });
 
-            // 生成页面 html
+                // 生成页面 html
+                var categoryEhTagHtml = ``;
+                var lastParentEn = '';
+                for (const i in psDict) {
+                    if (Object.hasOwnProperty.call(psDict, i)) {
+                        const item = psDict[i];
+                        if (item.parent_en != lastParentEn) {
+                            if (lastParentEn != '') {
+                                categoryEhTagHtml += `</div>`;
+                            }
+                            lastParentEn = item.parent_en;
+                            // 新建父级
+                            categoryEhTagHtml += `<h4>${item.parent_zh}<span data-category="${item.parent_en}" class="category_extend">-</span></h4>`;
+                            categoryEhTagHtml += `<div id="items_div_${item.parent_en}" class="category_items_div">`;
+                        }
 
-            // 更新到页面
+                        // 添加子级
+                        categoryEhTagHtml += `<span class="c_item" data-item="${item.sub_en}" data-favorite_parent_en="${item.parent_en}" data-favorite_parent_zh="${item.parent_zh}" title="[${item.sub_en}] ${item.sub_desc}">${item.sub_zh}</span>`;
+                    }
+                }
+                if (categoryEhTagHtml != ``) {
+                    categoryEhTagHtml += `</div>`;
+                }
 
-            // 存储页面 html
+                // 存储页面 html
+                var settings_ehTag_html = {
+                    item: table_Settings_key_EhTag_Html,
+                    value: categoryEhTagHtml
+                };
+                update(table_Settings, settings_ehTag_html, () => { }, error => { });
+                
+                var category_list_ehTag = document.getElementById("category_list_ehTag");
+                category_list_ehTag.innerHTML = categoryEhTagHtml;
 
-        }, () => {
-            console.log('ehtag', "没有新数据");
-            // 读取页面 Html
-            // 更新到页面
+            }, () => {
+                console.log('ehtag', "没有新数据");
+            });
         });
-
     });
 }
