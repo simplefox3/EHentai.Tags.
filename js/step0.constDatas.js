@@ -1,4 +1,4 @@
-// 数据字典
+//#region step0.constDatas.js 数据字典
 
 // 详情页父级
 const detailParentData = {
@@ -42,3 +42,5 @@ const bookClassTypeData = {
 	"ct8": "亚洲色情",
 	"ct1": "杂项"
 }
+
+//#endregion

@@ -1,4 +1,4 @@
-// 头部菜单翻译
+//#region step1.2.translateTopMenu.js 头部菜单翻译
 function topMenuTranslateZh() {
 	const fontMenusData = {
 		"Front Page": "首页",
@@ -25,3 +25,5 @@ function topMenuTranslateZh() {
 		}
 	}
 }
+
+//#endregion

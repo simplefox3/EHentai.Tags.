@@ -1,4 +1,4 @@
-﻿/// 获取标签数据
+﻿//#region step2.getTagDatas.js 获取标签数据
 
 //#region 恋物数据和ehTag数据
 function getFetishListGitHubReleaseVersion(func) {
@@ -120,12 +120,12 @@ request.onupgradeneeded = function (event) {
     // 包含：FetishList版本号、父子数据、父标签、页面Html
     // 包含：EhTag版本号、总数据、父标签、页面Html
     if (!db.objectStoreNames.contains(table_Settings)) {
-        objectStore = db.createObjectStore(table_Settings, { keyPath: 'item' });
+        var objectStore = db.createObjectStore(table_Settings, { keyPath: 'item' });
     }
 
     // FetishList 父子标签表
     if (!db.objectStoreNames.contains(table_fetishListSubItems)) {
-        objectStore = db.createObjectStore(table_fetishListSubItems, { keyPath: table_fetishListSubItems_key });
+        var objectStore = db.createObjectStore(table_fetishListSubItems, { keyPath: table_fetishListSubItems_key });
         // objectStore.createIndex('parent_en', 'parent_en', { unique: false });
         // objectStore.createIndex('parent_zh', 'parent_zh', { unique: false });
         // objectStore.createIndex('sub_en', 'sub_en', { unique: false });
@@ -135,7 +135,7 @@ request.onupgradeneeded = function (event) {
 
     // EhTag 父子标签表
     if (!db.objectStoreNames.contains(table_EhTagSubItems)) {
-        objectStore = db.createObjectStore(table_EhTagSubItems, { keyPath: table_EhTagSubItems_key });
+        var objectStore = db.createObjectStore(table_EhTagSubItems, { keyPath: table_EhTagSubItems_key });
         // objectStore.createIndex('parent_en', 'parent_en', { unique: false });
         // objectStore.createIndex('parent_zh', 'parent_zh', { unique: false });
         // objectStore.createIndex('sub_en', 'sub_en', { unique: false });
@@ -709,3 +709,5 @@ function initUserSettings(func_compelete) {
 }
 
 // TODO 用户收藏列表 等待转换 (本地从本地读取，网络从EhTag读取)
+
+//#endregion

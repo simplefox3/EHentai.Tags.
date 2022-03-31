@@ -1,5 +1,4 @@
-// 首页谷歌翻译
-
+//#region step3.1.frontTranslate.js 首页谷歌翻译
 function mainPageTranslate() {
 	// 首页添加 Meta
 	var meta = document.createElement("meta");
@@ -251,3 +250,5 @@ function mainPageTranslate() {
 	}
 
 }
+
+//#endregion

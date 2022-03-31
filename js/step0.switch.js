@@ -1,4 +1,4 @@
-// 判断域名选择 exhentai 还是 e-henatai
+//#region step0.switch.js 判断域名选择 exhentai 还是 e-henatai
 const webHost = window.location.host;
 function func_eh_ex(ehFunc, exFunc) {
 	if (webHost == "e-hentai.org") {
@@ -8,3 +8,5 @@ function func_eh_ex(ehFunc, exFunc) {
 		exFunc();
 	}
 }
+
+//#endregion

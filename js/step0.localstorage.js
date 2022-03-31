@@ -1,4 +1,4 @@
-// localstorage 数据方法，迁入 indexdb，如无特殊需要，删除之前存储的数据
+//#region step0.localstorage.js localstorage 数据方法，迁入 indexdb，如无特殊需要，删除之前存储的数据
 
 // 版本号数据 读取、删除
 var dbVersionKey = "categoryVersion";
@@ -71,3 +71,5 @@ function getGoogleTranslateCategoryDetail() {
 function removeGoogleTranslateCategoryDetail() {
     localStorage.removeItem(dbGoogleTranslateCategoryDetail);
 }
+
+//#endregion

@@ -1,5 +1,4 @@
-// 样式注入
-
+//#region step1.styleInject.js 样式注入
 func_eh_ex(() => {
 	// e-hentai 样式 eh.css
 	const category_style = `#searchbox #div_old_hidden_btn {
@@ -1203,3 +1202,5 @@ func_eh_ex(() => {
 	}`;
 	styleInject(category_style);
 });
+
+//#endregion
