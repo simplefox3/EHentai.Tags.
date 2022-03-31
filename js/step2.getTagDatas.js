@@ -74,6 +74,14 @@ const table_Settings_key_FetishList_ParentEnArray = "f_fetish_parentEnArray";
 const table_Settings_key_EhTag_ParentEnArray = "f_ehTag_parentEnArray";
 const table_Settings_key_FetishList_Html = "f_fetishListHtml";
 const table_Settings_key_EhTag_Html = "f_ehTagHtml";
+const table_Settings_key_CategoryList_Extend = "f_categoryListExtend";
+const table_Settings_key_FavoriteList_Extend = "f_favoriteListExtend";
+const table_Settings_key_OldSearchDiv_Visible = "f_oldSearchDivVisible";
+const table_settings_key_TranslateFrontPageTags = "f_translateFrontPageTags";
+const table_Settings_key_TranslateDetailPageTags = "f_translateDetailPageTags";
+const table_Settings_key_TranslateFrontPageTitles = "f_translateFrontPageTitles";
+const table_Settings_key_TranslateDetailPageTitles = "f_translateDetailPageTitles";
+
 
 // fetishList 父子信息表
 const table_fetishListSubItems = "t_fetishListSubItems";
@@ -234,16 +242,26 @@ function add(tableName, data, func_success, func_error) {
     }
 }
 
-function batchAdd(tableName, keyName, dataList) {
+function batchAdd(tableName, keyName, dataList, count, func_compelete) {
     var request = db.transaction([tableName], 'readwrite')
         .objectStore(tableName);
+
+    var index = 0;
     for (const key in dataList) {
         if (Object.hasOwnProperty.call(dataList, key)) {
             const item = dataList[key];
             item[keyName] = key;
             request.add(item);
+            index++;
         }
     }
+
+    var t = setInterval(() => {
+        if (count == index) {
+            t && clearInterval(t);
+            func_compelete();
+        }
+    }, 10);
 }
 
 function update(tableName, data, func_success, func_error) {
@@ -284,6 +302,22 @@ function checkTableEmpty(tableName, func_empty, func_hasData) {
     request.onsuccess = function (event) {
         if (request.result == 0) {
             // 数量为空
+            func_empty();
+        } else {
+            // 存在数据
+            func_hasData();
+        }
+    }
+}
+
+function checkFieldEmpty(tableName, filedName, func_empty, func_hasData) {
+    var transaction = db.transaction(tableName);
+    var objectStore = transaction.objectStore(tableName);
+    var request = objectStore.get(filedName);
+
+    request.onsuccess = function (event) {
+        if (!request.result) {
+            // 数据为空
             func_empty();
         } else {
             // 存在数据
@@ -357,6 +391,8 @@ function checkDataIntact(func_compelete) {
 
     var complete1 = false;
     var complete2 = false;
+    var complete3 = false;
+    var complete4 = false;
 
     checkTableEmpty(table_fetishListSubItems, () => {
         // 为空
@@ -373,33 +409,59 @@ function checkDataIntact(func_compelete) {
         complete2 = true;
     });
 
+    checkFieldEmpty(table_Settings, table_Settings_key_FetishList_Html, () => {
+        // 为空
+        remove(table_Settings, table_Settings_key_FetishListVersion, () => { complete3 = true; }, () => { complete3 = true; });
+    }, () => {
+        // 存在数据
+        complete3 = true;
+    });
+    checkFieldEmpty(table_Settings, table_Settings_key_EhTag_Html, () => {
+        // 为空
+        remove(table_Settings, table_Settings_key_EhTagVersion, () => { complete4 = true; }, () => { complete4 = true; });
+    }, () => {
+        // 存在数据
+        complete4 = true;
+    });
+
     var t = setInterval(() => {
-        if (complete1 && complete2) {
+        if (complete1 && complete2 && complete3 && complete4) {
             t && clearInterval(t);
             func_compelete();
         }
     }, 60);
 }
 
-function tagDataDispose() {
+// 准备关键数据
+function tagDataDispose(func_compelete) {
     // 获取数据
     indexDbInit(() => {
 
         // 验证数据完整性
         checkDataIntact(() => {
 
+            var complete1 = false;
+            var complete2 = false;
+            var complete3 = false;
+            var complete4 = false;
+            var complete5 = false;
+            var complete6 = false;
+
             // 获取并更新恋物的父子项、父级信息
             fetishListDataInit(newData => {
 
                 // 批量添加父子项
-                batchAdd(table_fetishListSubItems, table_fetishListSubItems_key, newData.data);
+                batchAdd(table_fetishListSubItems, table_fetishListSubItems_key, newData.data, newData.count, () => {
+                    complete1 = true;
+                    console.log('批量添加完成');
+                });
 
                 // 更新父级信息
                 var settings_fetishList_parentEnArray = {
                     item: table_Settings_key_FetishList_ParentEnArray,
                     value: newData.parent_en_array
                 };
-                update(table_Settings, settings_fetishList_parentEnArray, () => { }, error => { });
+                update(table_Settings, settings_fetishList_parentEnArray, () => { complete2 = true; }, error => { complete2 = true; });
 
                 // 生成页面 html，并保存
                 var categoryFetishListHtml = ``;
@@ -430,12 +492,15 @@ function tagDataDispose() {
                     item: table_Settings_key_FetishList_Html,
                     value: categoryFetishListHtml
                 };
-                update(table_Settings, settings_fetish_html, () => { }, error => { });
+                update(table_Settings, settings_fetish_html, () => { complete3 = true; }, error => { complete3 = true; });
 
                 var category_list_fetishList = document.getElementById("category_list_fetishList");
                 category_list_fetishList.innerHTML = categoryFetishListHtml;
 
             }, () => {
+                complete1 = true;
+                complete2 = true;
+                complete3 = true;
                 console.log('fet', "没有新数据");
             });
 
@@ -448,6 +513,7 @@ function tagDataDispose() {
                 var filterParents = ["rows", "reclass"];
 
                 var psDict = {};
+                var psDictCount = 0;
                 var parentEnArray = [];
 
                 for (const index in newData) {
@@ -470,13 +536,17 @@ function tagDataDispose() {
                                 var search_key = `${parent_en},${parent_zh},${sub_en},${sub_zh}`;
                                 var ps_en = `${parent_en}:${sub_en}`;
                                 psDict[ps_en] = { search_key, parent_en, parent_zh, sub_en, sub_zh, sub_desc };
+                                psDictCount++;
                             }
                         }
                     }
                 }
 
                 // 批量添加父子项
-                batchAdd(table_EhTagSubItems, table_EhTagSubItems_key, psDict);
+                batchAdd(table_EhTagSubItems, table_EhTagSubItems_key, psDict, psDictCount, () => {
+                    complete4 = true;
+                    console.log("批量添加完成");
+                });
 
                 var settings_ehTag_parentEnArray = {
                     item: table_Settings_key_EhTag_ParentEnArray,
@@ -484,7 +554,7 @@ function tagDataDispose() {
                 };
 
                 // 更新父级信息
-                update(table_Settings, settings_ehTag_parentEnArray, () => { }, error => { });
+                update(table_Settings, settings_ehTag_parentEnArray, () => { complete5 = true; }, error => { complete5 = true; });
 
                 // 生成页面 html
                 var categoryEhTagHtml = ``;
@@ -515,14 +585,127 @@ function tagDataDispose() {
                     item: table_Settings_key_EhTag_Html,
                     value: categoryEhTagHtml
                 };
-                update(table_Settings, settings_ehTag_html, () => { }, error => { });
-                
+                update(table_Settings, settings_ehTag_html, () => { complete6 = true; }, error => { complete6 = true; });
+
                 var category_list_ehTag = document.getElementById("category_list_ehTag");
                 category_list_ehTag.innerHTML = categoryEhTagHtml;
 
             }, () => {
+                complete4 = true;
+                complete5 = true;
+                complete6 = true;
                 console.log('ehtag', "没有新数据");
             });
+
+
+            var t = setInterval(() => {
+                if (complete1 && complete2 && complete3 && complete4 && complete5 && complete6) {
+                    t && clearInterval(t);
+                    func_compelete();
+                }
+            }, 50);
+
         });
     });
 }
+
+// 准备用户存储的关键信息，此为过渡功能，将localstroage 上的存储的配置数据存储到 indexedDB 中，然后清空 localstroage
+function initUserSettings(func_compelete) {
+    indexDbInit(() => {
+        var complete1 = false;
+        var complete2 = false;
+        var complete3 = false;
+        var complete4 = false;
+        var complete5 = false;
+
+        // 本地折叠按钮
+        var categoryListExpendArray = getCategoryListExpend();
+        if (categoryListExpendArray != null) {
+            var settings_categoryListExpendArray = {
+                item: table_Settings_key_CategoryList_Extend,
+                value: categoryListExpendArray
+            };
+            update(table_Settings, settings_categoryListExpendArray, () => {
+                removeCategoryListExpend();
+                complete1 = true;
+            }, error => { complete1 = true; });
+        } else {
+            complete1 = true;
+        }
+
+
+
+        // 收藏折叠按钮
+        var favoriteListExpendArray = getFavoriteDicts();
+        if (favoriteListExpendArray != null) {
+            var settings_favoriteListExpendArray = {
+                item: table_Settings_key_FavoriteList_Extend,
+                value: favoriteListExpendArray
+            };
+            update(table_Settings, settings_favoriteListExpendArray, () => {
+                removeFavoriteDicts();
+                complete2 = true;
+            }, error => { complete2 = true; });
+        } else {
+            complete2 = true;
+        }
+
+
+
+        // 头部搜索菜单显示隐藏开关
+        var oldSearchDivVisible = getOldSearchDivVisible();
+        if (oldSearchDivVisible != null) {
+            var settings_oldSearchDivVisible = {
+                item: table_Settings_key_OldSearchDiv_Visible,
+                value: oldSearchDivVisible == 1
+            };
+            update(table_Settings, settings_oldSearchDivVisible, () => {
+                removeOldSearchDivVisible();
+                complete3 = true;
+            }, error => { complete3 = true; });
+        } else {
+            complete3 = true;
+        }
+
+
+        // 标签谷歌机翻_首页开关
+        var translateCategoryFrontPage = getGoogleTranslateCategoryFontPage();
+        if (translateCategoryFrontPage != null) {
+            var settings_translateCategoryFontPage = {
+                item: table_settings_key_TranslateFrontPageTags,
+                value: translateCategoryFrontPage == 1
+            };
+            update(table_Settings, settings_translateCategoryFontPage, () => {
+                removeGoogleTranslateCategoryFontPage();
+                complete4 = true;
+            }, error => { complete4 = true; });
+        } else {
+            complete4 = true;
+        }
+
+
+        // 标签谷歌机翻_详情页开关
+        var translateCategoryDetailPage = getGoogleTranslateCategoryDetail();
+        if (translateCategoryDetailPage != null) {
+            var settings_translateCategoryDetailPage = {
+                item: table_Settings_key_TranslateDetailPageTags,
+                value: translateCategoryDetailPage == 1
+            };
+            update(table_Settings, settings_translateCategoryDetailPage, () => {
+                removeGoogleTranslateCategoryDetail();
+                complete5 = true;
+            }, error => { complete5 = true; });
+        } else {
+            complete5 = true;
+        }
+
+        var t = setInterval(() => {
+            if (complete1 && complete2 && complete3 && complete4 && complete5) {
+                t && clearInterval(t);
+                func_compelete();
+            }
+        }, 50);
+    })
+}
+
+// TODO 用户收藏列表 等待转换 (本地从本地读取，网络从EhTag读取)

@@ -1,33 +1,5 @@
 // 数据字典
 
-// 首页头部菜单翻译字典
-const fontMenusData = {
-    "Front Page": "首页",
-    "Watched": "已观看",
-    "Popular": "热门",
-    "Torrents": "种子",
-    "Favorites": "收藏",
-    "Settings": "设置",
-    "My Uploads": "我的上传",
-    "My Tags": "我的标签",
-    "My Home": "我的主页",
-    "Toplists": "排行榜",
-    "Bounties": "悬赏",
-    "News": "新闻",
-    "Forums": "论坛",
-    "Wiki": "维基百科",
-    "HentaiVerse": "變態之道(游戏)"
-};
-
-// 预览下拉框
-const dropData = {
-    "Minimal": "标题 + 悬浮图",
-    "Minimal+": "标题 + 悬浮图 + 账号收藏标签",
-    "Compact": "标题 + 悬浮图 + 标签",
-    "Extended": "标题 + 图片 + 标签",
-    "Thumbnail": "标题 + 缩略图",
-}
-
 // 详情页父级
 const detailParentData = {
 	"reclass": "重新分类",
