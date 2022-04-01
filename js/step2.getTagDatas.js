@@ -86,10 +86,12 @@ const table_Settings_key_TranslateDetailPageTitles = "f_translateDetailPageTitle
 // fetishList 父子信息表
 const table_fetishListSubItems = "t_fetishListSubItems";
 const table_fetishListSubItems_key = "ps_en";
+const table_fetishListSubItems_index_subEn = "sub_en";
 
 // EhTag 父子信息表
 const table_EhTagSubItems = "t_ehTagSubItems";
 const table_EhTagSubItems_key = "ps_en";
+const table_EhTagSubItems_index_subEn = "sub_en";
 
 function indexDbInit(func_start_use) {
     if (request.readyState == "done") {
@@ -128,7 +130,7 @@ request.onupgradeneeded = function (event) {
         var objectStore = db.createObjectStore(table_fetishListSubItems, { keyPath: table_fetishListSubItems_key });
         // objectStore.createIndex('parent_en', 'parent_en', { unique: false });
         // objectStore.createIndex('parent_zh', 'parent_zh', { unique: false });
-        // objectStore.createIndex('sub_en', 'sub_en', { unique: false });
+        objectStore.createIndex('sub_en', 'sub_en', { unique: false });
         // objectStore.createIndex('sub_zh', 'sub_zh', { unique: false });
         objectStore.createIndex('search_key', 'search_key', { unique: true });
     }
@@ -138,7 +140,7 @@ request.onupgradeneeded = function (event) {
         var objectStore = db.createObjectStore(table_EhTagSubItems, { keyPath: table_EhTagSubItems_key });
         // objectStore.createIndex('parent_en', 'parent_en', { unique: false });
         // objectStore.createIndex('parent_zh', 'parent_zh', { unique: false });
-        // objectStore.createIndex('sub_en', 'sub_en', { unique: false });
+        objectStore.createIndex('sub_en', 'sub_en', { unique: false });
         // objectStore.createIndex('sub_zh', 'sub_zh', { unique: false });
         objectStore.createIndex('search_key', 'search_key', { unique: true });
     }
@@ -151,7 +153,7 @@ function read(tableName, key, func_success, func_error) {
 
     request.onerror = function (event) {
         console.log('读取事务失败', event);
-        func_error(event);
+        func_error();
     }
 
     request.onsuccess = function (event) {
@@ -475,12 +477,12 @@ function tagDataDispose(func_compelete) {
                             }
                             lastParentEn = item.parent_en;
                             // 新建父级
-                            categoryFetishListHtml += `<h4>${item.parent_zh}<span data-category="${item.parent_en}" class="category_extend">-</span></h4>`;
+                            categoryFetishListHtml += `<h4>${item.parent_zh}<span data-category="${item.parent_en}" class="category_extend category_extend_fetish">-</span></h4>`;
                             categoryFetishListHtml += `<div id="items_div_${item.parent_en}" class="category_items_div">`;
                         }
 
                         // 添加子级
-                        categoryFetishListHtml += `<span class="c_item" data-item="${item.sub_en}" data-favorite_parent_en="${item.parent_en}" data-favorite_parent_zh="${item.parent_zh}" title="[${item.sub_en}] ${item.sub_desc}">${item.sub_zh}</span>`;
+                        categoryFetishListHtml += `<span class="c_item c_item_fetish" data-item="${item.sub_en}" data-parent_en="${item.parent_en}" data-parent_zh="${item.parent_zh}" title="[${item.sub_en}] ${item.sub_desc}">${item.sub_zh}</span>`;
                     }
                 }
                 if (categoryFetishListHtml != ``) {
@@ -493,9 +495,6 @@ function tagDataDispose(func_compelete) {
                     value: categoryFetishListHtml
                 };
                 update(table_Settings, settings_fetish_html, () => { complete3 = true; }, error => { complete3 = true; });
-
-                var category_list_fetishList = document.getElementById("category_list_fetishList");
-                category_list_fetishList.innerHTML = categoryFetishListHtml;
 
             }, () => {
                 complete1 = true;
@@ -568,12 +567,12 @@ function tagDataDispose(func_compelete) {
                             }
                             lastParentEn = item.parent_en;
                             // 新建父级
-                            categoryEhTagHtml += `<h4>${item.parent_zh}<span data-category="${item.parent_en}" class="category_extend">-</span></h4>`;
+                            categoryEhTagHtml += `<h4>${item.parent_zh}<span data-category="${item.parent_en}" class="category_extend category_extend_ehTag">-</span></h4>`;
                             categoryEhTagHtml += `<div id="items_div_${item.parent_en}" class="category_items_div">`;
                         }
 
                         // 添加子级
-                        categoryEhTagHtml += `<span class="c_item" data-item="${item.sub_en}" data-favorite_parent_en="${item.parent_en}" data-favorite_parent_zh="${item.parent_zh}" title="[${item.sub_en}] ${item.sub_desc}">${item.sub_zh}</span>`;
+                        categoryEhTagHtml += `<span class="c_item c_item_ehTag" data-item="${item.sub_en}" data-parent_en="${item.parent_en}" data-parent_zh="${item.parent_zh}" title="[${item.sub_en}] ${item.sub_desc}">${item.sub_zh}</span>`;
                     }
                 }
                 if (categoryEhTagHtml != ``) {
@@ -586,9 +585,6 @@ function tagDataDispose(func_compelete) {
                     value: categoryEhTagHtml
                 };
                 update(table_Settings, settings_ehTag_html, () => { complete6 = true; }, error => { complete6 = true; });
-
-                var category_list_ehTag = document.getElementById("category_list_ehTag");
-                category_list_ehTag.innerHTML = categoryEhTagHtml;
 
             }, () => {
                 complete4 = true;

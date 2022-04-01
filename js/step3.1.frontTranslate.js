@@ -1,4 +1,99 @@
 //#region step3.1.frontTranslate.js 首页谷歌翻译
+
+var translateDict = {};
+
+// 谷歌翻译:标签，通用方法
+function translateClick() {
+	// 根据是否选中来翻译或者正常
+	var translateCheckbox = document.getElementById("googleTranslateCheckbox");
+	var isChecked = translateCheckbox.checked;
+	var needTranslateArray = document.getElementsByClassName("needTranslate");
+
+	if (isChecked) {
+		// 翻译
+		var translateArray = [];
+		if (!checkDictNull(translateDict)) {
+			// 已经请求过接口，直接翻译
+			TranslateByDict();
+		} else {
+			// 请求接口，更新字典，翻译标签
+			for (const i in needTranslateArray) {
+				if (Object.hasOwnProperty.call(needTranslateArray, i)) {
+					const item = needTranslateArray[i].title;
+					translateArray.push(item);
+				}
+			}
+
+			if (translateArray.length > 0) {
+				// 请求接口
+				var text = translateArray.join("|");
+				getGoogleTranslate(text, function (data) {
+					var sentences = data.sentences;
+					var longtext = '';
+					for (const i in sentences) {
+						if (Object.hasOwnProperty.call(sentences, i)) {
+							const sentence = sentences[i];
+							longtext += sentence.trans;
+						}
+					}
+
+					var categoryZhArray = longtext.split("|");
+					for (const i in translateArray) {
+						if (Object.hasOwnProperty.call(translateArray, i)) {
+							const enKey = translateArray[i];
+							if (!translateDict[enKey]) {
+								translateDict[enKey] = categoryZhArray[i];
+							}
+						}
+					}
+
+					// 替换文本文件，并添加原文
+					TranslateByDict();
+				});
+			}
+
+		}
+		// 翻译
+		function TranslateByDict() {
+			for (const i in needTranslateArray) {
+				if (Object.hasOwnProperty.call(needTranslateArray, i)) {
+					const divItem = needTranslateArray[i];
+					divItem.dataset.old_inner_text = divItem.innerText;
+					var enKey = divItem.title;
+					divItem.innerText = translateDict[enKey]?.replace("：", ":") ?? enKey;
+				}
+			}
+		}
+
+	}
+	else {
+		// 不翻译，使用原文
+		if (!checkDictNull(translateDict)) {
+			// 已经翻译过，从 data 原文中返回
+			for (const i in needTranslateArray) {
+				if (Object.hasOwnProperty.call(needTranslateArray, i)) {
+					const divItem = needTranslateArray[i];
+					divItem.innerText = divItem.dataset.old_inner_text;
+				}
+			}
+		}
+	}
+
+	return isChecked;
+}
+
+// 首页谷歌翻译：标签
+function translateClickMainPage() {
+	var isChecked = translateClick();
+
+	// 更新存储
+	var settings_translateFrontPageTags = {
+		item: table_settings_key_TranslateFrontPageTags,
+		value: isChecked
+	};
+	update(table_Settings, settings_translateFrontPageTags, () => { }, () => { });
+}
+
 function mainPageTranslate() {
 	// 首页添加 Meta
 	var meta = document.createElement("meta");
@@ -88,9 +183,11 @@ function mainPageTranslate() {
 	translateLabel.innerText = "谷歌机翻 : 标签";
 
 	// 读取是否选中
-	if (getGoogleTranslateCategoryFontPage() == 1) {
-		translateCheckbox.setAttribute("checked", true);
-	}
+	read(table_Settings, table_settings_key_TranslateFrontPageTags, result => {
+		if (result && result.value) {
+			translateCheckbox.setAttribute("checked", true);
+		}
+	}, () => { });
 
 	translateDiv.appendChild(translateLabel);
 
@@ -199,25 +296,22 @@ function mainPageTranslate() {
 					var parentEn = split[0];
 					var subEn = split[1];
 					var parentZh = detailParentData[parentEn] ?? parentEn;
-					var subZh = getSubZh(subEn);
-					if (subZh != subEn) {
+
+					getSubZh(subEn, subZh => {
 						item.innerText = `${parentZh}:${subZh}`;
-					}
-					else {
+					}, () => {
 						item.classList.add("needTranslate");
-					}
+					});
 				}
 			}
 			else {
 				// 只有子标签
 				var subEn = innerText;
-				var subZh = getSubZh(subEn);
-				if (subZh != subEn) {
+				getSubZh(subEn, subZh => {
 					item.innerText = subZh;
-				}
-				else {
+				}, () => {
 					item.classList.add("needTranslate");
-				}
+				});
 			}
 		}
 	}
@@ -226,28 +320,31 @@ function mainPageTranslate() {
 		if (Object.hasOwnProperty.call(gtl, i)) {
 			const item = gtl[i];
 			var subEn = item.innerText;
-			var subZh = getSubZh(subEn);
-			if (subZh != subEn) {
+			getSubZh(subEn, subZh => {
 				item.innerText = subZh;
-			}
-			else {
+			}, () => {
 				item.classList.add("needTranslate");
-			}
+			});
 		}
 	}
 
-	function getSubZh(subEn) {
-		var subItems = subData[subEn];
-		if (subItems && subItems.length > 0) {
-			return subData[subEn][0];
-		}
-		return subEn;
+	function getSubZh(subEn, func_hasData, func_none) {
+		// 先从 恋物父子表尝试取出数据，如果不能找到再从EhTag表取数据
+		readByIndex(table_fetishListSubItems, table_fetishListSubItems_index_subEn, subEn, result1 => {
+			func_hasData(result1.sub_zh);
+		}, () => {
+			readByIndex(table_EhTagSubItems, table_EhTagSubItems_index_subEn, subEn, result2 => {
+				func_hasData(result2.sub_zh);
+			}, () => { func_none(); });
+		});
 	}
 
 	// 判断一开始是否选中
-	if (getGoogleTranslateCategoryFontPage() == 1) {
-		translateClickMainPage();
-	}
+	read(table_Settings, table_settings_key_TranslateFrontPageTags, result => {
+		if (result && result.value) {
+			translateClickMainPage();
+		}
+	}, () => { });
 
 }
 
