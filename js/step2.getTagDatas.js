@@ -87,11 +87,13 @@ const table_Settings_key_TranslateDetailPageTitles = "f_translateDetailPageTitle
 const table_fetishListSubItems = "t_fetishListSubItems";
 const table_fetishListSubItems_key = "ps_en";
 const table_fetishListSubItems_index_subEn = "sub_en";
+const table_fetishListSubItems_index_searchKey = "search_key";
 
 // EhTag 父子信息表
 const table_EhTagSubItems = "t_ehTagSubItems";
 const table_EhTagSubItems_key = "ps_en";
 const table_EhTagSubItems_index_subEn = "sub_en";
+const table_EhTagSubItems_index_searchKey = "search_key";
 
 function indexDbInit(func_start_use) {
     if (request.readyState == "done") {
@@ -130,9 +132,9 @@ request.onupgradeneeded = function (event) {
         var objectStore = db.createObjectStore(table_fetishListSubItems, { keyPath: table_fetishListSubItems_key });
         // objectStore.createIndex('parent_en', 'parent_en', { unique: false });
         // objectStore.createIndex('parent_zh', 'parent_zh', { unique: false });
-        objectStore.createIndex('sub_en', 'sub_en', { unique: false });
+        objectStore.createIndex(table_fetishListSubItems_index_subEn, table_fetishListSubItems_index_subEn, { unique: false });
         // objectStore.createIndex('sub_zh', 'sub_zh', { unique: false });
-        objectStore.createIndex('search_key', 'search_key', { unique: true });
+        objectStore.createIndex(table_fetishListSubItems_index_searchKey, table_fetishListSubItems_index_searchKey, { unique: true });
     }
 
     // EhTag 父子标签表
@@ -140,9 +142,9 @@ request.onupgradeneeded = function (event) {
         var objectStore = db.createObjectStore(table_EhTagSubItems, { keyPath: table_EhTagSubItems_key });
         // objectStore.createIndex('parent_en', 'parent_en', { unique: false });
         // objectStore.createIndex('parent_zh', 'parent_zh', { unique: false });
-        objectStore.createIndex('sub_en', 'sub_en', { unique: false });
+        objectStore.createIndex(table_EhTagSubItems_index_subEn, table_EhTagSubItems_index_subEn, { unique: false });
         // objectStore.createIndex('sub_zh', 'sub_zh', { unique: false });
-        objectStore.createIndex('search_key', 'search_key', { unique: true });
+        objectStore.createIndex(table_EhTagSubItems_index_searchKey, table_EhTagSubItems_index_searchKey, { unique: true });
     }
 }
 
@@ -191,6 +193,7 @@ function readByIndex(tableName, indexName, indexValue, func_success, func_none) 
     }
 }
 
+// 按照索引的值查询：等于
 function readByCursorIndex(tableName, indexName, indexValue, func_success) {
     const IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange;
     var transaction = db.transaction([tableName], 'readonly');
@@ -208,25 +211,31 @@ function readByCursorIndex(tableName, indexName, indexValue, func_success) {
             func_success(data);
         }
     }
-
 }
 
-function fuzzySearch(tableName, field, keyword, func_success) {
-    var objectStore = db.transaction(tableName).objectStore(tableName);
-    const data = [];
-    objectStore.openCursor().onsuccess = function (event) {
+// 按照索引的值查询：模糊搜索
+function readByCursorIndexFuzzy(tableName, indexName, indexValue, func_success) {
+    const IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange;
+    var transaction = db.transaction([tableName], 'readonly');
+    var store = transaction.objectStore(tableName);
+    var index = store.index(indexName);
+    var c = index.openCursor();
+    var data = [];
+    c.onsuccess = function (event) {
         var cursor = event.target.result;
         if (cursor) {
-            if (cursor.value[field].indexOf(keyword) != -1) {
+            if (cursor.value[indexName].indexOf(indexValue) != -1) {
                 data.push(cursor.value);
             }
-            cursor.continue;
-        } else {
-            console.log('没有更多数据了');
+            cursor.continue();
+        }
+        else {
             func_success(data);
         }
     }
 }
+
+
 
 function add(tableName, data, func_success, func_error) {
     var request = db.transaction([tableName], 'readwrite')
@@ -648,7 +657,7 @@ function initUserSettings(func_compelete) {
 
 
 
-        // 头部搜索菜单显示隐藏开关
+        // 头部搜索菜单显示隐藏开关，这个不需要删除
         var oldSearchDivVisible = getOldSearchDivVisible();
         if (oldSearchDivVisible != null) {
             var settings_oldSearchDivVisible = {
@@ -656,7 +665,6 @@ function initUserSettings(func_compelete) {
                 value: oldSearchDivVisible == 1
             };
             update(table_Settings, settings_oldSearchDivVisible, () => {
-                removeOldSearchDivVisible();
                 complete3 = true;
             }, error => { complete3 = true; });
         } else {

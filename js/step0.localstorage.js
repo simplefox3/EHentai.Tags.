@@ -50,6 +50,9 @@ var dbOldSearchDivVisibleKey = "oldSearchDivVisibleKey";
 function getOldSearchDivVisible() {
     return localStorage.getItem(dbOldSearchDivVisibleKey);
 }
+function setOldSearchDivVisible(visible) {
+	localStorage.setItem(dbOldSearchDivVisibleKey, visible);
+}
 function removeOldSearchDivVisible() {
     localStorage.removeItem(dbOldSearchDivVisibleKey);
 }

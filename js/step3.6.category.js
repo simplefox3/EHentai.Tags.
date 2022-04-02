@@ -72,10 +72,10 @@ function addItemToInput(parentEn, parentZh, enItem, zhItem) {
         newSearchInputItem.id = `input_item_${parentEn}_${enItem}`;
         newSearchInputItem.title = enItem;
 
-        newSearchInputItem.dataset.item = enItem;
+        newSearchInputItem.dataset.item = `${parentEn}_${enItem}`;
         searchItemDict[`${parentEn}_${enItem}`] = { enItem, zhItem, parentEn, parentZh };
 
-        var searchItemText = document.createTextNode(zhItem + " X");
+        var searchItemText = document.createTextNode(`${parentZh} : ${zhItem} X`);
         newSearchInputItem.appendChild(searchItemText);
         newSearchInputItem.addEventListener("click", removeSearchItem);
         readonlyDiv.appendChild(newSearchInputItem);

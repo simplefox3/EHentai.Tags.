@@ -280,6 +280,9 @@ var dbOldSearchDivVisibleKey = "oldSearchDivVisibleKey";
 function getOldSearchDivVisible() {
 	return localStorage.getItem(dbOldSearchDivVisibleKey);
 }
+function setOldSearchDivVisible(visible) {
+	localStorage.setItem(dbOldSearchDivVisibleKey, visible);
+}
 function removeOldSearchDivVisible() {
 	localStorage.removeItem(dbOldSearchDivVisibleKey);
 }
@@ -651,14 +654,17 @@ func_eh_ex(() => {
 		margin-left: -1px;
 		border: 1px solid #5c0d12;
 		border-top: 0;
-		padding-top: 48px;
 		background-color: #e3e0d1;
+		max-height: 500px;
+		overflow-y: scroll;
 	}
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items {
 		font-size: 10px;
 		cursor: pointer;
 		padding: 2px 5px;
+		height: 20px;
+    	line-height: 20px;
 	}
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items:first-child {
@@ -704,6 +710,7 @@ func_eh_ex(() => {
 		overflow-y: auto;
 	}
 	
+	#div_ee8413b2 #category_search_input #category_user_input_recommend::-webkit-scrollbar,
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list::-webkit-scrollbar {
@@ -711,6 +718,7 @@ func_eh_ex(() => {
 		height: 1px;
 	}
 	
+	#div_ee8413b2 #category_search_input #category_user_input_recommend::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list::-webkit-scrollbar-track {
@@ -718,6 +726,7 @@ func_eh_ex(() => {
 		border-radius: 10px;
 	}
 	
+	#div_ee8413b2 #category_search_input #category_user_input_recommend::-webkit-scrollbar-thumb,
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar-thumb,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar-thumb,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list::-webkit-scrollbar-thumb {
@@ -1252,8 +1261,9 @@ func_eh_ex(() => {
 		margin-left: -1px;
 		border: 1px solid #F1F1F1;
 		border-top: 0;
-		padding-top: 48px;
 		background-color: #40454B;
+		max-height: 500px;
+		overflow-y: scroll;
 	}
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items {
@@ -1261,6 +1271,8 @@ func_eh_ex(() => {
 		cursor: pointer;
 		padding: 2px 5px;
 		color: #ffde74;
+		height: 20px;
+    	line-height: 20px;
 	}
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items:first-child {
@@ -1306,6 +1318,7 @@ func_eh_ex(() => {
 		overflow-y: auto;
 	}
 	
+	#div_ee8413b2 #category_search_input #category_user_input_recommend::-webkit-scrollbar,
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list::-webkit-scrollbar {
@@ -1313,6 +1326,7 @@ func_eh_ex(() => {
 		height: 1px;
 	}
 	
+	#div_ee8413b2 #category_search_input #category_user_input_recommend::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list::-webkit-scrollbar-track {
@@ -1320,6 +1334,7 @@ func_eh_ex(() => {
 		border-radius: 10px;
 	}
 	
+	#div_ee8413b2 #category_search_input #category_user_input_recommend::-webkit-scrollbar-thumb,
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar-thumb,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar-thumb,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list::-webkit-scrollbar-thumb {
@@ -1643,11 +1658,13 @@ const table_Settings_key_TranslateDetailPageTitles = "f_translateDetailPageTitle
 const table_fetishListSubItems = "t_fetishListSubItems";
 const table_fetishListSubItems_key = "ps_en";
 const table_fetishListSubItems_index_subEn = "sub_en";
+const table_fetishListSubItems_index_searchKey = "search_key";
 
 // EhTag 父子信息表
 const table_EhTagSubItems = "t_ehTagSubItems";
 const table_EhTagSubItems_key = "ps_en";
 const table_EhTagSubItems_index_subEn = "sub_en";
+const table_EhTagSubItems_index_searchKey = "search_key";
 
 function indexDbInit(func_start_use) {
 	if (request.readyState == "done") {
@@ -1686,9 +1703,9 @@ request.onupgradeneeded = function (event) {
 		var objectStore = db.createObjectStore(table_fetishListSubItems, { keyPath: table_fetishListSubItems_key });
 		// objectStore.createIndex('parent_en', 'parent_en', { unique: false });
 		// objectStore.createIndex('parent_zh', 'parent_zh', { unique: false });
-		objectStore.createIndex('sub_en', 'sub_en', { unique: false });
+		objectStore.createIndex(table_fetishListSubItems_index_subEn, table_fetishListSubItems_index_subEn, { unique: false });
 		// objectStore.createIndex('sub_zh', 'sub_zh', { unique: false });
-		objectStore.createIndex('search_key', 'search_key', { unique: true });
+		objectStore.createIndex(table_fetishListSubItems_index_searchKey, table_fetishListSubItems_index_searchKey, { unique: true });
 	}
 
 	// EhTag 父子标签表
@@ -1696,9 +1713,9 @@ request.onupgradeneeded = function (event) {
 		var objectStore = db.createObjectStore(table_EhTagSubItems, { keyPath: table_EhTagSubItems_key });
 		// objectStore.createIndex('parent_en', 'parent_en', { unique: false });
 		// objectStore.createIndex('parent_zh', 'parent_zh', { unique: false });
-		objectStore.createIndex('sub_en', 'sub_en', { unique: false });
+		objectStore.createIndex(table_EhTagSubItems_index_subEn, table_EhTagSubItems_index_subEn, { unique: false });
 		// objectStore.createIndex('sub_zh', 'sub_zh', { unique: false });
-		objectStore.createIndex('search_key', 'search_key', { unique: true });
+		objectStore.createIndex(table_EhTagSubItems_index_searchKey, table_EhTagSubItems_index_searchKey, { unique: true });
 	}
 }
 
@@ -1747,6 +1764,7 @@ function readByIndex(tableName, indexName, indexValue, func_success, func_none) 
 	}
 }
 
+// 按照索引的值查询：等于
 function readByCursorIndex(tableName, indexName, indexValue, func_success) {
 	const IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange;
 	var transaction = db.transaction([tableName], 'readonly');
@@ -1764,25 +1782,31 @@ function readByCursorIndex(tableName, indexName, indexValue, func_success) {
 			func_success(data);
 		}
 	}
-
 }
 
-function fuzzySearch(tableName, field, keyword, func_success) {
-	var objectStore = db.transaction(tableName).objectStore(tableName);
-	const data = [];
-	objectStore.openCursor().onsuccess = function (event) {
+// 按照索引的值查询：模糊搜索
+function readByCursorIndexFuzzy(tableName, indexName, indexValue, func_success) {
+	const IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange;
+	var transaction = db.transaction([tableName], 'readonly');
+	var store = transaction.objectStore(tableName);
+	var index = store.index(indexName);
+	var c = index.openCursor();
+	var data = [];
+	c.onsuccess = function (event) {
 		var cursor = event.target.result;
 		if (cursor) {
-			if (cursor.value[field].indexOf(keyword) != -1) {
+			if (cursor.value[indexName].indexOf(indexValue) != -1) {
 				data.push(cursor.value);
 			}
-			cursor.continue;
-		} else {
-			console.log('没有更多数据了');
+			cursor.continue();
+		}
+		else {
 			func_success(data);
 		}
 	}
 }
+
+
 
 function add(tableName, data, func_success, func_error) {
 	var request = db.transaction([tableName], 'readwrite')
@@ -2204,7 +2228,7 @@ function initUserSettings(func_compelete) {
 
 
 
-		// 头部搜索菜单显示隐藏开关
+		// 头部搜索菜单显示隐藏开关，这个不需要删除
 		var oldSearchDivVisible = getOldSearchDivVisible();
 		if (oldSearchDivVisible != null) {
 			var settings_oldSearchDivVisible = {
@@ -2212,7 +2236,6 @@ function initUserSettings(func_compelete) {
 				value: oldSearchDivVisible == 1
 			};
 			update(table_Settings, settings_oldSearchDivVisible, () => {
-				removeOldSearchDivVisible();
 				complete3 = true;
 			}, error => { complete3 = true; });
 		} else {
@@ -2618,7 +2641,8 @@ function mainPageTranslate() {
 
 //#region step3.2.frontPageTopStyle 首页头部搜索显示隐藏
 
-function frontPageTopStyle() {
+// 添加样式和逻辑，从 localstroage 中读取显示隐藏
+function frontPageTopStyleStep01() {
 	// 调整头部样式
 	var searchBoxDiv = document.getElementById("searchbox");
 	searchBoxDiv.style.width = "auto";
@@ -2642,32 +2666,64 @@ function frontPageTopStyle() {
 		searchBoxDiv.children[0].style.display = "none";
 		hiddenOldDiv.style.display = "none";
 		showOldDiv.style.display = "block";
+		setOldSearchDivVisible(0);
+	}
+	function showOldSearchDiv() {
+		searchBoxDiv.children[0].style.display = "block";
+		hiddenOldDiv.style.display = "block";
+		showOldDiv.style.display = "none";
+		setOldSearchDivVisible(1);
+	}
 
+	// 读取头部是否隐藏，并应用到页面中
+	var oldSearchDivVisible = getOldSearchDivVisible();
+	if (oldSearchDivVisible == 0) {
+		searchBoxDiv.children[0].style.display = "none";
+		hiddenOldDiv.style.display = "none";
+		showOldDiv.style.display = "block";
+	}
+}
+
+// 从indexedDB 中读取隐藏折叠
+function frontPageTopStyleStep02() {
+	var searchBoxDiv = document.getElementById("searchbox");
+	var hiddenOldDiv = document.getElementById("div_old_hidden_btn");
+	var showOldDiv = document.getElementById("div_old_show_btn");
+
+	var oldSearchDivVisible = getOldSearchDivVisible();
+	if (oldSearchDivVisible == null) {
+		// 尝试从 indexedDB 中读取配置，如果存在则说明 localstroage 配置丢失，需要补充，页面对应隐藏折叠
+		read(table_Settings, table_Settings_key_OldSearchDiv_Visible, result => {
+			if (result) {
+				if (!result.value) {
+					searchBoxDiv.children[0].style.display = "none";
+					hiddenOldDiv.style.display = "none";
+					showOldDiv.style.display = "block";
+				}
+				setOldSearchDivVisible(result.value ? 1 : 0);
+			}
+		}, () => { });
+
+	}
+
+	// 添加按钮点击事件，用于将配置存储到 indexDB 中
+	hiddenOldDiv.addEventListener("click", hiddenTopIndexedDb);
+	showOldDiv.addEventListener("click", showTopIndexedDb);
+	function hiddenTopIndexedDb() {
 		var settings_oldSearchDivVisible = {
 			item: table_Settings_key_OldSearchDiv_Visible,
 			value: false
 		};
 		update(table_Settings, settings_oldSearchDivVisible, () => { }, error => { });
 	}
-	function showOldSearchDiv() {
-		searchBoxDiv.children[0].style.display = "block";
-		hiddenOldDiv.style.display = "block";
-		showOldDiv.style.display = "none";
+
+	function showTopIndexedDb() {
 		var settings_oldSearchDivVisible = {
 			item: table_Settings_key_OldSearchDiv_Visible,
 			value: true
 		};
 		update(table_Settings, settings_oldSearchDivVisible, () => { }, error => { });
 	}
-
-	// 读取头部是否隐藏，并应用到页面中
-	read(table_Settings, table_Settings_key_OldSearchDiv_Visible, result => {
-		if (result && !result.value) {
-			searchBoxDiv.children[0].style.display = "none";
-			hiddenOldDiv.style.display = "none";
-			showOldDiv.style.display = "block";
-		}
-	}, () => { });
 }
 
 //#endregion
@@ -2754,6 +2810,13 @@ function mainPageCategory() {
 	// 头部菜单汉化
 	topMenuTranslateZh();
 
+	// 从localstroge 读取，头部隐藏折叠
+	frontPageTopStyleStep01();
+
+	// TODO 头部高度伸缩功能
+	// 首页框架搭建
+	frontPageHtml();
+
 	// 初始化用户配置信息
 	initUserSettings(() => {
 		console.log('初始化用户配置信息完毕');
@@ -2761,11 +2824,8 @@ function mainPageCategory() {
 		// TODO 不同语种的翻译
 		// TODO 首页谷歌翻译：标题
 
-		// 首页头部样式调整
-		frontPageTopStyle();
-
-		// 首页框架搭建
-		frontPageHtml();
+		// 首页头部样式调整，补充事件
+		frontPageTopStyleStep02();
 
 		// 列举可用元素
 		//#region step3.4.frontPageAllElements.js 列出首页全部可操作元素
@@ -2978,10 +3038,10 @@ function mainPageCategory() {
 					newSearchInputItem.id = `input_item_${parentEn}_${enItem}`;
 					newSearchInputItem.title = enItem;
 
-					newSearchInputItem.dataset.item = enItem;
+					newSearchInputItem.dataset.item = `${parentEn}_${enItem}`;
 					searchItemDict[`${parentEn}_${enItem}`] = { enItem, zhItem, parentEn, parentZh };
 
-					var searchItemText = document.createTextNode(zhItem + " X");
+					var searchItemText = document.createTextNode(`${parentZh} : ${zhItem} X`);
 					newSearchInputItem.appendChild(searchItemText);
 					newSearchInputItem.addEventListener("click", removeSearchItem);
 					readonlyDiv.appendChild(newSearchInputItem);
@@ -3120,54 +3180,212 @@ function mainPageCategory() {
 			var f_searchs = GetQueryString("f_search");
 			if (f_searchs) {
 				var searchArray = f_searchs.replace(/\"/g, "").split("+");
+
 				for (const i in searchArray) {
 					if (Object.hasOwnProperty.call(searchArray, i)) {
 
 						var items = searchArray[i].replace("'", "");
-
-						// 从收藏中查询，看是否存在
 						var itemArray = items.split(":");
 						if (itemArray.length == 2) {
 							var parentEn = itemArray[0];
 							var subEn = itemArray[1];
-
-							readByIndex(table_fetishListSubItems, table_fetishListSubItems_index_subEn, subEn, fetishResult => {
-								var fetishData = fetishResult.value;
-								addItemToInput(fetishData.parent_en, fetishData.parent_zh, fetishData.sub_en, fetishData.sub_zh);
-							}, () => {
-								readByIndex(table_EhTagSubItems, table_EhTagSubItems_index_subEn, subEn, ehTagResult => {
-									var ehTagData = ehTagResult.value;
-									addItemToInput(ehTagData.parent_en, ehTagData.parent_zh, ehTagData.sub_en, ehTagData.sub_zh);
-								}, () => { });
-							})
-
-
-							// if (favoriteDict[parentEn][1][subEn]) {
-							//     var parentZh = favoriteDict[parentEn][0];
-							//     var subZh = favoriteDict[parentEn][1][subEn];
-							//     addItemToInput(parentEn, parentZh, subEn, subZh);
-							// }
-							// else {
-							//     addItemToInput(parentEn, parentEn, subEn, subEn);
-							// }
+							// 从EhTag中查询，看是否存在
+							readByIndex(table_EhTagSubItems, table_EhTagSubItems_index_subEn, subEn, ehTagData => {
+								addItemToInput(ehTagData.parent_en, ehTagData.parent_zh, ehTagData.sub_en, ehTagData.sub_zh);
+							}, () => { });
 						}
 						else {
-							// // 普通搜索
-							// var enItem = items;
-							// var valueItems = subData[enItem];
-							// if (valueItems) {
-							//     addItemToInput("localFavorites", "本地", enItem, valueItems[0]);
-							// } else {
-							//     addItemToInput("localFavorites", "本地", enItem, enItem);
-							// }
+							// 从恋物列表中查询，看是否存在
+							readByIndex(table_fetishListSubItems, table_fetishListSubItems_index_subEn, items, fetishData => {
+								addItemToInput(fetishData.parent_en, fetishData.parent_zh, fetishData.sub_en, fetishData.sub_zh);
+							}, () => {
+								// 用户自定义搜索关键字
+								addItemToInput("userCustom", "自定义", items, items);
+							});
 						}
 					}
 				}
 			}
 
-
 			// 删除搜索框子项
-			function removeSearchItem() { }
+			function removeSearchItem(e) {
+				var id = e.path[0].id;
+				var item = document.getElementById(id);
+				var cateItem = item.dataset.item;
+				delete searchItemDict[cateItem];
+				console.log(cateItem);
+				console.log(searchItemDict);
+
+				if (checkDictNull(searchItemDict)) {
+					inputClearBtn.style.display = "none";
+					searchBtn.innerText = "首页";
+					addFavoritesBtn.style.display = "none";
+					addFavoritesDisabledBtn.style.display = "block";
+				}
+
+				item.parentNode.removeChild(item);
+			}
+
+			// 清空选择
+			inputClearBtn.onclick = function () {
+				searchItemDict = {};
+				readonlyDiv.innerHTML = "";
+				inputClearBtn.style.display = "none";
+				searchBtn.innerText = "首页";
+				addFavoritesBtn.style.display = "none";
+				addFavoritesDisabledBtn.style.display = "block";
+			}
+
+			// 搜索包含父级
+			function SearchWithParentEn(fetishParentArray) {
+				var enItemArray = [];
+				for (const i in searchItemDict) {
+					if (Object.hasOwnProperty.call(searchItemDict, i)) {
+						var item = searchItemDict[i];
+						var parentEn = item.parentEn;
+						var subEn = item.enItem;
+						if (fetishParentArray.indexOf(parentEn) != -1) {
+							enItemArray.push(`"${subEn}"`);
+						}
+						else if (parentEn == "userCustom") {
+							enItemArray.push(`"${subEn}"`);
+						} else {
+							enItemArray.push(`"${parentEn}:${subEn}"`);
+						}
+					}
+				}
+				searchBtn.innerText = "···";
+				// 构建请求链接
+				var searchLink = `https://${webHost}/?f_search=${enItemArray.join("+")}`;
+				window.location.href = searchLink;
+			}
+
+			// 搜索只有子级
+			function SearchWithoutParentEn() {
+				var enItemArray = [];
+				for (const i in searchItemDict) {
+					if (Object.hasOwnProperty.call(searchItemDict, i)) {
+						var item = searchItemDict[i];
+						var parentEn = item.parentEn;
+						var subEn = item.enItem;
+						if (parentEn == "userCustom") {
+							enItemArray.push(`"${subEn}"`);
+						} else if (enItemArray.indexOf(subEn) == -1) {
+							enItemArray.push(`"${subEn}"`);
+						}
+					}
+				}
+				searchBtn.innerText = "···";
+				// 构建请求链接
+				var searchLink = `https://${webHost}/?f_search=${enItemArray.join("+")}`;
+				window.location.href = searchLink;
+			}
+
+			// 搜索按钮 or 首页按钮
+			searchBtn.onclick = function () {
+				if (searchBtn.innerText == "首页") {
+					searchBtn.innerText = "···";
+					window.location.href = `https://${webHost}`;
+				}
+				else if (searchBtn.innerText == "搜索") {
+					read(table_Settings, table_Settings_key_FetishList_ParentEnArray, fetishParentResult => {
+						if (fetishParentResult) {
+							SearchWithParentEn(fetishParentResult.value);
+						} else {
+							SearchWithoutParentEn();
+						}
+					}, () => {
+						SearchWithoutParentEn();
+					});
+				}
+			}
+
+			// 搜索按钮，点击后如果鼠标悬浮指针改为转圈
+			searchBtn.onmouseover = function () {
+				if (searchBtn.innerText == "···") {
+					searchBtn.style.cursor = "wait";
+				}
+			}
+
+			// 鼠标悬浮显示输入框
+			searchInput.onmouseover = function () {
+				if (userInput.value == "") {
+					userInput.classList.add("user_input_null_backcolor");
+				} else {
+					userInput.classList.add("user_input_value_backColor");
+				}
+
+			}
+
+			// 鼠标移出移除输入框
+			searchInput.onmouseout = function () {
+				if (userInput.value == "") {
+					userInput.classList.remove("user_input_null_backcolor");
+					userInput.classList.remove("user_input_value_backColor");
+				}
+			}
+
+			// 输入框输入时候选
+			userInput.oninput = function () {
+				var inputValue = userInput.value;
+				userInputOnInputEvent(inputValue);
+			}
+
+			function userInputOnInputEvent(inputValue) {
+				var foundKeys = {};
+				// 清空候选项
+				userInputRecommendDiv.innerHTML = "";
+				userInputRecommendDiv.style.display = "block";
+
+				if (!inputValue) {
+					userInputRecommendDiv.style.display = "none";
+					return;
+				}
+
+				// 添加搜索候选
+				function addInputSearchItems(foundArrays) {
+					for (const i in foundArrays) {
+						if (Object.hasOwnProperty.call(foundArrays, i)) {
+							const item = foundArrays[i];
+							var commendDiv = document.createElement("div");
+							commendDiv.classList.add("category_user_input_recommend_items");
+							commendDiv.title = item.sub_desc;
+
+							var chTextDiv = document.createElement("div");
+							chTextDiv.style.float = "left";
+							var chTextNode = document.createTextNode(`${item.parent_zh} : ${item.sub_zh}`);
+							chTextDiv.appendChild(chTextNode);
+
+							var enTextDiv = document.createElement("div");
+							enTextDiv.style.float = "right";
+							var enTextNode = document.createTextNode(`${item.parent_en} : ${item.sub_en}`);
+							enTextDiv.appendChild(enTextNode);
+
+							commendDiv.appendChild(chTextDiv);
+							commendDiv.appendChild(enTextDiv);
+
+							commendDiv.addEventListener("click", function () {
+								addItemToInput(item.parent_en, item.parent_zh, item.sub_en, item.sub_zh);
+								userInputRecommendDiv.innerHTML = "";
+								userInput.value = "";
+								userInput.focus();
+							});
+							userInputRecommendDiv.appendChild(commendDiv);
+						}
+					}
+				}
+
+				// 从恋物表中模糊搜索，绑定数据
+				readByCursorIndexFuzzy(table_fetishListSubItems, table_fetishListSubItems_index_searchKey, inputValue, foundArrays => {
+					addInputSearchItems(foundArrays);
+				});
+
+				// 从EhTag中模糊搜索，绑定数据
+				readByCursorIndexFuzzy(table_EhTagSubItems, table_EhTagSubItems_index_searchKey, inputValue, foundArrays => {
+					addInputSearchItems(foundArrays);
+				});
+
+			}
 
 			//#endregion
 

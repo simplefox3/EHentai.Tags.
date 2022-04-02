@@ -332,14 +332,17 @@ func_eh_ex(() => {
 		margin-left: -1px;
 		border: 1px solid #5c0d12;
 		border-top: 0;
-		padding-top: 48px;
 		background-color: #e3e0d1;
+		max-height: 500px;
+		overflow-y: scroll;
 	}
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items {
 		font-size: 10px;
 		cursor: pointer;
 		padding: 2px 5px;
+		height: 20px;
+    	line-height: 20px;
 	}
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items:first-child {
@@ -385,6 +388,7 @@ func_eh_ex(() => {
 		overflow-y: auto;
 	}
 	
+	#div_ee8413b2 #category_search_input #category_user_input_recommend::-webkit-scrollbar,
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list::-webkit-scrollbar {
@@ -392,6 +396,7 @@ func_eh_ex(() => {
 		height: 1px;
 	}
 	
+	#div_ee8413b2 #category_search_input #category_user_input_recommend::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list::-webkit-scrollbar-track {
@@ -399,6 +404,7 @@ func_eh_ex(() => {
 		border-radius: 10px;
 	}
 	
+	#div_ee8413b2 #category_search_input #category_user_input_recommend::-webkit-scrollbar-thumb,
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar-thumb,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar-thumb,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list::-webkit-scrollbar-thumb {
@@ -933,8 +939,9 @@ func_eh_ex(() => {
 		margin-left: -1px;
 		border: 1px solid #F1F1F1;
 		border-top: 0;
-		padding-top: 48px;
 		background-color: #40454B;
+		max-height: 500px;
+		overflow-y: scroll;
 	}
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items {
@@ -942,6 +949,8 @@ func_eh_ex(() => {
 		cursor: pointer;
 		padding: 2px 5px;
 		color: #ffde74;
+		height: 20px;
+    	line-height: 20px;
 	}
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items:first-child {
@@ -987,6 +996,7 @@ func_eh_ex(() => {
 		overflow-y: auto;
 	}
 	
+	#div_ee8413b2 #category_search_input #category_user_input_recommend::-webkit-scrollbar,
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list::-webkit-scrollbar {
@@ -994,6 +1004,7 @@ func_eh_ex(() => {
 		height: 1px;
 	}
 	
+	#div_ee8413b2 #category_search_input #category_user_input_recommend::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list::-webkit-scrollbar-track {
@@ -1001,6 +1012,7 @@ func_eh_ex(() => {
 		border-radius: 10px;
 	}
 	
+	#div_ee8413b2 #category_search_input #category_user_input_recommend::-webkit-scrollbar-thumb,
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar-thumb,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar-thumb,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list::-webkit-scrollbar-thumb {
