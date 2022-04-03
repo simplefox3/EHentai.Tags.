@@ -3336,15 +3336,18 @@ function mainPageCategory() {
 			}
 
 			function userInputOnInputEvent(inputValue) {
-				var foundKeys = {};
 				// 清空候选项
 				userInputRecommendDiv.innerHTML = "";
 				userInputRecommendDiv.style.display = "block";
+				var tempDiv = document.createElement("div");
+				userInputRecommendDiv.appendChild(tempDiv);
 
 				if (!inputValue) {
 					userInputRecommendDiv.style.display = "none";
 					return;
 				}
+
+
 
 				// 添加搜索候选
 				function addInputSearchItems(foundArrays) {
@@ -3374,7 +3377,7 @@ function mainPageCategory() {
 								userInput.value = "";
 								userInput.focus();
 							});
-							userInputRecommendDiv.appendChild(commendDiv);
+							tempDiv.appendChild(commendDiv);
 						}
 					}
 				}
@@ -3391,9 +3394,9 @@ function mainPageCategory() {
 
 			}
 
+			// TODO 候选透光
+
 			//#endregion
-
-
 
 			// TODO 读取转换本地收藏数据，更新并生成本地收藏，包含事件
 

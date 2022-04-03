@@ -156,15 +156,18 @@ userInput.oninput = function () {
 }
 
 function userInputOnInputEvent(inputValue) {
-    var foundKeys = {};
     // 清空候选项
     userInputRecommendDiv.innerHTML = "";
     userInputRecommendDiv.style.display = "block";
+    var tempDiv = document.createElement("div");
+    userInputRecommendDiv.appendChild(tempDiv);
 
     if (!inputValue) {
         userInputRecommendDiv.style.display = "none";
         return;
     }
+
+    
 
     // 添加搜索候选
     function addInputSearchItems(foundArrays) {
@@ -194,7 +197,7 @@ function userInputOnInputEvent(inputValue) {
                     userInput.value = "";
                     userInput.focus();
                 });
-                userInputRecommendDiv.appendChild(commendDiv);
+                tempDiv.appendChild(commendDiv);
             }
         }
     }
