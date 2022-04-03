@@ -271,6 +271,9 @@ function mainPageTranslate() {
 		}
 	}
 
+
+
+
 	// 作品标签
 	var tc = document.getElementsByClassName("tc");
 	for (const i in tc) {
@@ -284,6 +287,10 @@ function mainPageTranslate() {
 			}
 		}
 	}
+
+	// 翻译数量
+	var translateCount = 0;
+
 	var gt = document.getElementsByClassName("gt");
 	for (const i in gt) {
 		if (Object.hasOwnProperty.call(gt, i)) {
@@ -292,25 +299,27 @@ function mainPageTranslate() {
 			if (innerText.indexOf(":") != -1) {
 				// 父子标签
 				var split = item.title.split(":");
-				if (split.length == 2) {
-					var parentEn = split[0];
-					var subEn = split[1];
-					var parentZh = detailParentData[parentEn] ?? parentEn;
+				var parentEn = split[0];
+				var subEn = split[1];
+				var parentZh = detailParentData[parentEn] ?? parentEn;
 
-					getSubZh(subEn, subZh => {
-						item.innerText = `${parentZh}:${subZh}`;
-					}, () => {
-						item.classList.add("needTranslate");
-					});
-				}
+				getSubZh(subEn, subZh => {
+					item.innerText = `${parentZh}:${subZh}`;
+					translateCount++;
+				}, () => {
+					item.classList.add("needTranslate");
+					translateCount++;
+				});
 			}
 			else {
 				// 只有子标签
 				var subEn = innerText;
 				getSubZh(subEn, subZh => {
 					item.innerText = subZh;
+					translateCount++;
 				}, () => {
 					item.classList.add("needTranslate");
+					translateCount++;
 				});
 			}
 		}
@@ -322,11 +331,28 @@ function mainPageTranslate() {
 			var subEn = item.innerText;
 			getSubZh(subEn, subZh => {
 				item.innerText = subZh;
+				translateCount++;
 			}, () => {
 				item.classList.add("needTranslate");
+				translateCount++;
 			});
 		}
 	}
+
+	var allCount = gt.length + gtl.length;
+
+	var t = setInterval(() => {
+		if (translateCount == allCount) {
+			t && clearInterval(t);
+			// 判断一开始是否选中
+			read(table_Settings, table_settings_key_TranslateFrontPageTags, result => {
+				if (result && result.value) {
+					translateClickMainPage();
+				}
+			}, () => { });
+		}
+
+	}, 50);
 
 	function getSubZh(subEn, func_hasData, func_none) {
 		// 先从 恋物父子表尝试取出数据，如果不能找到再从EhTag表取数据
@@ -338,13 +364,6 @@ function mainPageTranslate() {
 			}, () => { func_none(); });
 		});
 	}
-
-	// 判断一开始是否选中
-	read(table_Settings, table_settings_key_TranslateFrontPageTags, result => {
-		if (result && result.value) {
-			translateClickMainPage();
-		}
-	}, () => { });
 
 }
 

@@ -214,6 +214,5 @@ function userInputOnInputEvent(inputValue) {
 
 }
 
-// TODO 候选透光
 
 //#endregion
