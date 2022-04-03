@@ -342,8 +342,9 @@ func_eh_ex(() => {
 		font-size: 10px;
 		cursor: pointer;
 		padding: 2px 5px;
-		height: 20px;
+		min-height: 20px;
     	line-height: 20px;
+		overflow: auto;
 	}
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items:first-child {
@@ -951,8 +952,9 @@ func_eh_ex(() => {
 		cursor: pointer;
 		padding: 2px 5px;
 		color: #ffde74;
-		height: 20px;
+		min-height: 20px;
     	line-height: 20px;
+		overflow: auto;
 	}
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items:first-child {
