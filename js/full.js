@@ -657,6 +657,7 @@ func_eh_ex(() => {
 		background-color: #e3e0d1;
 		max-height: 500px;
 		overflow-y: scroll;
+		position: relative;
 	}
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items {
@@ -1264,6 +1265,7 @@ func_eh_ex(() => {
 		background-color: #40454B;
 		max-height: 500px;
 		overflow-y: scroll;
+		position: relative;
 	}
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items {
