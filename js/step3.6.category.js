@@ -60,8 +60,8 @@ function parentItemsExtend(extendSpans) {
 }
 
 // 添加小项到搜索框
-function addItemToInput(parentEn, parentZh, enItem, zhItem) {
-    if (searchItemDict[`${parentEn}_${enItem}`] == undefined) {
+function addItemToInput(parent_en, parent_zh, sub_en, sub_zh, sub_desc) {
+    if (searchItemDict[`${parent_en}_${sub_en}`] == undefined) {
         if (checkDictNull(searchItemDict)) {
             inputClearBtn.style.display = "block";
             searchBtn.innerText = "搜索";
@@ -69,13 +69,13 @@ function addItemToInput(parentEn, parentZh, enItem, zhItem) {
 
         var newSearchInputItem = document.createElement("span");
         newSearchInputItem.classList.add("input_item");
-        newSearchInputItem.id = `input_item_${parentEn}_${enItem}`;
-        newSearchInputItem.title = enItem;
+        newSearchInputItem.id = `input_item_${parent_en}_${sub_en}`;
+        newSearchInputItem.title = sub_en;
 
-        newSearchInputItem.dataset.item = `${parentEn}_${enItem}`;
-        searchItemDict[`${parentEn}_${enItem}`] = { enItem, zhItem, parentEn, parentZh };
+        newSearchInputItem.dataset.item = `${parent_en}_${sub_en}`;
+        searchItemDict[`${parent_en}:${sub_en}`] = { parent_en, parent_zh, sub_en, sub_zh, sub_desc };
 
-        var searchItemText = document.createTextNode(`${parentZh} : ${zhItem} X`);
+        var searchItemText = document.createTextNode(`${parent_zh} : ${sub_zh} X`);
         newSearchInputItem.appendChild(searchItemText);
         newSearchInputItem.addEventListener("click", removeSearchItem);
         readonlyDiv.appendChild(newSearchInputItem);
@@ -97,10 +97,11 @@ function cItemJsonSearchInput(cItems) {
             searchItem.addEventListener("click", function () {
                 var parentEn = searchItem.dataset.parent_en;
                 var parentZh = searchItem.dataset.parent_zh;
+                var subDesc = searchItem.dataset.sub_desc;
                 var enItem = searchItem.dataset.item;
                 var zhItem = searchItem.innerHTML;
 
-                addItemToInput(parentEn, parentZh, enItem, zhItem);
+                addItemToInput(parentEn, parentZh, enItem, zhItem, subDesc);
             });
         }
     }

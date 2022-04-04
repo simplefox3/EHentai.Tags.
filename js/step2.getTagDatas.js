@@ -75,13 +75,14 @@ const table_Settings_key_EhTag_ParentEnArray = "f_ehTag_parentEnArray";
 const table_Settings_key_FetishList_Html = "f_fetishListHtml";
 const table_Settings_key_EhTag_Html = "f_ehTagHtml";
 const table_Settings_key_CategoryList_Extend = "f_categoryListExtend";
-const table_Settings_key_FavoriteList_Extend = "f_favoriteListExtend";
 const table_Settings_key_OldSearchDiv_Visible = "f_oldSearchDivVisible";
 const table_settings_key_TranslateFrontPageTags = "f_translateFrontPageTags";
 const table_Settings_key_TranslateDetailPageTags = "f_translateDetailPageTags";
 const table_Settings_key_TranslateFrontPageTitles = "f_translateFrontPageTitles";
 const table_Settings_key_TranslateDetailPageTitles = "f_translateDetailPageTitles";
 const table_Settings_key_FavoriteList = "f_favoriteList";
+const table_Settings_key_FavoriteList_Html = "f_favoriteListHtml";
+const table_Settings_Key_FavoriteList_Extend = "f_favoriteListExtend";
 
 
 // fetishList 全部类别 - 父子信息表
@@ -344,7 +345,7 @@ function checkFieldEmpty(tableName, filedName, func_empty, func_hasData) {
 }
 
 function clearTable(tableName, func_clear) {
-    var transaction = db.transaction(tableName);
+    var transaction = db.transaction([tableName], 'readwrite');
     var objectStore = transaction.objectStore(tableName);
     var request = objectStore.clear();
     request.onsuccess = function (event) {
@@ -450,10 +451,7 @@ function checkDataIntact(func_compelete) {
 }
 
 // 准备关键数据
-function tagDataDispose(func_compelete) {
-    // 删除恋物版本号和类别html
-    removeVersion();
-    removeCategoryListHtml();
+function tagDataDispose(func_compelete) {   
 
     // 获取数据
     indexDbInit(() => {
@@ -501,7 +499,7 @@ function tagDataDispose(func_compelete) {
                         }
 
                         // 添加子级
-                        categoryFetishListHtml += `<span class="c_item c_item_fetish" data-item="${item.sub_en}" data-parent_en="${item.parent_en}" data-parent_zh="${item.parent_zh}" title="[${item.sub_en}] ${item.sub_desc}">${item.sub_zh}</span>`;
+                        categoryFetishListHtml += `<span class="c_item c_item_fetish" data-item="${item.sub_en}" data-parent_en="${item.parent_en}" data-parent_zh="${item.parent_zh}" data-sub_desc="${item.sub_desc}" title="[${item.sub_en}] ${item.sub_desc}">${item.sub_zh}</span>`;
                     }
                 }
                 if (categoryFetishListHtml != ``) {
@@ -591,7 +589,7 @@ function tagDataDispose(func_compelete) {
                         }
 
                         // 添加子级
-                        categoryEhTagHtml += `<span class="c_item c_item_ehTag" data-item="${item.sub_en}" data-parent_en="${item.parent_en}" data-parent_zh="${item.parent_zh}" title="[${item.sub_en}] ${item.sub_desc}">${item.sub_zh}</span>`;
+                        categoryEhTagHtml += `<span class="c_item c_item_ehTag" data-item="${item.sub_en}" data-parent_en="${item.parent_en}" data-parent_zh="${item.parent_zh}" data-sub_desc="${item.sub_desc}" title="[${item.sub_en}] ${item.sub_desc}">${item.sub_zh}</span>`;
                     }
                 }
                 if (categoryEhTagHtml != ``) {
@@ -626,13 +624,17 @@ function tagDataDispose(func_compelete) {
 
 // 准备用户存储的关键信息，此为过渡功能，将localstroage 上的存储的配置数据存储到 indexedDB 中，然后清空 localstroage
 function initUserSettings(func_compelete) {
+    // 删除恋物版本号、类别html、收藏折叠数据
+    removeVersion();
+    removeCategoryListHtml();
+    removeFavoriteListExpend();
+    
     indexDbInit(() => {
         var complete1 = false;
         var complete2 = false;
         var complete3 = false;
         var complete4 = false;
         var complete5 = false;
-        var complete6 = false;
 
         // 本地折叠按钮
         var categoryListExpendArray = getCategoryListExpend();
@@ -650,24 +652,6 @@ function initUserSettings(func_compelete) {
         }
 
 
-
-        // 收藏折叠按钮
-        var favoriteListExpendArray = getFavoriteListExpend();
-        if (favoriteListExpendArray != null) {
-            var settings_favoriteListExpendArray = {
-                item: table_Settings_key_FavoriteList_Extend,
-                value: favoriteListExpendArray
-            };
-            update(table_Settings, settings_favoriteListExpendArray, () => {
-                removeFavoriteListExpend();
-                complete2 = true;
-            }, error => { complete2 = true; });
-        } else {
-            complete2 = true;
-        }
-
-
-
         // 头部搜索菜单显示隐藏开关，这个不需要删除
         var oldSearchDivVisible = getOldSearchDivVisible();
         if (oldSearchDivVisible != null) {
@@ -676,12 +660,11 @@ function initUserSettings(func_compelete) {
                 value: oldSearchDivVisible == 1
             };
             update(table_Settings, settings_oldSearchDivVisible, () => {
-                complete3 = true;
-            }, error => { complete3 = true; });
+                complete2 = true;
+            }, error => { complete2 = true; });
         } else {
-            complete3 = true;
+            complete2 = true;
         }
-
 
         // 标签谷歌机翻_首页开关
         var translateCategoryFrontPage = getGoogleTranslateCategoryFontPage();
@@ -692,10 +675,10 @@ function initUserSettings(func_compelete) {
             };
             update(table_Settings, settings_translateCategoryFontPage, () => {
                 removeGoogleTranslateCategoryFontPage();
-                complete4 = true;
-            }, error => { complete4 = true; });
+                complete3 = true;
+            }, error => { complete3 = true; });
         } else {
-            complete4 = true;
+            complete3 = true;
         }
 
 
@@ -708,10 +691,10 @@ function initUserSettings(func_compelete) {
             };
             update(table_Settings, settings_translateCategoryDetailPage, () => {
                 removeGoogleTranslateCategoryDetail();
-                complete5 = true;
-            }, error => { complete5 = true; });
+                complete4 = true;
+            }, error => { complete4 = true; });
         } else {
-            complete5 = true;
+            complete4 = true;
         }
 
         // 用户收藏标签
@@ -723,15 +706,15 @@ function initUserSettings(func_compelete) {
             };
             update(table_Settings, settings_favoriteListDict, () => {
                 removeFavoriteDicts();
-                complete6 = true;
-            }, error => { complete2 = true; });
+                complete5 = true;
+            }, error => { complete5 = true; });
         } else {
-            complete6 = true;
+            complete5 = true;
         }
 
 
         var t = setInterval(() => {
-            if (complete1 && complete2 && complete3 && complete4 && complete5 && complete6) {
+            if (complete1 && complete2 && complete3 && complete4 && complete5) {
                 t && clearInterval(t);
                 func_compelete();
             }

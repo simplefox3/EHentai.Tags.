@@ -184,6 +184,7 @@
 
 #div_ee8413b2 #category_favorites_div #favorites_edit_list .f_edit_item {
     margin-left: 5px;
+    padding: 4px 6px;
 }
 
 #div_ee8413b2 #category_search_input #input_info .input_item:hover,
@@ -232,7 +233,8 @@
     display: none;
 }
 
-#div_ee8413b2 #favorites_list .favorite_items_div {
+#div_ee8413b2 #favorites_list .favorite_items_div,
+#div_ee8413b2 #favorites_edit_list .favorite_edit_items_div {
     padding-bottom: 20px;
 }
 

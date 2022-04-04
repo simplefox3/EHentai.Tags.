@@ -190,6 +190,7 @@ func_eh_ex(() => {
 	
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list .f_edit_item {
 		margin-left: 5px;
+		padding: 4px 6px;
 	}
 	
 	
@@ -239,8 +240,9 @@ func_eh_ex(() => {
 		display: none;
 	}
 	
-	#div_ee8413b2 #favorites_list .favorite_items_div {
-		padding-bottom: 20px;
+	#div_ee8413b2 #favorites_list .favorite_items_div,
+	#div_ee8413b2 #favorites_edit_list .favorite_edit_items_div {
+    	padding-bottom: 20px;
 	}
 	
 	#div_ee8413b2 #category_all_div h4,
@@ -800,6 +802,7 @@ func_eh_ex(() => {
 	
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list .f_edit_item {
 		margin-left: 5px;
+		padding: 4px 6px;
 	}
 	
 	
@@ -849,8 +852,9 @@ func_eh_ex(() => {
 		display: none;
 	}
 	
-	#div_ee8413b2 #favorites_list .favorite_items_div {
-		padding-bottom: 20px;
+	#div_ee8413b2 #favorites_list .favorite_items_div,
+	#div_ee8413b2 #favorites_edit_list .favorite_edit_items_div {
+    	padding-bottom: 20px;
 	}
 	
 	#div_ee8413b2 #category_all_div h4,
