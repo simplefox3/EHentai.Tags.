@@ -9,7 +9,7 @@ const category_html = `
 		<div id="search_close">收起</div>
 		<div id="category_search_input">
 			<div id="input_info">
-				<div id="readonly_div"></div>
+				<span id="readonly_div"></span>
 				<input type="text" id="user_input">
 				<span id="user_input_enter" title="按回车键添加">↵</span>
 			</div>

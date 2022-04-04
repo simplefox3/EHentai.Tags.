@@ -82,6 +82,9 @@ function addItemToInput(parentEn, parentZh, enItem, zhItem) {
 
         addFavoritesBtn.style.display = "block";
         addFavoritesDisabledBtn.style.display = "none";
+
+        // 滚动条滚动到底部
+        searchInput.scrollTop = searchInput.scrollHeight;
     }
 }
 

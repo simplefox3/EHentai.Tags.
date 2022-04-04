@@ -132,13 +132,10 @@ func_eh_ex(() => {
 	
 	#div_ee8413b2 #category_search_input #input_info {
 		width: calc(100% - 104px);
-		height: 40px;
+		height: 48px;
 		float: left;
-		padding: 4px;
-	}
-	
-	#div_ee8413b2 #category_search_input #input_info #readonly_div {
-		float: left;
+		padding: 0 4px;
+		overflow-y: auto;
 	}
 	
 	#div_ee8413b2 #category_search_input #input_info #user_input {
@@ -146,8 +143,8 @@ func_eh_ex(() => {
 		outline: none;
 		padding-left: 5px;
 		padding-right: 15px;
-		height: 21px;
-		margin: 0;
+		height: 15px;
+		margin-top: 2px;
 		background-color: transparent;
 		caret-color: black;
 		color: black;
@@ -176,9 +173,9 @@ func_eh_ex(() => {
 	#div_ee8413b2 #category_search_input #input_info .input_item,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list .f_edit_item {
 		display: inline-block;
-		padding: 0 6px;
-		height: 20px;
-		line-height: 20px;
+		padding: 0 5px;
+		height: 16px;
+		line-height: 16px;
 		font-size: 10px;
 		background-color: #f5cc9c;
 		cursor: pointer;
@@ -187,7 +184,8 @@ func_eh_ex(() => {
 	}
 	
 	#div_ee8413b2 #category_search_input #input_info .input_item {
-		margin-right: 5px;
+		margin-right: 4px;
+    	margin-top: 4px;
 	}
 	
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list .f_edit_item {
@@ -390,6 +388,7 @@ func_eh_ex(() => {
 		overflow-y: auto;
 	}
 	
+	#div_ee8413b2 #category_search_input #input_info::-webkit-scrollbar,
 	#div_ee8413b2 #category_search_input #category_user_input_recommend::-webkit-scrollbar,
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar,
@@ -398,6 +397,7 @@ func_eh_ex(() => {
 		height: 1px;
 	}
 	
+	#div_ee8413b2 #category_search_input #input_info::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_search_input #category_user_input_recommend::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar-track,
@@ -406,6 +406,7 @@ func_eh_ex(() => {
 		border-radius: 10px;
 	}
 	
+	#div_ee8413b2 #category_search_input #input_info::-webkit-scrollbar-thumb,
 	#div_ee8413b2 #category_search_input #category_user_input_recommend::-webkit-scrollbar-thumb,
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar-thumb,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar-thumb,
@@ -741,13 +742,10 @@ func_eh_ex(() => {
 	
 	#div_ee8413b2 #category_search_input #input_info {
 		width: calc(100% - 104px);
-		height: 40px;
+		height: 48px;
 		float: left;
-		padding: 4px;
-	}
-	
-	#div_ee8413b2 #category_search_input #input_info #readonly_div {
-		float: left;
+		padding: 0 4px;
+		overflow-y: auto;
 	}
 	
 	#div_ee8413b2 #category_search_input #input_info #user_input {
@@ -755,8 +753,8 @@ func_eh_ex(() => {
 		outline: none;
 		padding-left: 5px;
 		padding-right: 15px;
-		height: 21px;
-		margin: 0;
+		height: 15px;
+		margin-top: 2px;
 		background-color: transparent;
 		caret-color: black;
 		color: black;
@@ -785,9 +783,9 @@ func_eh_ex(() => {
 	#div_ee8413b2 #category_search_input #input_info .input_item,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list .f_edit_item {
 		display: inline-block;
-		padding: 0 6px;
-		height: 20px;
-		line-height: 20px;
+		padding: 0 5px;
+		height: 16px;
+		line-height: 16px;
 		font-size: 10px;
 		background-color: #f5cc9c;
 		cursor: pointer;
@@ -796,7 +794,8 @@ func_eh_ex(() => {
 	}
 	
 	#div_ee8413b2 #category_search_input #input_info .input_item {
-		margin-right: 5px;
+		margin-right: 4px;
+    	margin-top: 4px;
 	}
 	
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list .f_edit_item {
@@ -1000,6 +999,7 @@ func_eh_ex(() => {
 		overflow-y: auto;
 	}
 	
+	#div_ee8413b2 #category_search_input #input_info::-webkit-scrollbar,
 	#div_ee8413b2 #category_search_input #category_user_input_recommend::-webkit-scrollbar,
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar,
@@ -1008,6 +1008,7 @@ func_eh_ex(() => {
 		height: 1px;
 	}
 	
+	#div_ee8413b2 #category_search_input #input_info::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_search_input #category_user_input_recommend::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar-track,
@@ -1016,6 +1017,7 @@ func_eh_ex(() => {
 		border-radius: 10px;
 	}
 	
+	#div_ee8413b2 #category_search_input #input_info::-webkit-scrollbar-thumb,
 	#div_ee8413b2 #category_search_input #category_user_input_recommend::-webkit-scrollbar-thumb,
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar-thumb,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar-thumb,
