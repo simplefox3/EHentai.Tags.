@@ -3,29 +3,34 @@
 // 进入页面，根据地址栏信息生成搜索栏标签
 var f_searchs = GetQueryString("f_search");
 if (f_searchs) {
-    var searchArray = f_searchs.replace(/\"/g, "").split("+");
-
+    var searchArray = f_searchs.split("\"+\"");
     for (const i in searchArray) {
         if (Object.hasOwnProperty.call(searchArray, i)) {
 
-            var items = searchArray[i].replace("'", "");
+            var items = searchArray[i].replace(/\+/g, " ").replace("\"", "").replace("\'", "\"");
             var itemArray = items.split(":");
-            if (itemArray.length == 2) {
-                var parentEn = itemArray[0];
-                var subEn = itemArray[1];
-                // 从EhTag中查询，看是否存在
-                readByIndex(table_EhTagSubItems, table_EhTagSubItems_index_subEn, subEn, ehTagData => {
-                    addItemToInput(ehTagData.parent_en, ehTagData.parent_zh, ehTagData.sub_en, ehTagData.sub_zh);
-                }, () => { });
-            }
-            else {
-                // 从恋物列表中查询，看是否存在
-                readByIndex(table_fetishListSubItems, table_fetishListSubItems_index_subEn, items, fetishData => {
-                    addItemToInput(fetishData.parent_en, fetishData.parent_zh, fetishData.sub_en, fetishData.sub_zh);
-                }, () => {
-                    // 用户自定义搜索关键字
-                    addItemToInput("userCustom", "自定义", items, items);
-                });
+            searchItem(itemArray);
+
+            function searchItem(itemArray) {
+                if (itemArray.length == 2) {
+                    var parentEn = itemArray[0];
+                    var subEn = itemArray[1];
+                    // 从EhTag中查询，看是否存在
+                    readByIndex(table_EhTagSubItems, table_EhTagSubItems_index_subEn, subEn, ehTagData => {
+                        addItemToInput(ehTagData.parent_en, ehTagData.parent_zh, ehTagData.sub_en, ehTagData.sub_zh);
+                    }, () => {
+                        addItemToInput(parentEn, subEn, subEn, subEn);
+                    });
+                }
+                else {
+                    // 从恋物列表中查询，看是否存在
+                    readByIndex(table_fetishListSubItems, table_fetishListSubItems_index_subEn, itemArray[0], fetishData => {
+                        addItemToInput(fetishData.parent_en, fetishData.parent_zh, fetishData.sub_en, fetishData.sub_zh);
+                    }, () => {
+                        // 用户自定义搜索关键字
+                        addItemToInput("userCustom", "自定义", itemArray[0], itemArray[0]);
+                    });
+                }
             }
         }
     }
@@ -167,7 +172,7 @@ function userInputOnInputEvent(inputValue) {
         return;
     }
 
-    
+
 
     // 添加搜索候选
     function addInputSearchItems(foundArrays) {
@@ -214,5 +219,59 @@ function userInputOnInputEvent(inputValue) {
 
 }
 
+// 输入框检测回车事件
+userInput.onkeydown = function (e) {
+    var theEvent = window.event || e;
+    var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+    if (code == 13) {
+        userInputEnter();
+    }
+}
+
+userInputEnterBtn.onclick = userInputEnter;
+
+function userInputEnter() {
+    var inputValue = userInput.value.replace(/(^\s*)|(\s*$)/g, '');
+    if (!inputValue) return;
+
+
+    var recommendItems = document.getElementsByClassName("category_user_input_recommend_items");
+    if (recommendItems.length > 0) {
+        // 从候选下拉列表中匹配，如果有相同的，使用匹配内容，否则直接新增自定义文本
+        var isFound = false;
+        for (const i in recommendItems) {
+            if (Object.hasOwnProperty.call(recommendItems, i)) {
+                const recommendItem = recommendItems[i];
+                var zhDiv = recommendItem.firstChild;
+                var enDiv = recommendItem.lastChild;
+                var zhArray = zhDiv.innerText.split(" : ");
+                var enArray = enDiv.innerText.split(" : ");
+                var sub_zh = zhArray[1];
+                var sub_en = enArray[1];
+                if (sub_zh == inputValue || sub_en == inputValue) {
+                    // 符合条件
+                    var parent_zh = zhArray[0];
+                    var parent_en = enArray[0];
+                    addItemToInput(parent_en, parent_zh, sub_en, sub_zh);
+                    isFound = true;
+                    break;
+                }
+            }
+        }
+
+        if (!isFound) {
+            // 没有找到符合条件的
+            addItemToInput("userCustom", "自定义", inputValue, inputValue);
+        }
+
+    } else {
+        // 如果没有下拉列表，直接新增自定义文本
+        addItemToInput("userCustom", "自定义", inputValue, inputValue);
+    }
+
+    // 清空文本框
+    userInput.value = "";
+    userInputRecommendDiv.style.display = "none";
+}
 
 //#endregion
