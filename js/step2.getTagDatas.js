@@ -81,19 +81,25 @@ const table_settings_key_TranslateFrontPageTags = "f_translateFrontPageTags";
 const table_Settings_key_TranslateDetailPageTags = "f_translateDetailPageTags";
 const table_Settings_key_TranslateFrontPageTitles = "f_translateFrontPageTitles";
 const table_Settings_key_TranslateDetailPageTitles = "f_translateDetailPageTitles";
+const table_Settings_key_FavoriteList = "f_favoriteList";
 
 
-// fetishList 父子信息表
+// fetishList 全部类别 - 父子信息表
 const table_fetishListSubItems = "t_fetishListSubItems";
 const table_fetishListSubItems_key = "ps_en";
 const table_fetishListSubItems_index_subEn = "sub_en";
 const table_fetishListSubItems_index_searchKey = "search_key";
 
-// EhTag 父子信息表
+// EhTag 全部类别 - 父子信息表
 const table_EhTagSubItems = "t_ehTagSubItems";
 const table_EhTagSubItems_key = "ps_en";
 const table_EhTagSubItems_index_subEn = "sub_en";
 const table_EhTagSubItems_index_searchKey = "search_key";
+
+// FavoriteList 本地收藏表
+const table_favoriteSubItems = "t_favoriteSubItems";
+const table_favoriteSubItems_key = "ps_en";
+const table_favoriteSubItems_index_parentEn = "parent_en";
 
 function indexDbInit(func_start_use) {
     if (request.readyState == "done") {
@@ -130,21 +136,21 @@ request.onupgradeneeded = function (event) {
     // FetishList 父子标签表
     if (!db.objectStoreNames.contains(table_fetishListSubItems)) {
         var objectStore = db.createObjectStore(table_fetishListSubItems, { keyPath: table_fetishListSubItems_key });
-        // objectStore.createIndex('parent_en', 'parent_en', { unique: false });
-        // objectStore.createIndex('parent_zh', 'parent_zh', { unique: false });
         objectStore.createIndex(table_fetishListSubItems_index_subEn, table_fetishListSubItems_index_subEn, { unique: false });
-        // objectStore.createIndex('sub_zh', 'sub_zh', { unique: false });
         objectStore.createIndex(table_fetishListSubItems_index_searchKey, table_fetishListSubItems_index_searchKey, { unique: true });
     }
 
     // EhTag 父子标签表
     if (!db.objectStoreNames.contains(table_EhTagSubItems)) {
         var objectStore = db.createObjectStore(table_EhTagSubItems, { keyPath: table_EhTagSubItems_key });
-        // objectStore.createIndex('parent_en', 'parent_en', { unique: false });
-        // objectStore.createIndex('parent_zh', 'parent_zh', { unique: false });
         objectStore.createIndex(table_EhTagSubItems_index_subEn, table_EhTagSubItems_index_subEn, { unique: false });
-        // objectStore.createIndex('sub_zh', 'sub_zh', { unique: false });
         objectStore.createIndex(table_EhTagSubItems_index_searchKey, table_EhTagSubItems_index_searchKey, { unique: true });
+    }
+
+    // 本地收藏表
+    if (!db.objectStoreNames.contains(table_favoriteSubItems)) {
+        var objectStore = db.createObjectStore(table_favoriteSubItems, { keyPath: table_favoriteSubItems_key });
+        objectStore.createIndex(table_favoriteSubItems_index_parentEn, table_favoriteSubItems_index_parentEn, { unique: false });
     }
 }
 
@@ -445,6 +451,10 @@ function checkDataIntact(func_compelete) {
 
 // 准备关键数据
 function tagDataDispose(func_compelete) {
+    // 删除恋物版本号和类别html
+    removeVersion();
+    removeCategoryListHtml();
+
     // 获取数据
     indexDbInit(() => {
 
@@ -622,6 +632,7 @@ function initUserSettings(func_compelete) {
         var complete3 = false;
         var complete4 = false;
         var complete5 = false;
+        var complete6 = false;
 
         // 本地折叠按钮
         var categoryListExpendArray = getCategoryListExpend();
@@ -641,14 +652,14 @@ function initUserSettings(func_compelete) {
 
 
         // 收藏折叠按钮
-        var favoriteListExpendArray = getFavoriteDicts();
+        var favoriteListExpendArray = getFavoriteListExpend();
         if (favoriteListExpendArray != null) {
             var settings_favoriteListExpendArray = {
                 item: table_Settings_key_FavoriteList_Extend,
                 value: favoriteListExpendArray
             };
             update(table_Settings, settings_favoriteListExpendArray, () => {
-                removeFavoriteDicts();
+                removeFavoriteListExpend();
                 complete2 = true;
             }, error => { complete2 = true; });
         } else {
@@ -703,8 +714,24 @@ function initUserSettings(func_compelete) {
             complete5 = true;
         }
 
+        // 用户收藏标签
+        var favoriteList = getFavoriteDicts();
+        if (favoriteList != null) {
+            var settings_favoriteListDict = {
+                item: table_Settings_key_FavoriteList,
+                value: favoriteList
+            };
+            update(table_Settings, settings_favoriteListDict, () => {
+                removeFavoriteDicts();
+                complete6 = true;
+            }, error => { complete2 = true; });
+        } else {
+            complete6 = true;
+        }
+
+
         var t = setInterval(() => {
-            if (complete1 && complete2 && complete3 && complete4 && complete5) {
+            if (complete1 && complete2 && complete3 && complete4 && complete5 && complete6) {
                 t && clearInterval(t);
                 func_compelete();
             }

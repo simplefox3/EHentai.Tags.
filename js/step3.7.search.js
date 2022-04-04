@@ -7,7 +7,7 @@ if (f_searchs) {
     for (const i in searchArray) {
         if (Object.hasOwnProperty.call(searchArray, i)) {
 
-            var items = searchArray[i].replace(/\+/g, " ").replace("\"", "").replace("\'", "\"");
+            var items = searchArray[i].replace(/\+/g, " ").replace(/\"/g, "");
             var itemArray = items.split(":");
             searchItem(itemArray);
 
