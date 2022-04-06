@@ -88,6 +88,8 @@ read(table_Settings, table_Settings_key_FavoriteList, result => {
     } else {
         // 读取收藏 Html 数据，存在则更新页面
         generalFavoriteListDiv(false, () => {
+            // 设置收藏折叠
+            setFavoriteExpend();
             // 更新按钮状态
             updateFavoriteListBtnStatus();
         });
@@ -136,15 +138,40 @@ function firstUpdateFavoriteSubItems(favoriteSubItems, foundTotalCount) {
         // 页面附加Html
         favoriteListDiv.innerHTML = favoritesListHtml;
 
+        // 存储收藏Html
+        saveFavoriteListHtml(favoritesListHtml);
+
         // 小项添加点击事件
         favoriteItemsClick();
 
         // 折叠菜单添加点击事件
         favoriteExtendClick();
 
-        // 存储收藏Html
-        saveFavoriteListHtml(favoritesListHtml);
+        // 折叠的菜单显示隐藏
+        setFavoriteExpend();
+
     }
+}
+
+// 设置收藏折叠
+function setFavoriteExpend() {
+    read(table_Settings, table_Settings_Key_FavoriteList_Extend, result => {
+        if (result && result.value) {
+            var expendArray = result.value;
+            var expendBtns = document.getElementsByClassName("favorite_extend");
+            for (const i in expendBtns) {
+                if (Object.hasOwnProperty.call(expendBtns, i)) {
+                    const btn = expendBtns[i];
+                    var category = btn.dataset.category;
+                    if (expendArray.indexOf(category) != -1) {
+                        btn.innerText = "+";
+                        var itemDiv = document.getElementById("favorite_div_" + category);
+                        itemDiv.style.display = "none";
+                    }
+                }
+            }
+        }
+    }, () => { });
 }
 
 // 更新收藏列表Html存储
@@ -324,6 +351,9 @@ addFavoritesBtn.onclick = function () {
                 // 获取html并更新收藏html
                 saveFavoriteListHtml(favoriteListDiv.innerHTML);
 
+                // 设置折叠
+                setFavoriteExpend();
+
                 // 完成
                 finishFavorite();
             })
@@ -336,7 +366,7 @@ addFavoritesBtn.onclick = function () {
     // 指定折叠
     function favoriteExend(parentEn) {
         var h4 = document.getElementById("favorite_h4_" + parentEn);
-		var span = h4.querySelector("span");
+        var span = h4.querySelector("span");
         read(table_Settings, table_Settings_Key_FavoriteList_Extend, result => {
             var expendData = [];
             if (result && result.value) {
@@ -372,11 +402,8 @@ addFavoritesBtn.onclick = function () {
 
     // 收尾工作
     function finishFavorite() {
-        // 显示按钮
-        favoriteAllExtend.style.display = "block";
-        favoriteAllCollapse.style.display = "block";
-        favoriteEdit.style.display = "block";
-        favoriteClear.style.display = "block";
+        // 更新按钮状态
+        updateFavoriteListBtnStatus();
 
         setTimeout(function () {
             addFavoritesBtn.innerText = "完成 √";
@@ -459,6 +486,10 @@ favoriteEdit.onclick = function () {
     favoriteClear.style.display = "none";
     addFavoritesBtn.style.display = "none";
     addFavoritesDisabledBtn.style.display = "block";
+
+    // 隐藏备份和恢复按钮
+    favoriteExport.style.display = "none";
+    favoriteRecover.style.display = "none";
 
     // 隐藏收藏列表，方便用户取消时直接还原
     favoriteListDiv.style.display = "none";
@@ -566,23 +597,20 @@ function updateFavoriteListBtnStatus() {
         favoriteClear.style.display = "none";
         favoriteSave.style.display = "none";
         favoriteCancel.style.display = "none";
+        favoriteExport.style.display = "none";
     }
     else {
         favoriteAllExtend.style.display = "block";
         favoriteAllCollapse.style.display = "block";
         favoriteEdit.style.display = "block";
         favoriteClear.style.display = "block";
+        favoriteExport.style.display = "block";
     }
 }
 
 // 退出编辑模式，先改变按钮样式
 function editToFavoriteBtnStatus() {
-    // 隐藏保存和取消按钮，显示编辑和清空按钮，以及加入收藏按钮
-    favoriteSave.style.display = "none";
-    favoriteCancel.style.display = "none";
-    favoriteEdit.style.display = "block";
-    favoriteClear.style.display = "block";
-
+    // 是否允许加入收藏
     if (checkDictNull(searchItemDict)) {
         addFavoritesBtn.style.display = "none";
         addFavoritesDisabledBtn.style.display = "block";
@@ -592,8 +620,15 @@ function editToFavoriteBtnStatus() {
         addFavoritesDisabledBtn.style.display = "none";
     }
 
-    // 展开折叠按钮
+    // 更新收藏模块按钮的显示隐藏
     updateFavoriteListBtnStatus();
+
+    // 隐藏保存和取消按钮
+    favoriteSave.style.display = "none";
+    favoriteCancel.style.display = "none";
+
+    // 显示恢复按钮
+    favoriteRecover.style.display = "block";
 }
 
 // 退出编辑模式
@@ -610,9 +645,6 @@ function editToFavorite() {
 
 // 保存
 favoriteSave.onclick = function () {
-    // 退出编辑模式，仅按钮变化
-    editToFavoriteBtnStatus();
-
     // 编辑删除
     var removeTotalCount = favoriteRemoveKeys.length;
     var removeIndex = 0;
@@ -626,6 +658,7 @@ favoriteSave.onclick = function () {
     var t = setInterval(() => {
         if (removeTotalCount == removeIndex) {
             t && clearInterval(t);
+            // 更新收藏折叠
             updateFavoriteExtend();
         }
     }, 50);
@@ -686,15 +719,11 @@ favoriteSave.onclick = function () {
             favoriteRemoveKeys = [];
             favoriteDict = {};
 
-            // 更新收藏按钮
-            updateFavoriteListBtnStatus();
+            // 设置收藏折叠
+            setFavoriteExpend();
 
-            // 显示收藏列表
-            favoriteListDiv.style.display = "block";
-
-            // 隐藏并清空收藏编辑列表
-            favoriteEditDiv.style.display = "none";
-            favoriteEditDiv.innerHTML = "";
+            // 退出编辑模式
+            editToFavorite();
         });
 
     }
