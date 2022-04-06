@@ -1684,6 +1684,10 @@ const table_favoriteSubItems = "t_favoriteSubItems";
 const table_favoriteSubItems_key = "ps_en";
 const table_favoriteSubItems_index_parentEn = "parent_en";
 
+// DetailParentItems 详情页父级表
+const table_detailParentItems = "t_detailParentItems";
+const table_detailParentItems_key = "row";
+
 function indexDbInit(func_start_use) {
 	if (request.readyState == "done") {
 		db = request.result;
@@ -1730,10 +1734,15 @@ request.onupgradeneeded = function (event) {
 		objectStore.createIndex(table_EhTagSubItems_index_searchKey, table_EhTagSubItems_index_searchKey, { unique: true });
 	}
 
-	// 本地收藏表
+	// FavoriteList 本地收藏表
 	if (!db.objectStoreNames.contains(table_favoriteSubItems)) {
 		var objectStore = db.createObjectStore(table_favoriteSubItems, { keyPath: table_favoriteSubItems_key });
 		objectStore.createIndex(table_favoriteSubItems_index_parentEn, table_favoriteSubItems_index_parentEn, { unique: false });
+	}
+
+	// DetailParentItems 详情页父级表
+	if (!db.objectStoreNames.contains(table_detailParentItems)) {
+		var objectStore = db.createObjectStore(table_detailParentItems, { keyPath: table_detailParentItems_key });
 	}
 }
 
@@ -1993,6 +2002,7 @@ function checkDataIntact(func_compelete) {
 	var complete2 = false;
 	var complete3 = false;
 	var complete4 = false;
+	var complete5 = false;
 
 	checkTableEmpty(table_fetishListSubItems, () => {
 		// 为空
@@ -2024,8 +2034,16 @@ function checkDataIntact(func_compelete) {
 		complete4 = true;
 	});
 
+	checkTableEmpty(table_detailParentItems, () => {
+		// 为空
+		remove(table_Settings, table_Settings_key_EhTagVersion, () => { complete5 = true; }, () => { complete5 = true; });
+	}, () => {
+		// 存在数据
+		complete5 = true;
+	});
+
 	var t = setInterval(() => {
-		if (complete1 && complete2 && complete3 && complete4) {
+		if (complete1 && complete2 && complete3 && complete4 && complete5) {
 			t && clearInterval(t);
 			func_compelete();
 		}
@@ -2048,7 +2066,7 @@ function tagDataDispose(func_compelete) {
 			var complete5 = false;
 			var complete6 = false;
 
-			// 获取并更新恋物的父子项、父级信息
+			// 获取并更新恋物的父子项、父级信息，详情页父级信息
 			fetishListDataInit(newData => {
 
 				// 批量添加父子项
@@ -2107,12 +2125,12 @@ function tagDataDispose(func_compelete) {
 				// 更新本地数据库 indexDB
 				// 存储完成之后，更新版本号
 
-				// 需要过滤的项
-				var filterParents = ["rows", "reclass"];
-
 				var psDict = {};
 				var psDictCount = 0;
 				var parentEnArray = [];
+
+				var detailDict = {};
+				var detailDictCount = 0;
 
 				for (const index in newData) {
 					if (Object.hasOwnProperty.call(newData, index)) {
@@ -2120,9 +2138,23 @@ function tagDataDispose(func_compelete) {
 
 						const element = newData[index];
 						var parent_en = element.namespace;
-						if (filterParents.indexOf(parent_en) != -1) continue;
-						parentEnArray.push(parent_en);
+						if (parent_en == "rows") {
+							// 详情页父级信息
+							var parentItems = element.data;
+							for (const key in parentItems) {
+								if (Object.hasOwnProperty.call(parentItems, key)) {
+									const parentItem = parentItems[key];
+									detailDict[key] = { row: key, name: parentItem.name, desc: parentItem.intro };
+									detailDictCount++;
+								}
+							}
+						}
 
+						// 过滤重新分类
+						if (parent_en == "reclass") continue;
+
+						// 普通 EhTag 数据
+						parentEnArray.push(parent_en);
 						var parent_zh = element.frontMatters.name;
 
 						var subItems = element.data;
@@ -2139,6 +2171,12 @@ function tagDataDispose(func_compelete) {
 						}
 					}
 				}
+
+				// 批量添加详情页父级信息
+				batchAdd(table_detailParentItems, table_detailParentItems_key, detailDict, detailDictCount, () => {
+					complete4 = true;
+					console.log("批量添加完成");
+				});
 
 				// 批量添加父子项
 				batchAdd(table_EhTagSubItems, table_EhTagSubItems_key, psDict, psDictCount, () => {
@@ -2581,103 +2619,60 @@ function mainPageTranslate() {
 		}
 	}
 
-
-
-
-	// 作品标签
+	// 父项
 	var tc = document.getElementsByClassName("tc");
 	for (const i in tc) {
 		if (Object.hasOwnProperty.call(tc, i)) {
 			const item = tc[i];
 			var cateEn = item.innerText.replace(":", "");
-			if (detailParentData[cateEn]) {
-				item.innerText = detailParentData[cateEn];
-			} else {
-				item.classList.add("needTranslate");
-			}
+			read(table_detailParentItems, cateEn, result => {
+				if (result) {
+					item.innerText = `${result.name}: `;
+				}
+			}, () => { });
 		}
 	}
 
-	// 翻译数量
-	var translateCount = 0;
-
+	// 父项:子项
 	var gt = document.getElementsByClassName("gt");
 	for (const i in gt) {
 		if (Object.hasOwnProperty.call(gt, i)) {
 			const item = gt[i];
-			var innerText = item.innerText;
-			if (innerText.indexOf(":") != -1) {
-				// 父子标签
-				var split = item.title.split(":");
-				var parentEn = split[0];
-				var subEn = split[1];
-				var parentZh = detailParentData[parentEn] ?? parentEn;
-
-				getSubZh(subEn, subZh => {
-					item.innerText = `${parentZh}:${subZh}`;
-					translateCount++;
-				}, () => {
-					item.classList.add("needTranslate");
-					translateCount++;
-				});
-			}
-			else {
-				// 只有子标签
-				var subEn = innerText;
-				getSubZh(subEn, subZh => {
-					item.innerText = subZh;
-					translateCount++;
-				}, () => {
-					item.classList.add("needTranslate");
-					translateCount++;
-				});
-			}
+			//var innerText = item.innerText;
+			var ps_en = item.title;
+			read(table_EhTagSubItems, ps_en, result => {
+				if (result) {
+					if (rightSelect.value == "e") {
+						// 标题 + 图片 + 标签，单个子项
+						item.innerText = result.sub_zh;
+					} else {
+						item.innerText = `${result.parent_zh}:${result.sub_zh}`;
+					}
+				}
+			}, () => { });
 		}
 	}
+
+	// 子项
 	var gtl = document.getElementsByClassName("gtl");
 	for (const i in gtl) {
 		if (Object.hasOwnProperty.call(gtl, i)) {
 			const item = gtl[i];
-			var subEn = item.innerText;
-			getSubZh(subEn, subZh => {
-				item.innerText = subZh;
-				translateCount++;
-			}, () => {
-				item.classList.add("needTranslate");
-				translateCount++;
-			});
-		}
-	}
-
-	var allCount = gt.length + gtl.length;
-
-	var t = setInterval(() => {
-		if (translateCount == allCount) {
-			t && clearInterval(t);
-			// 判断一开始是否选中
-			read(table_Settings, table_settings_key_TranslateFrontPageTags, result => {
-				if (result && result.value) {
-					translateClickMainPage();
+			var ps_en = item.title;
+			read(table_EhTagSubItems, ps_en, result => {
+				if (result) {
+					item.innerText = result.sub_zh;
 				}
 			}, () => { });
+
 		}
-
-	}, 50);
-
-	function getSubZh(subEn, func_hasData, func_none) {
-		// 先从 恋物父子表尝试取出数据，如果不能找到再从EhTag表取数据
-		readByIndex(table_fetishListSubItems, table_fetishListSubItems_index_subEn, subEn, result1 => {
-			func_hasData(result1.sub_zh);
-		}, () => {
-			readByIndex(table_EhTagSubItems, table_EhTagSubItems_index_subEn, subEn, result2 => {
-				func_hasData(result2.sub_zh);
-			}, () => { func_none(); });
-		});
 	}
-
 }
 
 //#endregion
+
+
+
 
 //#region step3.2.frontPageTopStyle 首页头部搜索显示隐藏
 
@@ -2832,14 +2827,187 @@ function frontPageHtml() {
 
 //#endregion
 
+//#region step4.1.detailTranslate.js 详情页翻译
+
+// 详情页翻译
+function detailPageTranslate() {
+
+	// 首页添加 Meta
+	var meta = document.createElement("meta");
+	meta.httpEquiv = "Content-Security-Policy";
+	meta.content = "upgrade-insecure-requests";
+	document.getElementsByTagName("head")[0].appendChild(meta);
+
+	//#region 左侧作品详情
+
+	// 类型
+	var bookType = document.getElementsByClassName("cs");
+	if (bookType.length > 0) {
+		bookType[0].innerText = bookTypeData[bookType[0].innerText] ?? bookType[0].innerText;
+	}
+
+	// 上传人员
+	var uploder = document.getElementById("gdn");
+	if (uploder) {
+		var up = uploder.innerHTML;
+		var newInnerHtml = `由 ${up} 上传`;
+		uploder.innerHTML = newInnerHtml;
+	}
+
+
+	var trList = document.getElementById("gdd").querySelectorAll("tr");
+
+	// 上传时间
+	trList[0].firstChild.innerText = "上传:";
+
+	// 父级
+	trList[1].firstChild.innerText = "父级:";
+
+	// 是否可见
+	trList[2].firstChild.innerText = "可见:";
+	trList[2].lastChild.innerText = trList[2].lastChild.innerText == "Yes" ? "是" : "否";
+
+	// 语言
+	trList[3].firstChild.innerText = "语言:";
+	var language = trList[3].lastChild.innerText.toLowerCase().replace(/(\s*$)/g, "");
+	readByIndex(table_EhTagSubItems, table_EhTagSubItems_index_subEn, language, result => {
+		trList[3].lastChild.innerText = result.sub_zh;
+	}, () => { });
+
+	// 文件大小
+	trList[4].firstChild.innerText = "大小:";
+
+	// 篇幅
+	trList[5].firstChild.innerText = "篇幅:";
+	trList[5].lastChild.innerText = trList[5].lastChild.innerText.replace("pages", "张图");
+
+	// 收藏
+	trList[6].firstChild.innerText = "收藏:";
+	var favoriteText = trList[6].lastChild.innerText;
+	if (favoriteText == "None") {
+		trList[6].lastChild.innerText = "0 次";
+	}
+	else if (favoriteText == "Once") {
+		trList[6].lastChild.innerText = "1 次";
+	}
+	else {
+		trList[6].lastChild.innerText = favoriteText.replace("times", "次");
+	}
+
+	// 评分
+	var trRateList = document.getElementById("gdr").querySelectorAll("tr");
+	trRateList[0].firstChild.innerText = "评分:";
+	trRateList[1].firstChild.innerText = trRateList[1].firstChild.innerText.replace("Average", "平均分");
+
+	// 添加到收藏(Ex 账号)
+	document.getElementById("favoritelink").innerText = "收藏到 (Ex 账号)";
+
+	//#endregion
+
+	// 文本框提示
+	document.getElementById("newtagfield").placeholder = "添加新标签，用逗号分隔";
+	document.getElementById("newtagbutton").value = "添加";
+
+	// 右侧五个菜单
+	var gd5a = document.getElementById("gd5").querySelectorAll("a");
+	var gd5aDict = {
+		"Report Gallery": "举报",
+		"Archive Download": "档案下载",
+		"Petition to Expunge": "申请删除",
+		"Petition to Rename": "申请改名",
+		"Show Gallery Stats": "画廊统计",
+	};
+
+	for (const i in gd5a) {
+		if (Object.hasOwnProperty.call(gd5a, i)) {
+			const a = gd5a[i];
+			if (a.innerText.indexOf("Torrent Download") != -1) {
+				a.innerText = a.innerText.replace("Torrent Download", "种子下载");
+			} else {
+				a.innerText = gd5aDict[a.innerText] ?? a.innerText;
+			}
+		}
+	}
+
+	// 展示数量
+	var gpc = document.getElementsByClassName("gpc")[0];
+	gpc.innerText = gpc.innerText.replace("Showing", "展示").replace("of", "共").replace("images", "张");
+
+	// 展示行数
+	var gdo2 = document.getElementById("gdo2").querySelectorAll("div");
+	for (const i in gdo2) {
+		if (Object.hasOwnProperty.call(gdo2, i)) {
+			const div = gdo2[i];
+			div.innerText = div.innerText.replace("rows", "行");
+		}
+	}
+
+	// 图片尺寸
+	var gdo4 = document.getElementById("gdo4").querySelectorAll("div");
+	gdo4[0].innerText = "小图";
+	gdo4[1].innerText = "大图";
+
+}
+
+//#endregion
+
+//#region step4.2.detailbtn.js 详情页主要按钮功能
+
+function translateClickDetail() {
+	var isChecked = translateClick();
+
+	// 更新存储
+	var settings_translateDetailPageTags = {
+		item: table_Settings_key_TranslateDetailPageTags,
+		value: isChecked
+	};
+	update(table_Settings, settings_translateDetailPageTags, () => { }, () => { });
+}
+
+function detailPageFavorite() {
+	// 详情页添加 标签谷歌机翻、清空选择按钮、加入收藏按钮、查询按钮
+	var rightDiv = document.getElementById("gd5");
+
+	var translateDiv = document.createElement("div");
+	translateDiv.id = "googleTranslateDiv";
+	var translateCheckbox = document.createElement("input");
+	translateCheckbox.setAttribute("type", "checkbox");
+	translateCheckbox.id = "googleTranslateCheckbox";
+	translateDiv.appendChild(translateCheckbox);
+	var translateLabel = document.createElement("label");
+	translateLabel.setAttribute("for", translateCheckbox.id);
+	translateLabel.id = "translateLabel";
+	translateLabel.innerText = "谷歌机翻 : 标签";
+
+	// 读取是否选中
+	read(table_Settings, table_Settings_key_TranslateDetailPageTags, result => {
+		if (result && result.value) {
+			translateCheckbox.setAttribute("checked", true);
+		}
+	}, () => { });
+
+	translateDiv.appendChild(translateLabel);
+	rightDiv.appendChild(translateDiv);
+
+	translateCheckbox.addEventListener("click", translateClickDetail);
+}
+
+//#endregion
+
+
+
+
 
 //#region main.js
 // 主方法
+
+// 头部菜单汉化
+topMenuTranslateZh();
+
 // 根据地址链接判断当前是首页还是详情页
 if (window.location.pathname.indexOf("/g/") != -1) {
 	// 详情页
-	// detailPageTranslate();
-	// detailPageFavorite();
+	detailPage();
 }
 else if (window.location.pathname.length == 1) {
 	// 首页
@@ -2847,13 +3015,10 @@ else if (window.location.pathname.length == 1) {
 }
 
 function mainPageCategory() {
-	// 头部菜单汉化
-	topMenuTranslateZh();
 
 	// 从localstroge 读取，头部隐藏折叠
 	frontPageTopStyleStep01();
 
-	// TODO 头部高度伸缩功能
 	// 首页框架搭建
 	frontPageHtml();
 
@@ -3219,7 +3384,6 @@ function mainPageCategory() {
 
 			//#endregion
 
-
 			//#region step3.7.search.js 搜索框功能
 
 			// 进入页面，根据地址栏信息生成搜索栏标签
@@ -3513,8 +3677,6 @@ function mainPageCategory() {
 			}
 
 			//#endregion
-
-
 
 			//#region step3.8.favorite.js 收藏功能
 
@@ -4396,11 +4558,27 @@ function mainPageCategory() {
 
 			//#endregion
 
-
-
 			// 数据同步
 
 		});
+	})
+}
+
+function detailPage() {
+	// 初始化用户配置信息
+	initUserSettings(() => {
+		// 保证完整数据
+		tagDataDispose(() => {
+			detailPageTranslate();
+			detailPageFavorite();
+		});
+
+
+		// TODO 删除谷歌机翻：标签相关逻辑，标签匹配不上时，有必要翻译出父级名称
+		// TODO 谷歌翻译：标题，多语种翻译
+		// TODO 详情页父级删除掉相关逻辑，从数据库读取
+
+
 	})
 }
 

@@ -271,100 +271,54 @@ function mainPageTranslate() {
 		}
 	}
 
-
-
-
-	// 作品标签
+	// 父项
 	var tc = document.getElementsByClassName("tc");
 	for (const i in tc) {
 		if (Object.hasOwnProperty.call(tc, i)) {
 			const item = tc[i];
 			var cateEn = item.innerText.replace(":", "");
-			if (detailParentData[cateEn]) {
-				item.innerText = detailParentData[cateEn];
-			} else {
-				item.classList.add("needTranslate");
-			}
+			read(table_detailParentItems, cateEn, result => {
+				if (result) {
+					item.innerText = `${result.name}: `;
+				}
+			}, () => { });
 		}
 	}
 
-	// 翻译数量
-	var translateCount = 0;
-
+	// 父项:子项
 	var gt = document.getElementsByClassName("gt");
 	for (const i in gt) {
 		if (Object.hasOwnProperty.call(gt, i)) {
 			const item = gt[i];
-			var innerText = item.innerText;
-			if (innerText.indexOf(":") != -1) {
-				// 父子标签
-				var split = item.title.split(":");
-				var parentEn = split[0];
-				var subEn = split[1];
-				var parentZh = detailParentData[parentEn] ?? parentEn;
-
-				getSubZh(subEn, subZh => {
-					item.innerText = `${parentZh}:${subZh}`;
-					translateCount++;
-				}, () => {
-					item.classList.add("needTranslate");
-					translateCount++;
-				});
-			}
-			else {
-				// 只有子标签
-				var subEn = innerText;
-				getSubZh(subEn, subZh => {
-					item.innerText = subZh;
-					translateCount++;
-				}, () => {
-					item.classList.add("needTranslate");
-					translateCount++;
-				});
-			}
+			//var innerText = item.innerText;
+			var ps_en = item.title;
+			read(table_EhTagSubItems, ps_en, result => {
+				if (result) {
+					if (rightSelect.value == "e") {
+						// 标题 + 图片 + 标签，单个子项
+						item.innerText = result.sub_zh;
+					} else {
+						item.innerText = `${result.parent_zh}:${result.sub_zh}`;
+					}
+				}
+			}, () => { });
 		}
 	}
+
+	// 子项
 	var gtl = document.getElementsByClassName("gtl");
 	for (const i in gtl) {
 		if (Object.hasOwnProperty.call(gtl, i)) {
 			const item = gtl[i];
-			var subEn = item.innerText;
-			getSubZh(subEn, subZh => {
-				item.innerText = subZh;
-				translateCount++;
-			}, () => {
-				item.classList.add("needTranslate");
-				translateCount++;
-			});
-		}
-	}
-
-	var allCount = gt.length + gtl.length;
-
-	var t = setInterval(() => {
-		if (translateCount == allCount) {
-			t && clearInterval(t);
-			// 判断一开始是否选中
-			read(table_Settings, table_settings_key_TranslateFrontPageTags, result => {
-				if (result && result.value) {
-					translateClickMainPage();
+			var ps_en = item.title;
+			read(table_EhTagSubItems, ps_en, result => {
+				if (result) {
+					item.innerText = result.sub_zh;
 				}
 			}, () => { });
+
 		}
-
-	}, 50);
-
-	function getSubZh(subEn, func_hasData, func_none) {
-		// 先从 恋物父子表尝试取出数据，如果不能找到再从EhTag表取数据
-		readByIndex(table_fetishListSubItems, table_fetishListSubItems_index_subEn, subEn, result1 => {
-			func_hasData(result1.sub_zh);
-		}, () => {
-			readByIndex(table_EhTagSubItems, table_EhTagSubItems_index_subEn, subEn, result2 => {
-				func_hasData(result2.sub_zh);
-			}, () => { func_none(); });
-		});
 	}
-
 }
 
 //#endregion

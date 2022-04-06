@@ -3,16 +3,17 @@
 // 详情页父级
 const detailParentData = {
 	"reclass": "重新分类",
-	"parody": "二创",
+	"parody": "原作",
 	"male": "男性",
 	"female": "女性",
 	"mixed": "混合",
 	"character": "角色",
-	"artist": "作者",
+	"artist": "艺术家",
 	"other": "其他",
 	"language": "语言",
-	"group": "分组",
-	"temp": "临时"
+	"group": "团队",
+	"temp": "临时",
+	"cosplayer": "Coser"
 };
 
 // 作品分类 01

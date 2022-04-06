@@ -102,6 +102,10 @@ const table_favoriteSubItems = "t_favoriteSubItems";
 const table_favoriteSubItems_key = "ps_en";
 const table_favoriteSubItems_index_parentEn = "parent_en";
 
+// DetailParentItems 详情页父级表
+const table_detailParentItems = "t_detailParentItems";
+const table_detailParentItems_key = "row";
+
 function indexDbInit(func_start_use) {
     if (request.readyState == "done") {
         db = request.result;
@@ -148,10 +152,15 @@ request.onupgradeneeded = function (event) {
         objectStore.createIndex(table_EhTagSubItems_index_searchKey, table_EhTagSubItems_index_searchKey, { unique: true });
     }
 
-    // 本地收藏表
+    // FavoriteList 本地收藏表
     if (!db.objectStoreNames.contains(table_favoriteSubItems)) {
         var objectStore = db.createObjectStore(table_favoriteSubItems, { keyPath: table_favoriteSubItems_key });
         objectStore.createIndex(table_favoriteSubItems_index_parentEn, table_favoriteSubItems_index_parentEn, { unique: false });
+    }
+
+    // DetailParentItems 详情页父级表
+    if (!db.objectStoreNames.contains(table_detailParentItems)) {
+        var objectStore = db.createObjectStore(table_detailParentItems, { keyPath: table_detailParentItems_key });
     }
 }
 
@@ -411,6 +420,7 @@ function checkDataIntact(func_compelete) {
     var complete2 = false;
     var complete3 = false;
     var complete4 = false;
+    var complete5 = false;
 
     checkTableEmpty(table_fetishListSubItems, () => {
         // 为空
@@ -442,8 +452,16 @@ function checkDataIntact(func_compelete) {
         complete4 = true;
     });
 
+    checkTableEmpty(table_detailParentItems, () => {
+        // 为空
+        remove(table_Settings, table_Settings_key_EhTagVersion, () => { complete5 = true; }, () => { complete5 = true; });
+    }, () => {
+        // 存在数据
+        complete5 = true;
+    });
+
     var t = setInterval(() => {
-        if (complete1 && complete2 && complete3 && complete4) {
+        if (complete1 && complete2 && complete3 && complete4 && complete5) {
             t && clearInterval(t);
             func_compelete();
         }
@@ -451,7 +469,7 @@ function checkDataIntact(func_compelete) {
 }
 
 // 准备关键数据
-function tagDataDispose(func_compelete) {   
+function tagDataDispose(func_compelete) {
 
     // 获取数据
     indexDbInit(() => {
@@ -466,7 +484,7 @@ function tagDataDispose(func_compelete) {
             var complete5 = false;
             var complete6 = false;
 
-            // 获取并更新恋物的父子项、父级信息
+            // 获取并更新恋物的父子项、父级信息，详情页父级信息
             fetishListDataInit(newData => {
 
                 // 批量添加父子项
@@ -525,12 +543,12 @@ function tagDataDispose(func_compelete) {
                 // 更新本地数据库 indexDB
                 // 存储完成之后，更新版本号
 
-                // 需要过滤的项
-                var filterParents = ["rows", "reclass"];
-
                 var psDict = {};
                 var psDictCount = 0;
                 var parentEnArray = [];
+
+                var detailDict = {};
+                var detailDictCount = 0;
 
                 for (const index in newData) {
                     if (Object.hasOwnProperty.call(newData, index)) {
@@ -538,9 +556,23 @@ function tagDataDispose(func_compelete) {
 
                         const element = newData[index];
                         var parent_en = element.namespace;
-                        if (filterParents.indexOf(parent_en) != -1) continue;
-                        parentEnArray.push(parent_en);
+                        if (parent_en == "rows") {
+                            // 详情页父级信息
+                            var parentItems = element.data;
+                            for (const key in parentItems) {
+                                if (Object.hasOwnProperty.call(parentItems, key)) {
+                                    const parentItem = parentItems[key];
+                                    detailDict[key] = { row: key, name: parentItem.name, desc: parentItem.intro };
+                                    detailDictCount++;
+                                }
+                            }
+                        }
 
+                        // 过滤重新分类
+                        if (parent_en == "reclass") continue;
+
+                        // 普通 EhTag 数据
+                        parentEnArray.push(parent_en);
                         var parent_zh = element.frontMatters.name;
 
                         var subItems = element.data;
@@ -557,6 +589,12 @@ function tagDataDispose(func_compelete) {
                         }
                     }
                 }
+
+                // 批量添加详情页父级信息
+                batchAdd(table_detailParentItems, table_detailParentItems_key, detailDict, detailDictCount, () => {
+                    complete4 = true;
+                    console.log("批量添加完成");
+                });
 
                 // 批量添加父子项
                 batchAdd(table_EhTagSubItems, table_EhTagSubItems_key, psDict, psDictCount, () => {
@@ -628,7 +666,7 @@ function initUserSettings(func_compelete) {
     removeVersion();
     removeCategoryListHtml();
     removeFavoriteListExpend();
-    
+
     indexDbInit(() => {
         var complete1 = false;
         var complete2 = false;
