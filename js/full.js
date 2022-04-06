@@ -3067,7 +3067,7 @@ function mainPageCategory() {
 
 			// 添加小项到搜索框
 			function addItemToInput(parent_en, parent_zh, sub_en, sub_zh, sub_desc) {
-				if (searchItemDict[`${parent_en}_${sub_en}`] == undefined) {
+				if (searchItemDict[`${parent_en}:${sub_en}`] == undefined) {
 					if (checkDictNull(searchItemDict)) {
 						inputClearBtn.style.display = "block";
 						searchBtn.innerText = "搜索";
@@ -3078,8 +3078,9 @@ function mainPageCategory() {
 					newSearchInputItem.id = `input_item_${parent_en}_${sub_en}`;
 					newSearchInputItem.title = sub_en;
 
-					newSearchInputItem.dataset.item = `${parent_en}_${sub_en}`;
-					searchItemDict[`${parent_en}:${sub_en}`] = { parent_en, parent_zh, sub_en, sub_zh, sub_desc };
+					const key = `${parent_en}:${sub_en}`;
+					newSearchInputItem.dataset.item = key;
+					searchItemDict[key] = { parent_en, parent_zh, sub_en, sub_zh, sub_desc };
 
 					var searchItemText = document.createTextNode(`${parent_zh} : ${sub_zh} X`);
 					newSearchInputItem.appendChild(searchItemText);
@@ -3217,6 +3218,7 @@ function mainPageCategory() {
 			}
 
 			//#endregion
+
 
 			//#region step3.7.search.js 搜索框功能
 
