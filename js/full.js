@@ -3653,6 +3653,9 @@ function mainPageCategory() {
 					setFavoriteExpend();
 
 				}
+
+				// 更新按钮状态
+				updateFavoriteListBtnStatus();
 			}
 
 			// 设置收藏折叠
@@ -4358,11 +4361,14 @@ function mainPageCategory() {
 								return;
 							}
 
-							// 清空收藏列表
-							favoriteListDiv.innerHTML = "";
 
-							// 重新生成收藏列表
-							reBuildFavoriteByOldData(favoriteDb);
+							// 清空收藏列表数据
+							clearTable(table_favoriteSubItems, () => {
+								// 清空收藏列表
+								favoriteListDiv.innerHTML = "";
+								// 重新生成收藏列表
+								reBuildFavoriteByOldData(favoriteDb);
+							});
 						}
 
 						// 上传置空
@@ -4372,6 +4378,7 @@ function mainPageCategory() {
 			}
 
 			//#endregion
+
 
 
 			// TODO 输入框搜索，加上本地收藏的检索（自定义模块）
