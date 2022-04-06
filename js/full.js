@@ -4293,6 +4293,32 @@ function mainPageCategory() {
 			}
 
 			// 备份
+			favoriteExport.onclick = function () {
+				var data = {};
+				var count = 0;
+				readAll(table_favoriteSubItems, (k, v) => {
+					data[k] = v;
+					count++;
+				}, () => {
+					if (count == 0) {
+						alert("导出前，请先收藏标签");
+						return;
+					}
+
+					var result = {
+						count,
+						data
+					};
+
+					func_eh_ex(() => {
+						saveJSON(result, `EH收藏数据备份_${getCurrentDate(2)}.json`);
+					}, () => {
+						saveJSON(result, `EX收藏数据备份_${getCurrentDate(2)}.json`);
+					});
+				});
+			}
+
+
 
 			// 恢复
 
