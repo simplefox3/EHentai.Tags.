@@ -4,87 +4,7 @@
 read(table_Settings, table_Settings_key_FavoriteList, result => {
     if (result && result.value) {
         // 首次使用，需要转换收藏数据，更新本地收藏表，更新收藏Html
-        var favoriteSubItems = {};
-        // var example = { ps_en: "male:bo", parent_en: "male", parent_zh: "男性", sub_en: "bo", sub_zh: "波", sub_desc: "波波" };
-
-        var favoriteDict = result.value;
-
-        function setFavoriteDict(result) {
-            var parent_en = result.parent_en;
-            var parent_zh = result.parent_zh;
-            var sub_en = result.sub_en;
-            var sub_zh = result.sub_zh;
-            var sub_desc = result.sub_desc;
-            var ps_en = `${parent_en}:${sub_en}`;
-            favoriteSubItems[ps_en] = { ps_en, parent_en, parent_zh, sub_en, sub_zh, sub_desc };
-        }
-
-        function setFavoriteDictCustom(subEn, subZh) {
-            var parent_en = "userCustom";
-            var parent_zh = "自定义";
-            var sub_en = subEn;
-            var sub_zh = subZh;
-            var sub_desc = "";
-            var ps_en = `${parent_en}:${sub_en}`;
-            favoriteSubItems[ps_en] = { ps_en, parent_en, parent_zh, sub_en, sub_zh, sub_desc };
-        }
-
-        var foundTotalCount = 0; // 总数
-        var foundIndex = 0; // 执行完个数
-
-        for (const parentEn in favoriteDict) {
-            if (Object.hasOwnProperty.call(favoriteDict, parentEn)) {
-                const subData = favoriteDict[parentEn];
-                var subItems = subData[1];
-                if (parentEn == "localFavorites") {
-                    // 恋物数据
-                    for (const subEn in subItems) {
-                        if (Object.hasOwnProperty.call(subItems, subEn)) {
-                            const subZh = subItems[subEn];
-                            foundTotalCount++;
-                            readByIndex(table_fetishListSubItems, table_fetishListSubItems_index_subEn, subEn, fetishResult => {
-                                setFavoriteDict(fetishResult);
-                                foundIndex++;
-                            }, () => {
-                                setFavoriteDictCustom(subEn, subZh);
-                                foundIndex++;
-                            });
-                        }
-                    }
-
-                } else {
-                    // Ehtag 数据
-                    for (const subEn in subItems) {
-                        if (Object.hasOwnProperty.call(subItems, subEn)) {
-                            const subZh = subItems[subEn];
-                            foundTotalCount++;
-                            var ps_en = `${parentEn}:${subEn}`;
-                            read(table_EhTagSubItems, ps_en, ehTagResult => {
-                                if (ehTagResult) {
-                                    setFavoriteDict(ehTagResult);
-                                    foundIndex++;
-                                } else {
-                                    setFavoriteDictCustom(subEn, subZh);
-                                    foundIndex++;
-                                }
-                            }, () => {
-                                setFavoriteDictCustom(subEn, subZh);
-                                foundIndex++;
-                            });
-                        }
-                    }
-                }
-            }
-        }
-
-        var t = setInterval(() => {
-            if (foundTotalCount == foundIndex) {
-                t && clearInterval(t);
-                // 首次更新本地收藏列表
-                firstUpdateFavoriteSubItems(favoriteSubItems, foundTotalCount);
-            }
-        }, 50);
-
+        reBuildFavoriteByOldData(result.value);
     } else {
         // 读取收藏 Html 数据，存在则更新页面
         generalFavoriteListDiv(false, () => {
@@ -96,6 +16,88 @@ read(table_Settings, table_Settings_key_FavoriteList, result => {
     }
 }, () => { });
 
+// 根据旧收藏数据重新生成收藏列表
+function reBuildFavoriteByOldData(favoriteDict) {
+
+    var favoriteSubItems = {};
+    // var example = { ps_en: "male:bo", parent_en: "male", parent_zh: "男性", sub_en: "bo", sub_zh: "波", sub_desc: "波波" };
+
+    function setFavoriteDict(result) {
+        var parent_en = result.parent_en;
+        var parent_zh = result.parent_zh;
+        var sub_en = result.sub_en;
+        var sub_zh = result.sub_zh;
+        var sub_desc = result.sub_desc;
+        var ps_en = `${parent_en}:${sub_en}`;
+        favoriteSubItems[ps_en] = { ps_en, parent_en, parent_zh, sub_en, sub_zh, sub_desc };
+    }
+
+    function setFavoriteDictCustom(subEn, subZh) {
+        var parent_en = "userCustom";
+        var parent_zh = "自定义";
+        var sub_en = subEn;
+        var sub_zh = subZh;
+        var sub_desc = "";
+        var ps_en = `${parent_en}:${sub_en}`;
+        favoriteSubItems[ps_en] = { ps_en, parent_en, parent_zh, sub_en, sub_zh, sub_desc };
+    }
+
+    var foundTotalCount = 0; // 总数
+    var foundIndex = 0; // 执行完个数
+
+    for (const parentEn in favoriteDict) {
+        if (Object.hasOwnProperty.call(favoriteDict, parentEn)) {
+            const subData = favoriteDict[parentEn];
+            var subItems = subData[1];
+            if (parentEn == "localFavorites") {
+                // 恋物数据
+                for (const subEn in subItems) {
+                    if (Object.hasOwnProperty.call(subItems, subEn)) {
+                        const subZh = subItems[subEn];
+                        foundTotalCount++;
+                        readByIndex(table_fetishListSubItems, table_fetishListSubItems_index_subEn, subEn, fetishResult => {
+                            setFavoriteDict(fetishResult);
+                            foundIndex++;
+                        }, () => {
+                            setFavoriteDictCustom(subEn, subZh);
+                            foundIndex++;
+                        });
+                    }
+                }
+
+            } else {
+                // Ehtag 数据
+                for (const subEn in subItems) {
+                    if (Object.hasOwnProperty.call(subItems, subEn)) {
+                        const subZh = subItems[subEn];
+                        foundTotalCount++;
+                        var ps_en = `${parentEn}:${subEn}`;
+                        read(table_EhTagSubItems, ps_en, ehTagResult => {
+                            if (ehTagResult) {
+                                setFavoriteDict(ehTagResult);
+                                foundIndex++;
+                            } else {
+                                setFavoriteDictCustom(subEn, subZh);
+                                foundIndex++;
+                            }
+                        }, () => {
+                            setFavoriteDictCustom(subEn, subZh);
+                            foundIndex++;
+                        });
+                    }
+                }
+            }
+        }
+    }
+
+    var t = setInterval(() => {
+        if (foundTotalCount == foundIndex) {
+            t && clearInterval(t);
+            // 首次更新本地收藏列表
+            firstUpdateFavoriteSubItems(favoriteSubItems, foundTotalCount);
+        }
+    }, 50);
+}
 
 // 首次更新本地收藏列表
 function firstUpdateFavoriteSubItems(favoriteSubItems, foundTotalCount) {
@@ -818,9 +820,56 @@ favoriteExport.onclick = function () {
     });
 }
 
-
-
 // 恢复
+favoriteRecover.onclick = function () {
+    favoriteUploadFiles.click();
+}
 
+// TODO 上传后页面按钮没有刷新
+// 上传
+favoriteUploadFiles.onchange = function () {
+    var resultFile = favoriteUploadFiles.files[0];
+    if (resultFile) {
+        var reader = new FileReader();
+        reader.readAsText(resultFile, 'UTF-8');
+
+        reader.onload = function (e) {
+            var fileContent = e.target.result;
+
+            // 判断是旧版本收藏列表，还是新版本收藏列表
+            var favoriteDb = JSON.parse(fileContent);
+            if (favoriteDb.data) {
+                // 检查数据完整性
+                if (favoriteDb.count == 0 || checkDictNull(favoriteDb.data)) {
+                    alert('导入失败，备份数据为空');
+                    return;
+                }
+
+                // 清空收藏列表数据
+                clearTable(table_favoriteSubItems, () => {
+                    // 清空收藏列表
+                    favoriteListDiv.innerHTML = "";
+                    // 重新生成
+                    firstUpdateFavoriteSubItems(favoriteDb.data, favoriteDb.count);
+                });
+
+            } else {
+                if (checkDictNull(favoriteDb)) {
+                    alert('导入失败，备份数据为空');
+                    return;
+                }
+
+                // 清空收藏列表
+                favoriteListDiv.innerHTML = "";
+
+                // 重新生成收藏列表
+                reBuildFavoriteByOldData(favoriteDb);
+            }
+
+            // 上传置空
+            favoriteUploadFiles.value = "";
+        }
+    }
+}
 
 //#endregion
