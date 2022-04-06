@@ -3239,18 +3239,18 @@ function mainPageCategory() {
 								var subEn = itemArray[1];
 								// 从EhTag中查询，看是否存在
 								readByIndex(table_EhTagSubItems, table_EhTagSubItems_index_subEn, subEn, ehTagData => {
-									addItemToInput(ehTagData.parent_en, ehTagData.parent_zh, ehTagData.sub_en, ehTagData.sub_zh);
+									addItemToInput(ehTagData.parent_en, ehTagData.parent_zh, ehTagData.sub_en, ehTagData.sub_zh, ehTagData.sub_desc);
 								}, () => {
-									addItemToInput(parentEn, subEn, subEn, subEn);
+									addItemToInput(parentEn, subEn, subEn, subEn, '');
 								});
 							}
 							else {
 								// 从恋物列表中查询，看是否存在
 								readByIndex(table_fetishListSubItems, table_fetishListSubItems_index_subEn, itemArray[0], fetishData => {
-									addItemToInput(fetishData.parent_en, fetishData.parent_zh, fetishData.sub_en, fetishData.sub_zh);
+									addItemToInput(fetishData.parent_en, fetishData.parent_zh, fetishData.sub_en, fetishData.sub_zh, fetishData.sub_desc);
 								}, () => {
 									// 用户自定义搜索关键字
-									addItemToInput("userCustom", "自定义", itemArray[0], itemArray[0]);
+									addItemToInput("userCustom", "自定义", itemArray[0], itemArray[0], '');
 								});
 							}
 						}
@@ -3415,7 +3415,7 @@ function mainPageCategory() {
 							commendDiv.appendChild(enTextDiv);
 
 							commendDiv.addEventListener("click", function () {
-								addItemToInput(item.parent_en, item.parent_zh, item.sub_en, item.sub_zh);
+								addItemToInput(item.parent_en, item.parent_zh, item.sub_en, item.sub_zh, item.sub_desc);
 								userInputRecommendDiv.innerHTML = "";
 								userInput.value = "";
 								userInput.focus();
@@ -3433,6 +3433,25 @@ function mainPageCategory() {
 				// 从EhTag中模糊搜索，绑定数据
 				readByCursorIndexFuzzy(table_EhTagSubItems, table_EhTagSubItems_index_searchKey, inputValue, foundArrays => {
 					addInputSearchItems(foundArrays);
+				});
+
+				// 从收藏中的用户自定义中模糊搜索，绑定数据
+				readByCursorIndex(table_favoriteSubItems, table_favoriteSubItems_index_parentEn, "userCustom", customArray => {
+					if (customArray.length > 0) {
+						var foundArrays = [];
+						for (const i in customArray) {
+							if (Object.hasOwnProperty.call(customArray, i)) {
+								const item = customArray[i];
+								if (item.sub_en.indexOf(inputValue) != -1) {
+									foundArrays.push(item);
+								}
+							}
+						}
+
+						if (foundArrays.length > 0) {
+							addInputSearchItems(foundArrays);
+						}
+					}
 				});
 
 			}
@@ -3466,11 +3485,12 @@ function mainPageCategory() {
 							var enArray = enDiv.innerText.split(" : ");
 							var sub_zh = zhArray[1];
 							var sub_en = enArray[1];
+							var sub_desc = recommendItem.title;
 							if (sub_zh == inputValue || sub_en == inputValue) {
 								// 符合条件
 								var parent_zh = zhArray[0];
 								var parent_en = enArray[0];
-								addItemToInput(parent_en, parent_zh, sub_en, sub_zh);
+								addItemToInput(parent_en, parent_zh, sub_en, sub_zh, sub_desc);
 								isFound = true;
 								break;
 							}
@@ -3479,12 +3499,12 @@ function mainPageCategory() {
 
 					if (!isFound) {
 						// 没有找到符合条件的
-						addItemToInput("userCustom", "自定义", inputValue, inputValue);
+						addItemToInput("userCustom", "自定义", inputValue, inputValue, '');
 					}
 
 				} else {
 					// 如果没有下拉列表，直接新增自定义文本
-					addItemToInput("userCustom", "自定义", inputValue, inputValue);
+					addItemToInput("userCustom", "自定义", inputValue, inputValue, '');
 				}
 
 				// 清空文本框
@@ -3493,6 +3513,7 @@ function mainPageCategory() {
 			}
 
 			//#endregion
+
 
 
 			//#region step3.8.favorite.js 收藏功能
@@ -3534,9 +3555,8 @@ function mainPageCategory() {
 					var parent_zh = "自定义";
 					var sub_en = subEn;
 					var sub_zh = subZh;
-					var sub_desc = "";
 					var ps_en = `${parent_en}:${sub_en}`;
-					favoriteSubItems[ps_en] = { ps_en, parent_en, parent_zh, sub_en, sub_zh, sub_desc };
+					favoriteSubItems[ps_en] = { ps_en, parent_en, parent_zh, sub_en, sub_zh, sub_desc: "" };
 				}
 
 				var foundTotalCount = 0; // 总数
@@ -4377,12 +4397,6 @@ function mainPageCategory() {
 			//#endregion
 
 
-
-			// TODO 输入框搜索，加上本地收藏的检索（自定义模块）
-
-			// TODO 读取转换本地收藏数据，更新并生成本地收藏，包含事件
-
-			// 生成收藏列表，包含事件
 
 			// 数据同步
 
