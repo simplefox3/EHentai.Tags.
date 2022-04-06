@@ -3293,15 +3293,13 @@ function mainPageCategory() {
 				for (const i in searchItemDict) {
 					if (Object.hasOwnProperty.call(searchItemDict, i)) {
 						var item = searchItemDict[i];
-						var parentEn = item.parentEn;
-						var subEn = item.enItem;
-						if (fetishParentArray.indexOf(parentEn) != -1) {
-							enItemArray.push(`"${subEn}"`);
+						if (fetishParentArray.indexOf(item.parent_en) != -1) {
+							enItemArray.push(`"${item.sub_en}"`);
 						}
-						else if (parentEn == "userCustom") {
-							enItemArray.push(`"${subEn}"`);
+						else if (item.parent_en == "userCustom") {
+							enItemArray.push(`"${item.sub_en}"`);
 						} else {
-							enItemArray.push(`"${parentEn}:${subEn}"`);
+							enItemArray.push(`"${item.parent_en}:${item.sub_en}"`);
 						}
 					}
 				}
@@ -3317,12 +3315,10 @@ function mainPageCategory() {
 				for (const i in searchItemDict) {
 					if (Object.hasOwnProperty.call(searchItemDict, i)) {
 						var item = searchItemDict[i];
-						var parentEn = item.parentEn;
-						var subEn = item.enItem;
-						if (parentEn == "userCustom") {
-							enItemArray.push(`"${subEn}"`);
-						} else if (enItemArray.indexOf(subEn) == -1) {
-							enItemArray.push(`"${subEn}"`);
+						if (item.parent_en == "userCustom") {
+							enItemArray.push(`"${item.sub_en}"`);
+						} else if (enItemArray.indexOf(item.sub_en) == -1) {
+							enItemArray.push(`"${item.sub_en}"`);
 						}
 					}
 				}
@@ -3497,6 +3493,7 @@ function mainPageCategory() {
 			}
 
 			//#endregion
+
 
 			//#region step3.8.favorite.js 收藏功能
 
