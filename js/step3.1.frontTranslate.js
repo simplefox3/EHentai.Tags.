@@ -17,20 +17,28 @@ function translateMainPageTitle() {
 		for (const i in titleDivs) {
 			if (Object.hasOwnProperty.call(titleDivs, i)) {
 				const div = titleDivs[i];
-				div.title = div.innerText;
+				if (div.dataset.translate) {
+					// 已经翻译过
+					div.innerText = div.dataset.translate;
 
-				// 单条翻译
-				getGoogleTranslate(div.innerText, function (data) {
-					var sentences = data.sentences;
-					var longtext = '';
-					for (const i in sentences) {
-						if (Object.hasOwnProperty.call(sentences, i)) {
-							const sentence = sentences[i];
-							longtext += sentence.trans;
+				} else {
+					// 需要翻译
+					div.title = div.innerText;
+
+					// 单条翻译
+					getGoogleTranslate(div.innerText, function (data) {
+						var sentences = data.sentences;
+						var longtext = '';
+						for (const i in sentences) {
+							if (Object.hasOwnProperty.call(sentences, i)) {
+								const sentence = sentences[i];
+								longtext += sentence.trans;
+							}
 						}
-					}
-					div.innerText = longtext;
-				});
+						div.innerText = longtext;
+						div.dataset.translate = longtext;
+					});
+				}
 			}
 		}
 
