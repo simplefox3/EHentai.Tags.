@@ -1,18 +1,181 @@
 //#region step4.2.detailbtn.js 详情页主要按钮功能
 
 // 详情页选中的标签信息
-var detailCheckedDict = {};
 
 // 谷歌机翻
-function translateClickDetail() {
-    var isChecked = translateClick();
+function translateDetailPageTitle() {
+    var isChecked = document.getElementById("googleTranslateCheckbox").checked;
 
     // 更新存储
-    var settings_translateDetailPageTags = {
-        item: table_Settings_key_TranslateDetailPageTags,
+    var settings_translateDetailPageTitles = {
+        item: table_Settings_key_TranslateDetailPageTitles,
         value: isChecked
     };
-    update(table_Settings, settings_translateDetailPageTags, () => { }, () => { });
+    update(table_Settings, settings_translateDetailPageTitles, () => { }, () => { });
+
+    var h1 = document.getElementById("gj");
+
+
+    var signDictArray = [];
+    var txtArray = [];
+    var translateDict = {};
+    var specialChars = [
+        '(', ')', '（', '）',
+        '[', ']', '【', '】',
+        '{', '}', '｛', '｝',
+        '<', '>', '《', '》',
+        '|', '&', '!', '@', '#', '$', '￥', '%', '^', '*', '`', '~'
+    ];
+
+    if (isChecked) {
+        // 翻译标题
+        if (h1.dataset.translate) {
+            // 已经翻译过
+            h1.innerText = h1.dataset.translate;
+        } else {
+            // 需要翻译
+            h1.title = h1.innerText;
+
+            var cstr = '';
+            for (let i = 0; i < h1.title.length; i++) {
+                const c = h1.title[i];
+
+                if (specialChars.indexOf(c) != -1) {
+                    signDictArray.push({ i, c });
+                    if (cstr != '') {
+                        txtArray.push(cstr);
+                        cstr = '';
+                    }
+                } else {
+                    cstr += c;
+                }
+            }
+
+            if (cstr != '') {
+                txtArray.push(cstr);
+            }
+
+            console.log(txtArray);
+            console.log(signDictArray);
+
+            var totalCount = txtArray.length;
+            var indexCount = 0;
+            for (const i in txtArray) {
+                if (Object.hasOwnProperty.call(txtArray, i)) {
+                    const text = txtArray[i];
+                    getTranslate(text, i);
+                }
+            }
+
+            function getTranslate(text, i) {
+                getGoogleTranslate(text, function (data) {
+                    var sentences = data.sentences;
+                    var longtext = '';
+                    for (const i in sentences) {
+                        if (Object.hasOwnProperty.call(sentences, i)) {
+                            const sentence = sentences[i];
+                            longtext += sentence.trans;
+                        }
+                    }
+                    translateDict[i] = longtext;
+                    indexCount++;
+                });
+            }
+
+            var t = setInterval(() => {
+                if (totalCount == indexCount) {
+                    t && clearInterval(t);
+                    translateCompelete();
+                }
+            }, 50);
+
+            function translateCompelete() {
+                console.log(translateDict);
+                if (signDictArray.length == 0 && txtArray.length > 0) {
+                    // 纯文字
+                    var str = '';
+                    for (const i in translateDict) {
+                        if (Object.hasOwnProperty.call(translateDict, i)) {
+                            str += translateDict[i];
+                        }
+                    }
+                    h1.innerText = str;
+                    h1.dataset.translate = h1.innerText;
+
+                } else if (signDictArray.length > 0 && txtArray.length == 0) {
+                    // 纯符号
+                    var str = '';
+                    for (const i in signDictArray) {
+                        if (Object.hasOwnProperty.call(signDictArray, i)) {
+                            const item = signDictArray[i];
+                            str += item.c;
+                        }
+                    }
+                    h1.innerText = str;
+                    h1.dataset.translate = h1.innerText;
+
+                } else if (signDictArray.length > 0 || txtArray.length > 0) {
+                    // 文字 + 符号
+                    var signIndex = 0;
+                    var translateIndex = 0;
+                    var str = '';
+                    if (signDictArray[0].i == 0) {
+                        // 符号在前 TODO 符号索引间隔是否为1
+                        while (signIndex < signDictArray.length &&
+                            translateIndex < txtArray.length) {
+                            if (signIndex < signDictArray.length) {
+                                str += signDictArray[signIndex].c;
+                                signIndex++;
+                            }
+                            if (translateIndex < txtArray.length) {
+                                str += translateDict[translateIndex];
+                                translateIndex++;
+                            }
+                        }
+                    } else {
+                        // 文字在前 TODO 符号索引间隔是否为1
+                        while (signIndex < signDictArray.length &&
+                            translateIndex < txtArray.length) {
+                            if (translateIndex < txtArray.length) {
+                                str += translateDict[translateIndex];
+                                translateIndex++;
+                            }
+
+                            if (signIndex < signDictArray.length) {
+                                str += signDictArray[signIndex].c;
+                                signIndex++;
+                            }
+                        }
+                    }
+
+                    h1.innerText = str;
+                    h1.dataset.translate = h1.innerText;
+                }
+            }
+
+
+            // var encodeText = urlEncode(h1.innerText);
+            // getGoogleTranslate(encodeText, function (data) {
+            //     var sentences = data.sentences;
+            //     var longtext = '';
+            //     for (const i in sentences) {
+            //         if (Object.hasOwnProperty.call(sentences, i)) {
+            //             const sentence = sentences[i];
+            //             longtext += sentence.trans;
+            //         }
+            //     }
+
+            //     h1.innerText = longtext;
+            //     h1.dataset.translate = longtext;
+            // });
+        }
+
+    } else {
+        // 显示原文
+        if (h1.title) {
+            h1.innerText = h1.title;
+        }
+    }
 }
 
 // 清空选择
@@ -65,18 +228,19 @@ function detailPageFavorite() {
     var translateLabel = document.createElement("label");
     translateLabel.setAttribute("for", translateCheckbox.id);
     translateLabel.id = "translateLabel";
-    translateLabel.innerText = "谷歌机翻 : 标签";
-
-    // 读取是否选中
-    read(table_Settings, table_Settings_key_TranslateDetailPageTags, result => {
-        if (result && result.value) {
-            translateCheckbox.setAttribute("checked", true);
-        }
-    }, () => { });
+    translateLabel.innerText = "谷歌机翻 : 标题";
 
     translateDiv.appendChild(translateLabel);
     rightDiv.appendChild(translateDiv);
-    translateCheckbox.addEventListener("click", translateClickDetail);
+    translateCheckbox.addEventListener("click", translateDetailPageTitle);
+
+    // 读取是否选中
+    read(table_Settings, table_Settings_key_TranslateDetailPageTitles, result => {
+        if (result && result.value) {
+            translateCheckbox.setAttribute("checked", true);
+            translateDetailPageTitle();
+        }
+    }, () => { });
 
     // 清空选择按钮
     var clearBtn = document.createElement("div");
@@ -113,16 +277,16 @@ function detailPageFavorite() {
 
     // 翻译标签父级
     var tcList = document.getElementsByClassName("tc");
-	for (const i in tcList) {
-		if (Object.hasOwnProperty.call(tcList, i)) {
-			const tc = tcList[i];
-			var parentEn = tc.innerText.replace(":", "");
-			var parentZh = detailParentData[parentEn] ?? parentEn;
-			tc.innerText = `${parentZh}:`;
-		}
-	}
+    for (const i in tcList) {
+        if (Object.hasOwnProperty.call(tcList, i)) {
+            const tc = tcList[i];
+            var parentEn = tc.innerText.replace(":", "");
+            var parentZh = detailParentData[parentEn] ?? parentEn;
+            tc.innerText = `${parentZh}:`;
+        }
+    }
 
-    
+
 }
 
 //#endregion

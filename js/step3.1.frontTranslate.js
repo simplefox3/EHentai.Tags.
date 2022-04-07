@@ -146,12 +146,9 @@ function mainPageTranslate() {
 	translateLabel.innerText = "谷歌机翻 : 标题";
 
 	translateDiv.appendChild(translateLabel);
-
 	translateCheckbox.addEventListener("click", translateMainPageTitle);
-
 	var dms = document.getElementById("dms");
 	dms.insertBefore(translateDiv, dms.lastChild);
-
 
 	// 读取是否选中
 	read(table_Settings, table_Settings_key_TranslateFrontPageTitles, result => {
