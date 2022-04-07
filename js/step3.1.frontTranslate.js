@@ -25,8 +25,9 @@ function translateMainPageTitle() {
 					// 需要翻译
 					div.title = div.innerText;
 
+					var encodeText = urlEncode(div.innerText);
 					// 单条翻译
-					getGoogleTranslate(div.innerText, function (data) {
+					getGoogleTranslate(encodeText, function (data) {
 						var sentences = data.sentences;
 						var longtext = '';
 						for (const i in sentences) {
@@ -35,6 +36,7 @@ function translateMainPageTitle() {
 								longtext += sentence.trans;
 							}
 						}
+
 						div.innerText = longtext;
 						div.dataset.translate = longtext;
 					});

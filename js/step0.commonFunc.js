@@ -133,30 +133,38 @@ function slideUp(element, speed, func) {
 
 // 页面样式注入
 function styleInject(css, ref) {
-	if (ref === void 0) ref = {};
-	var insertAt = ref.insertAt;
+    if (ref === void 0) ref = {};
+    var insertAt = ref.insertAt;
 
-	if (!css || typeof document === 'undefined') { return; }
+    if (!css || typeof document === 'undefined') { return; }
 
-	var head = document.head || document.getElementsByTagName('head')[0];
-	var style = document.createElement('style');
-	style.type = 'text/css';
+    var head = document.head || document.getElementsByTagName('head')[0];
+    var style = document.createElement('style');
+    style.type = 'text/css';
 
-	if (insertAt === 'top') {
-		if (head.firstChild) {
-			head.insertBefore(style, head.firstChild);
-		} else {
-			head.appendChild(style);
-		}
-	} else {
-		head.appendChild(style);
-	}
+    if (insertAt === 'top') {
+        if (head.firstChild) {
+            head.insertBefore(style, head.firstChild);
+        } else {
+            head.appendChild(style);
+        }
+    } else {
+        head.appendChild(style);
+    }
 
-	if (style.styleSheet) {
-		style.styleSheet.cssText = css;
-	} else {
-		style.appendChild(document.createTextNode(css));
-	}
+    if (style.styleSheet) {
+        style.styleSheet.cssText = css;
+    } else {
+        style.appendChild(document.createTextNode(css));
+    }
+}
+
+// UrlEncode
+function urlEncode(str) {
+    str = (str + '').toString();
+
+    return encodeURIComponent(str).replace(/!/g, '%21').replace(/'/g, '%27').replace(/\(/g, '%28').
+        replace(/\)/g, '%29').replace(/\*/g, '%2A').replace(/%20/g, '+');
 }
 
 //#endregion
