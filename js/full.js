@@ -22,133 +22,133 @@
 
 // 检查字典是否为空
 function checkDictNull(dict) {
-	for (const n in dict) {
-		return false;
-	}
-	return true;
+    for (const n in dict) {
+        return false;
+    }
+    return true;
 }
 
 // 获取地址参数
 function GetQueryString(name) {
-	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-	var r = window.location.search.substring(1).match(reg);
-	if (r != null) return decodeURI(r[2]); return null;
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = window.location.search.substring(1).match(reg);
+    if (r != null) return decodeURI(r[2]); return null;
 }
 
 // 数组删除元素
 Array.prototype.remove = function (val) {
-	var index = this.indexOf(val);
-	if (index > -1) {
-		this.splice(index, 1);
-	}
+    var index = this.indexOf(val);
+    if (index > -1) {
+        this.splice(index, 1);
+    }
 };
 
 // 数组差集
 function getDiffSet(array1, array2) {
-	return array1.filter(item => !new Set(array2).has(item));
+    return array1.filter(item => !new Set(array2).has(item));
 }
 
 // 导出json文件
 function saveJSON(data, filename) {
-	if (!data) return;
-	if (!filename) filename = "json.json";
-	if (typeof data === "object") {
-		data = JSON.stringify(data, undefined, 4);
-	}
-	// 要创建一个 blob 数据
-	let blob = new Blob([data], { type: "text/json" }),
-		a = document.createElement("a");
-	a.download = filename;
+    if (!data) return;
+    if (!filename) filename = "json.json";
+    if (typeof data === "object") {
+        data = JSON.stringify(data, undefined, 4);
+    }
+    // 要创建一个 blob 数据
+    let blob = new Blob([data], { type: "text/json" }),
+        a = document.createElement("a");
+    a.download = filename;
 
-	// 将blob转换为地址
-	// 创建 URL 的 Blob 对象
-	a.href = window.URL.createObjectURL(blob);
+    // 将blob转换为地址
+    // 创建 URL 的 Blob 对象
+    a.href = window.URL.createObjectURL(blob);
 
-	// 标签 data- 嵌入自定义属性  屏蔽后也可正常下载
-	a.dataset.downloadurl = ["text/json", a.download, a.href].join(":");
+    // 标签 data- 嵌入自定义属性  屏蔽后也可正常下载
+    a.dataset.downloadurl = ["text/json", a.download, a.href].join(":");
 
-	// 添加鼠标事件
-	let event = new MouseEvent("click", {});
+    // 添加鼠标事件
+    let event = new MouseEvent("click", {});
 
-	// 向一个指定的事件目标派发一个事件
-	a.dispatchEvent(event);
+    // 向一个指定的事件目标派发一个事件
+    a.dispatchEvent(event);
 }
 
 // 获取当前时间
 function getCurrentDate(format) {
-	var now = new Date();
-	var year = now.getFullYear(); //年份
-	var month = now.getMonth();//月份
-	var date = now.getDate();//日期
-	var day = now.getDay();//周几
-	var hour = now.getHours();//小时
-	var minu = now.getMinutes();//分钟
-	var sec = now.getSeconds();//秒
-	month = month + 1;
-	if (month < 10) month = "0" + month;
-	if (date < 10) date = "0" + date;
-	if (hour < 10) hour = "0" + hour;
-	if (minu < 10) minu = "0" + minu;
-	if (sec < 10) sec = "0" + sec;
-	var time = "";
-	//精确到天
-	if (format == 1) {
-		time = year + "-" + month + "-" + date;
-	}
-	//精确到分
-	else if (format == 2) {
-		time = year + "/" + month + "/" + date + " " + hour + ":" + minu + ":" + sec;
-	}
-	return time;
+    var now = new Date();
+    var year = now.getFullYear(); //年份
+    var month = now.getMonth();//月份
+    var date = now.getDate();//日期
+    var day = now.getDay();//周几
+    var hour = now.getHours();//小时
+    var minu = now.getMinutes();//分钟
+    var sec = now.getSeconds();//秒
+    month = month + 1;
+    if (month < 10) month = "0" + month;
+    if (date < 10) date = "0" + date;
+    if (hour < 10) hour = "0" + hour;
+    if (minu < 10) minu = "0" + minu;
+    if (sec < 10) sec = "0" + sec;
+    var time = "";
+    //精确到天
+    if (format == 1) {
+        time = year + "-" + month + "-" + date;
+    }
+    //精确到分
+    else if (format == 2) {
+        time = year + "/" + month + "/" + date + " " + hour + ":" + minu + ":" + sec;
+    }
+    return time;
 }
 
 // 调用谷歌翻译接口
 function getGoogleTranslate(text, func) {
-	var httpRequest = new XMLHttpRequest();
-	var url = `http://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=zh-CN&dj=1&dt=t&q=${text}`;
-	httpRequest.open("GET", url, true);
-	httpRequest.send();
+    var httpRequest = new XMLHttpRequest();
+    var url = `http://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=zh-CN&dj=1&dt=t&q=${text}`;
+    httpRequest.open("GET", url, true);
+    httpRequest.send();
 
-	httpRequest.onreadystatechange = function () {
-		if (httpRequest.readyState == 4 && httpRequest.status == 200) {
-			var json = JSON.parse(httpRequest.responseText);
-			func(json);
-		}
-	}
+    httpRequest.onreadystatechange = function () {
+        if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+            var json = JSON.parse(httpRequest.responseText);
+            func(json);
+        }
+    }
 }
 
 // 展开折叠动画
 var slideTimer = null;
 function slideDown(element, realHeight, speed, func) {
-	clearInterval(slideTimer);
-	var h = 0;
-	slideTimer = setInterval(function () {
-		// 但目标高度与实际高度小于10px时，以1px的速度步进
-		var step = (realHeight - h) / 10;
-		step = Math.ceil(step);
-		h += step;
-		if (Math.abs(realHeight - h) <= Math.abs(step)) {
-			h = realHeight;
-			element.style.height = `${realHeight}px`;
-			func();
-			clearInterval(slideTimer);
-		} else {
-			element.style.height = `${h}px`;
-		}
-	}, speed);
+    clearInterval(slideTimer);
+    var h = 0;
+    slideTimer = setInterval(function () {
+        // 但目标高度与实际高度小于10px时，以1px的速度步进
+        var step = (realHeight - h) / 10;
+        step = Math.ceil(step);
+        h += step;
+        if (Math.abs(realHeight - h) <= Math.abs(step)) {
+            h = realHeight;
+            element.style.height = `${realHeight}px`;
+            func();
+            clearInterval(slideTimer);
+        } else {
+            element.style.height = `${h}px`;
+        }
+    }, speed);
 }
 function slideUp(element, speed, func) {
-	clearInterval(slideTimer);
-	slideTimer = setInterval(function () {
-		var step = (0 - element.clientHeight) / 10;
-		step = Math.floor(step);
-		element.style.height = `${element.clientHeight + step}px`;
-		if (Math.abs(0 - element.clientHeight) <= Math.abs(step)) {
-			element.style.height = "0px";
-			func();
-			clearInterval(slideTimer);
-		}
-	}, speed);
+    clearInterval(slideTimer);
+    slideTimer = setInterval(function () {
+        var step = (0 - element.clientHeight) / 10;
+        step = Math.floor(step);
+        element.style.height = `${element.clientHeight + step}px`;
+        if (Math.abs(0 - element.clientHeight) <= Math.abs(step)) {
+            element.style.height = "0px";
+            func();
+            clearInterval(slideTimer);
+        }
+    }, speed);
 }
 
 // 页面样式注入
@@ -2348,34 +2348,27 @@ function initUserSettings(func_compelete) {
 
 //#region step3.1.frontTranslate.js 首页谷歌翻译
 
-var translateDict = {};
+// 首页谷歌翻译：标签
+function translateMainPageTitle() {
+	var isChecked = document.getElementById("googleTranslateCheckbox").checked;
 
-// 谷歌翻译:标签，通用方法
-function translateClick() {
-	// 根据是否选中来翻译或者正常
-	var translateCheckbox = document.getElementById("googleTranslateCheckbox");
-	var isChecked = translateCheckbox.checked;
-	var needTranslateArray = document.getElementsByClassName("needTranslate");
+	// 更新存储
+	var settings_translateFrontPageTitles = {
+		item: table_Settings_key_TranslateFrontPageTitles,
+		value: isChecked
+	};
+	update(table_Settings, settings_translateFrontPageTitles, () => { }, () => { });
 
+	var titleDivs = document.getElementsByClassName("glink");
 	if (isChecked) {
-		// 翻译
-		var translateArray = [];
-		if (!checkDictNull(translateDict)) {
-			// 已经请求过接口，直接翻译
-			TranslateByDict();
-		} else {
-			// 请求接口，更新字典，翻译标签
-			for (const i in needTranslateArray) {
-				if (Object.hasOwnProperty.call(needTranslateArray, i)) {
-					const item = needTranslateArray[i].title;
-					translateArray.push(item);
-				}
-			}
+		// 翻译标题
+		for (const i in titleDivs) {
+			if (Object.hasOwnProperty.call(titleDivs, i)) {
+				const div = titleDivs[i];
+				div.title = div.innerText;
 
-			if (translateArray.length > 0) {
-				// 请求接口
-				var text = translateArray.join("|");
-				getGoogleTranslate(text, function (data) {
+				// 单条翻译
+				getGoogleTranslate(div.innerText, function (data) {
 					var sentences = data.sentences;
 					var longtext = '';
 					for (const i in sentences) {
@@ -2384,62 +2377,22 @@ function translateClick() {
 							longtext += sentence.trans;
 						}
 					}
-
-					var categoryZhArray = longtext.split("|");
-					for (const i in translateArray) {
-						if (Object.hasOwnProperty.call(translateArray, i)) {
-							const enKey = translateArray[i];
-							if (!translateDict[enKey]) {
-								translateDict[enKey] = categoryZhArray[i];
-							}
-						}
-					}
-
-					// 替换文本文件，并添加原文
-					TranslateByDict();
+					div.innerText = longtext;
 				});
 			}
-
-		}
-		// 翻译
-		function TranslateByDict() {
-			for (const i in needTranslateArray) {
-				if (Object.hasOwnProperty.call(needTranslateArray, i)) {
-					const divItem = needTranslateArray[i];
-					divItem.dataset.old_inner_text = divItem.innerText;
-					var enKey = divItem.title;
-					divItem.innerText = translateDict[enKey]?.replace("：", ":") ?? enKey;
-				}
-			}
 		}
 
-	}
-	else {
-		// 不翻译，使用原文
-		if (!checkDictNull(translateDict)) {
-			// 已经翻译过，从 data 原文中返回
-			for (const i in needTranslateArray) {
-				if (Object.hasOwnProperty.call(needTranslateArray, i)) {
-					const divItem = needTranslateArray[i];
-					divItem.innerText = divItem.dataset.old_inner_text;
+	} else {
+		// 显示原文
+		for (const i in titleDivs) {
+			if (Object.hasOwnProperty.call(titleDivs, i)) {
+				const div = titleDivs[i];
+				if (div.title) {
+					div.innerText = div.title;
 				}
 			}
 		}
 	}
-
-	return isChecked;
-}
-
-// 首页谷歌翻译：标签
-function translateClickMainPage() {
-	var isChecked = translateClick();
-
-	// 更新存储
-	var settings_translateFrontPageTags = {
-		item: table_settings_key_TranslateFrontPageTags,
-		value: isChecked
-	};
-	update(table_Settings, settings_translateFrontPageTags, () => { }, () => { });
 }
 
 function mainPageTranslate() {
@@ -2528,35 +2481,23 @@ function mainPageTranslate() {
 	var translateLabel = document.createElement("label");
 	translateLabel.setAttribute("for", translateCheckbox.id);
 	translateLabel.id = "translateLabel";
-	translateLabel.innerText = "谷歌机翻 : 标签";
-
-	// 读取是否选中
-	read(table_Settings, table_settings_key_TranslateFrontPageTags, result => {
-		if (result && result.value) {
-			translateCheckbox.setAttribute("checked", true);
-		}
-	}, () => { });
+	translateLabel.innerText = "谷歌机翻 : 标题";
 
 	translateDiv.appendChild(translateLabel);
 
-	translateCheckbox.addEventListener("click", translateClickMainPage);
+	translateCheckbox.addEventListener("click", translateMainPageTitle);
 
 	var dms = document.getElementById("dms");
 	dms.insertBefore(translateDiv, dms.lastChild);
 
 
-
-
-
-	// 根据右侧预览下拉框显示和隐藏
-	var rightSelect = select[0];
-	if (rightSelect.value == "l" || rightSelect.value == "e") {
-		// 显示
-		translateDiv.style.display = "block";
-	} else {
-		// 隐藏
-		translateDiv.style.display = "none";
-	}
+	// 读取是否选中
+	read(table_Settings, table_Settings_key_TranslateFrontPageTitles, result => {
+		if (result && result.value) {
+			translateCheckbox.setAttribute("checked", true);
+			translateMainPageTitle();
+		}
+	}, () => { });
 
 	// 表头
 	const thData = {
@@ -2633,23 +2574,41 @@ function mainPageTranslate() {
 		}
 	}
 
-	// 父项:子项
+	// 父项:子项，偶尔出现单个子项
+	var rightSelect = select[0];
 	var gt = document.getElementsByClassName("gt");
-	for (const i in gt) {
-		if (Object.hasOwnProperty.call(gt, i)) {
-			const item = gt[i];
-			//var innerText = item.innerText;
-			var ps_en = item.title;
-			read(table_EhTagSubItems, ps_en, result => {
-				if (result) {
-					if (rightSelect.value == "e") {
-						// 标题 + 图片 + 标签，单个子项
-						item.innerText = result.sub_zh;
-					} else {
-						item.innerText = `${result.parent_zh}:${result.sub_zh}`;
+	function translate(gt, i) {
+		const item = gt[i];
+		var ps_en = item.title;
+		read(table_EhTagSubItems, ps_en, result => {
+			if (result) {
+				if (rightSelect.value == "e") {
+					// 标题 + 图片 + 标签，单个子项
+					item.innerText = result.sub_zh;
+				} else {
+					// 父子项
+					item.innerText = `${result.parent_zh}:${result.sub_zh}`;
+				}
+			} else {
+				// 没有找到，翻译父项，子项保留
+				if (rightSelect.value != "e") {
+					var array = ps_en.split(":");
+					if (array.length == 2) {
+						var parent_en = array[0];
+						var sub_en = array[1];
+						read(table_detailParentItems, parent_en, result => {
+							if (result) {
+								item.innerText = `${result.name}:${sub_en}`;
+							}
+						}, () => { });
 					}
 				}
-			}, () => { });
+			}
+		}, () => { });
+	}
+	for (const i in gt) {
+		if (Object.hasOwnProperty.call(gt, i)) {
+			translate(gt, i);
 		}
 	}
 
@@ -2670,9 +2629,6 @@ function mainPageTranslate() {
 }
 
 //#endregion
-
-
-
 
 //#region step3.2.frontPageTopStyle 首页头部搜索显示隐藏
 

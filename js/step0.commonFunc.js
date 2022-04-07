@@ -85,7 +85,7 @@ function getCurrentDate(format) {
 // 调用谷歌翻译接口
 function getGoogleTranslate(text, func) {
     var httpRequest = new XMLHttpRequest();
-    var url = `http://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=zh-CN&dj=1&dt=t&q=${text}`;
+    var url = `http://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=zh-CN&dj=1&dt=t&q=${text}`;
     httpRequest.open("GET", url, true);
     httpRequest.send();
 
