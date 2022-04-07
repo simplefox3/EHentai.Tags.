@@ -1,20 +1,28 @@
 //#region step0.constDatas.js 数据字典
 
-// 详情页父级
-const detailParentData = {
-	"reclass": "重新分类",
-	"parody": "原作",
-	"male": "男性",
-	"female": "女性",
-	"mixed": "混合",
-	"character": "角色",
-	"artist": "艺术家",
-	"other": "其他",
-	"language": "语言",
-	"group": "团队",
-	"temp": "临时",
-	"cosplayer": "Coser"
+//#region 头部菜单
+
+const fontMenusData = {
+	"Front Page": "首页",
+	"Watched": "已观看",
+	"Popular": "热门",
+	"Torrents": "种子",
+	"Favorites": "收藏",
+	"Settings": "设置",
+	"My Uploads": "我的上传",
+	"My Tags": "我的标签",
+	"My Home": "我的主页",
+	"Toplists": "排行榜",
+	"Bounties": "悬赏",
+	"News": "新闻",
+	"Forums": "论坛",
+	"Wiki": "维基百科",
+	"HentaiVerse": "變態之道(游戏)"
 };
+
+//#endregion
+
+//#region 作品分类
 
 // 作品分类 01
 const bookTypeData = {
@@ -29,7 +37,6 @@ const bookTypeData = {
 	"Asian Porn": "亚洲色情",
 	"Misc": "杂项"
 }
-
 // 作品分类02
 const bookClassTypeData = {
 	"ct2": "同人志",
@@ -43,5 +50,128 @@ const bookClassTypeData = {
 	"ct8": "亚洲色情",
 	"ct1": "杂项"
 }
+
+//#endregion
+
+//#region 预览下拉框
+
+const dropData = {
+	"Minimal": "标题 + 悬浮图",
+	"Minimal+": "标题 + 悬浮图 + 账号收藏标签",
+	"Compact": "标题 + 悬浮图 + 标签",
+	"Extended": "标题 + 图片 + 标签",
+	"Thumbnail": "标题 + 缩略图",
+}
+
+//#endregion
+
+//#region 表头翻译字典
+
+const thData = {
+	"": "作品类型",
+	"Published": "上传日期",
+	"Title": "标题",
+	"Uploader": "上传人员"
+};
+
+//#endregion
+
+//#region 详情页右侧链接翻译
+
+const gd5aDict = {
+	"Report Gallery": "举报",
+	"Archive Download": "档案下载",
+	"Petition to Expunge": "申请删除",
+	"Petition to Rename": "申请改名",
+	"Show Gallery Stats": "画廊统计",
+};
+
+//#endregion
+
+//#region localstroage 键名
+
+// 版本号
+const dbVersionKey = "categoryVersion";
+
+// 全部列表Html
+const dbCategoryListHtmlKey = "categoryListHtml";
+
+// 全部列表折叠
+const dbCategoryListExpendKey = "categoryListExpendArray"; 
+
+// 本地收藏折叠
+const dbFavoriteListExpendKey = "favoriteListExpendArray"; 
+
+// 本地收藏列表
+const dbFavoriteKey = "favoriteDict"; 
+
+// 头部搜索菜单显示隐藏
+const dbOldSearchDivVisibleKey = "oldSearchDivVisibleKey";
+
+// 标签谷歌机翻_首页开关
+const dbGoogleTranslateCategoryFontPage = "googleTranslateCategoryFontPage";
+
+// 标签谷歌机翻_详情页开关
+const dbGoogleTranslateCategoryDetail = "googleTranslateCategoryDetail";
+
+// 消息通知页面同步
+const dbSyncMessageKey = "dbSyncMessage";
+
+//#endregion
+
+//#region indexedDB 数据表、索引、键
+
+// 设置表
+const table_Settings = "t_settings";
+const table_Settings_key_FetishListVersion = "f_fetishListVersion";
+const table_Settings_key_EhTagVersion = "f_ehTagVersion";
+const table_Settings_key_FetishList_ParentEnArray = "f_fetish_parentEnArray";
+const table_Settings_key_EhTag_ParentEnArray = "f_ehTag_parentEnArray";
+const table_Settings_key_FetishList_Html = "f_fetishListHtml";
+const table_Settings_key_EhTag_Html = "f_ehTagHtml";
+const table_Settings_key_CategoryList_Extend = "f_categoryListExtend";
+const table_Settings_key_OldSearchDiv_Visible = "f_oldSearchDivVisible";
+const table_settings_key_TranslateFrontPageTags = "f_translateFrontPageTags";
+const table_Settings_key_TranslateDetailPageTags = "f_translateDetailPageTags";
+const table_Settings_key_TranslateFrontPageTitles = "f_translateFrontPageTitles";
+const table_Settings_key_TranslateDetailPageTitles = "f_translateDetailPageTitles";
+const table_Settings_key_FavoriteList = "f_favoriteList";
+const table_Settings_key_FavoriteList_Html = "f_favoriteListHtml";
+const table_Settings_Key_FavoriteList_Extend = "f_favoriteListExtend";
+
+// fetishList 全部类别 - 父子信息表
+const table_fetishListSubItems = "t_fetishListSubItems";
+const table_fetishListSubItems_key = "ps_en";
+const table_fetishListSubItems_index_subEn = "sub_en";
+const table_fetishListSubItems_index_searchKey = "search_key";
+
+// EhTag 全部类别 - 父子信息表
+const table_EhTagSubItems = "t_ehTagSubItems";
+const table_EhTagSubItems_key = "ps_en";
+const table_EhTagSubItems_index_subEn = "sub_en";
+const table_EhTagSubItems_index_searchKey = "search_key";
+
+// FavoriteList 本地收藏表
+const table_favoriteSubItems = "t_favoriteSubItems";
+const table_favoriteSubItems_key = "ps_en";
+const table_favoriteSubItems_index_parentEn = "parent_en";
+
+// DetailParentItems 详情页父级表
+const table_detailParentItems = "t_detailParentItems";
+const table_detailParentItems_key = "row";
+
+//#endregion
+
+//#region 消息通知 dbSyncMessageKey 值
+
+const sync_oldSearchTopVisible = 'syncOldSearchTopVisible';
+const sync_categoryList = 'syncCategoryList';
+const sync_favoriteList = 'syncFavoriteList';
+const sync_categoryList_Extend = 'syncCategoryListExtend';
+const sync_favoriteList_Extend = 'syncFavoriteListExtend';
+const sync_googleTranslate_frontPage_title = 'syncGoogleTranslateFrontPageTitle';
+const sync_googleTranslate_detailPage_title = 'syncGoogleTranslateDetailPageTitle';
+
+//#endregion
 
 //#endregion

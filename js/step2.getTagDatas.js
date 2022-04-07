@@ -66,46 +66,6 @@ function getEhTagTranslate(version, func) {
 var request = window.indexedDB.open("EXH_DYZYFTS", 1);
 var db;
 
-// 设置表
-const table_Settings = "t_settings";
-const table_Settings_key_FetishListVersion = "f_fetishListVersion";
-const table_Settings_key_EhTagVersion = "f_ehTagVersion";
-const table_Settings_key_FetishList_ParentEnArray = "f_fetish_parentEnArray";
-const table_Settings_key_EhTag_ParentEnArray = "f_ehTag_parentEnArray";
-const table_Settings_key_FetishList_Html = "f_fetishListHtml";
-const table_Settings_key_EhTag_Html = "f_ehTagHtml";
-const table_Settings_key_CategoryList_Extend = "f_categoryListExtend";
-const table_Settings_key_OldSearchDiv_Visible = "f_oldSearchDivVisible";
-const table_settings_key_TranslateFrontPageTags = "f_translateFrontPageTags";
-const table_Settings_key_TranslateDetailPageTags = "f_translateDetailPageTags";
-const table_Settings_key_TranslateFrontPageTitles = "f_translateFrontPageTitles";
-const table_Settings_key_TranslateDetailPageTitles = "f_translateDetailPageTitles";
-const table_Settings_key_FavoriteList = "f_favoriteList";
-const table_Settings_key_FavoriteList_Html = "f_favoriteListHtml";
-const table_Settings_Key_FavoriteList_Extend = "f_favoriteListExtend";
-
-
-// fetishList 全部类别 - 父子信息表
-const table_fetishListSubItems = "t_fetishListSubItems";
-const table_fetishListSubItems_key = "ps_en";
-const table_fetishListSubItems_index_subEn = "sub_en";
-const table_fetishListSubItems_index_searchKey = "search_key";
-
-// EhTag 全部类别 - 父子信息表
-const table_EhTagSubItems = "t_ehTagSubItems";
-const table_EhTagSubItems_key = "ps_en";
-const table_EhTagSubItems_index_subEn = "sub_en";
-const table_EhTagSubItems_index_searchKey = "search_key";
-
-// FavoriteList 本地收藏表
-const table_favoriteSubItems = "t_favoriteSubItems";
-const table_favoriteSubItems_key = "ps_en";
-const table_favoriteSubItems_index_parentEn = "parent_en";
-
-// DetailParentItems 详情页父级表
-const table_detailParentItems = "t_detailParentItems";
-const table_detailParentItems_key = "row";
-
 function indexDbInit(func_start_use) {
     if (request.readyState == "done") {
         db = request.result;

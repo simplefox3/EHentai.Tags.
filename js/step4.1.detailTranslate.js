@@ -81,14 +81,6 @@ function detailPageTranslate() {
 
     // 右侧五个菜单
     var gd5a = document.getElementById("gd5").querySelectorAll("a");
-    var gd5aDict = {
-        "Report Gallery": "举报",
-        "Archive Download": "档案下载",
-        "Petition to Expunge": "申请删除",
-        "Petition to Rename": "申请改名",
-        "Show Gallery Stats": "画廊统计",
-    };
-
     for (const i in gd5a) {
         if (Object.hasOwnProperty.call(gd5a, i)) {
             const a = gd5a[i];

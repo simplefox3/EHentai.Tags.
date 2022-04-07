@@ -16,7 +16,7 @@ if (f_searchs) {
                     var parentEn = itemArray[0];
                     var subEn = itemArray[1];
                     // 从EhTag中查询，看是否存在
-                    readByIndex(table_EhTagSubItems, table_EhTagSubItems_index_subEn, subEn, ehTagData => {
+                    read(table_EhTagSubItems, items, ehTagData => {
                         addItemToInput(ehTagData.parent_en, ehTagData.parent_zh, ehTagData.sub_en, ehTagData.sub_zh, ehTagData.sub_desc);
                     }, () => {
                         addItemToInput(parentEn, subEn, subEn, subEn, '');

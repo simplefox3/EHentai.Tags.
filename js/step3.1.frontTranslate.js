@@ -71,15 +71,8 @@ function mainPageTranslate() {
 		var totalCount = ipElement.innerText.replace("Showing ", "").replace(" results", "");
 		ipElement.innerText = `共 ${totalCount} 条记录`;
 	}
-	// 预览下拉框
-	const dropData = {
-		"Minimal": "标题 + 悬浮图",
-		"Minimal+": "标题 + 悬浮图 + 账号收藏标签",
-		"Compact": "标题 + 悬浮图 + 标签",
-		"Extended": "标题 + 图片 + 标签",
-		"Thumbnail": "标题 + 缩略图",
-	}
 
+	// 预览下拉框
 	var dms = document.getElementById("dms");
 	if (!dms) {
 		// 没有搜索到记录
@@ -159,12 +152,6 @@ function mainPageTranslate() {
 	}, () => { });
 
 	// 表头
-	const thData = {
-		"": "作品类型",
-		"Published": "上传日期",
-		"Title": "标题",
-		"Uploader": "上传人员"
-	};
 	var table = document.getElementsByClassName("itg");
 	if (table.length > 0) {
 		var theads = table[0].querySelectorAll("th");
