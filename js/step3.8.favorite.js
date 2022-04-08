@@ -135,7 +135,7 @@ function getFavoriteListHtml(favoriteSubItems) {
             }
 
             // 添加子级
-            favoritesListHtml += `<span class="c_item c_item_favorite" title="[${item.sub_en}] ${item.sub_desc}" data-item="${item.sub_en}" 
+            favoritesListHtml += `<span class="c_item c_item_favorite" title="${item.sub_zh} [${item.sub_en}]&#10;&#13;${item.sub_desc}" data-item="${item.sub_en}" 
                         data-parent_en="${item.parent_en}" data-parent_zh="${item.parent_zh}" data-sub_desc="${item.sub_desc}">${item.sub_zh}</span>`;
         }
     }
@@ -187,18 +187,31 @@ function firstUpdateFavoriteSubItems(favoriteSubItems, foundTotalCount) {
 // 设置收藏折叠
 function setFavoriteExpend() {
     read(table_Settings, table_Settings_Key_FavoriteList_Extend, result => {
+        var expendBtns = document.getElementsByClassName("favorite_extend");
         if (result && result.value) {
             var expendArray = result.value;
-            var expendBtns = document.getElementsByClassName("favorite_extend");
             for (const i in expendBtns) {
                 if (Object.hasOwnProperty.call(expendBtns, i)) {
                     const btn = expendBtns[i];
                     var category = btn.dataset.category;
+                    var itemDiv = document.getElementById("favorite_div_" + category);
                     if (expendArray.indexOf(category) != -1) {
                         btn.innerText = "+";
-                        var itemDiv = document.getElementById("favorite_div_" + category);
                         itemDiv.style.display = "none";
+                    } else {
+                        btn.innerText = "-";
+                        itemDiv.style.display = "block";
                     }
+                }
+            }
+        } else {
+            for (const i in expendBtns) {
+                if (Object.hasOwnProperty.call(expendBtns, i)) {
+                    const btn = expendBtns[i];
+                    btn.innerText = "-";
+                    var category = btn.dataset.category;
+                    var itemDiv = document.getElementById("favorite_div_" + category);
+                    itemDiv.style.display = "block";
                 }
             }
         }
@@ -271,7 +284,10 @@ function favoriteExtendClick() {
                         value: expendData
                     };
 
-                    update(table_Settings, settings_favoriteList_extend, () => { }, () => { });
+                    update(table_Settings, settings_favoriteList_extend, () => {
+                        // 通知折叠
+                        setDbSyncMessage(sync_favoriteList_Extend);
+                    }, () => { });
 
                 }, () => { });
             });
@@ -365,7 +381,7 @@ addFavoritesBtn.onclick = function () {
                         newFavoriteItem.dataset.parent_en = item.parent_en;
                         newFavoriteItem.dataset.parent_zh = item.parent_zh;
                         newFavoriteItem.dataset.sub_desc = item.sub_desc;
-                        newFavoriteItem.title = `[${item.sub_en}] ${item.sub_desc}`;
+                        newFavoriteItem.title = `${item.sub_zh} [${item.sub_en}]\n\n${item.sub_desc}`;
 
                         var itemText = document.createTextNode(item.sub_zh);
                         newFavoriteItem.appendChild(itemText);
@@ -471,7 +487,10 @@ favoriteAllExtend.onclick = function () {
     }
 
     // 清空折叠记录
-    remove(table_Settings, table_Settings_Key_FavoriteList_Extend, () => { }, () => { });
+    remove(table_Settings, table_Settings_Key_FavoriteList_Extend, () => {
+        // 通知折叠
+        setDbSyncMessage(sync_favoriteList_Extend);
+    }, () => { });
 }
 
 // 全部折叠
@@ -504,7 +523,10 @@ favoriteAllCollapse.onclick = function () {
         value: favoriteParentData
     };
 
-    update(table_Settings, settings_favoriteList_extend, () => { }, () => { });
+    update(table_Settings, settings_favoriteList_extend, () => {
+        // 通知折叠
+        setDbSyncMessage(sync_favoriteList_Extend);
+    }, () => { });
 }
 
 // 编辑

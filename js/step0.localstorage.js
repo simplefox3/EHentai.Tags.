@@ -72,6 +72,7 @@ function getDbSyncMessage() {
     return localStorage.getItem(dbSyncMessageKey);
 }
 function setDbSyncMessage(msg) {
+    removeDbSyncMessage();
     localStorage.setItem(dbSyncMessageKey, msg);
 }
 function removeDbSyncMessage() {

@@ -55,8 +55,10 @@ function updatePageTopVisible() {
 
 // 本地列表更新
 function updatePageCategoryList() {
-
-    removeDbSyncMessage();
+    indexDbInit(() => {
+        categoryInit();
+        removeDbSyncMessage();
+    });
 }
 
 // 本地收藏更新
@@ -100,14 +102,43 @@ function updatePageFavoriteList() {
 
 // 本地列表折叠更新
 function updatePageCategoryListExtend() {
+    indexDbInit(() => {
+        var ehTagExtendSpans = document.getElementsByClassName("category_extend_ehTag");
+        read(table_Settings, table_Settings_key_CategoryList_Extend, extendResult => {
+            if (extendResult) {
+                extendDiv(ehTagExtendSpans, extendResult.value);
+            } else {
+                extendDiv(ehTagExtendSpans, []);
+            };
+        }, () => {
+        });
 
-    removeDbSyncMessage();
+        var fetishExtendSpans = document.getElementsByClassName("category_extend_fetish");
+        read(table_Settings, table_Settings_key_CategoryList_Extend, extendResult => {
+            if (extendResult) {
+                extendDiv(fetishExtendSpans, extendResult.value);
+            } else {
+                extendDiv(fetishExtendSpans, []);
+            }
+        }, () => { });
+
+        // 清理通知
+        removeDbSyncMessage();
+    });
 }
 
 // 本地收藏折叠更新
 function updatePageFavoriteListExtend() {
-
-    removeDbSyncMessage();
+    indexDbInit(() => {
+        // 退出编辑模式
+        editToFavorite();
+        // 设置收藏折叠
+        setFavoriteExpend();
+        // 更新按钮状态
+        updateFavoriteListBtnStatus();
+        // 清理通知
+        removeDbSyncMessage();
+    });
 }
 
 // 首页谷歌翻译标题

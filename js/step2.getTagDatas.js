@@ -483,7 +483,7 @@ function tagDataDispose(func_compelete) {
                         }
 
                         // 添加子级
-                        categoryFetishListHtml += `<span class="c_item c_item_fetish" data-item="${item.sub_en}" data-parent_en="${item.parent_en}" data-parent_zh="${item.parent_zh}" data-sub_desc="${item.sub_desc}" title="[${item.sub_en}] ${item.sub_desc}">${item.sub_zh}</span>`;
+                        categoryFetishListHtml += `<span class="c_item c_item_fetish" data-item="${item.sub_en}" data-parent_en="${item.parent_en}" data-parent_zh="${item.parent_zh}" data-sub_desc="${item.sub_desc}" title="${item.sub_zh} [${item.sub_en}]&#10;&#13;${item.sub_desc}">${item.sub_zh}</span>`;
                     }
                 }
                 if (categoryFetishListHtml != ``) {
@@ -597,7 +597,7 @@ function tagDataDispose(func_compelete) {
                         }
 
                         // 添加子级
-                        categoryEhTagHtml += `<span class="c_item c_item_ehTag" data-item="${item.sub_en}" data-parent_en="${item.parent_en}" data-parent_zh="${item.parent_zh}" data-sub_desc="${item.sub_desc}" title="[${item.sub_en}] ${item.sub_desc}">${item.sub_zh}</span>`;
+                        categoryEhTagHtml += `<span class="c_item c_item_ehTag" data-item="${item.sub_en}" data-parent_en="${item.parent_en}" data-parent_zh="${item.parent_zh}" data-sub_desc="${item.sub_desc}" title="${item.sub_zh} [${item.sub_en}]&#10;&#13;${item.sub_desc}">${item.sub_zh}</span>`;
                     }
                 }
                 if (categoryEhTagHtml != ``) {
@@ -677,7 +677,7 @@ function tagDataDispose(func_compelete) {
                                     }
 
                                     // 添加子级
-                                    favoritesListHtml += `<span class="c_item c_item_favorite" title="[${item.sub_en}] ${item.sub_desc}" data-item="${item.sub_en}" 
+                                    favoritesListHtml += `<span class="c_item c_item_favorite" title="${item.sub_zh} [${item.sub_en}]&#10;&#13;${item.sub_desc}" data-item="${item.sub_en}" 
                                                 data-parent_en="${item.parent_en}" data-parent_zh="${item.parent_zh}" data-sub_desc="${item.sub_desc}">${item.sub_zh}</span>`;
                                 }
                             }
@@ -770,7 +770,7 @@ function initUserSettings(func_compelete) {
             update(table_Settings, settings_categoryListExpendArray, () => {
                 removeCategoryListExpend();
                 complete1 = true;
-            }, error => { complete1 = true; });
+            }, () => { complete1 = true; });
         } else {
             complete1 = true;
         }

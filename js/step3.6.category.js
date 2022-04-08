@@ -2,17 +2,33 @@
 
 // 折叠方法
 function extendDiv(extendSpans, extendArray) {
-    for (const i in extendSpans) {
-        if (Object.hasOwnProperty.call(extendSpans, i)) {
-            const span = extendSpans[i];
-            var parent_en = span.dataset.category;
-            if (extendArray.indexOf(parent_en) != -1) {
-                span.innerText = "+";
+    if (extendArray.length > 0) {
+        for (const i in extendSpans) {
+            if (Object.hasOwnProperty.call(extendSpans, i)) {
+                const span = extendSpans[i];
+                var parent_en = span.dataset.category;
                 var itemDiv = document.getElementById("items_div_" + parent_en);
-                itemDiv.style.display = "none";
+                if (extendArray.indexOf(parent_en) != -1) {
+                    span.innerText = "+";
+                    itemDiv.style.display = "none";
+                } else {
+                    span.innerText = "-";
+                    itemDiv.style.display = "block";
+                }
+            }
+        }
+    } else {
+        for (const i in extendSpans) {
+            if (Object.hasOwnProperty.call(extendSpans, i)) {
+                const span = extendSpans[i];
+                var parent_en = span.dataset.category;
+                var itemDiv = document.getElementById("items_div_" + parent_en);
+                span.innerText = "-";
+                itemDiv.style.display = "block";
             }
         }
     }
+
 }
 
 // 单个折叠、展开
@@ -51,7 +67,10 @@ function parentItemsExtend(extendSpans) {
                         item: table_Settings_key_CategoryList_Extend,
                         value: extendData
                     }
-                    update(table_Settings, setting_categoryExtend, () => { }, () => { });
+                    update(table_Settings, setting_categoryExtend, () => {
+                        // 通知折叠
+                        setDbSyncMessage(sync_categoryList_Extend);
+                    }, () => { });
 
                 }, () => { });
             });
@@ -108,42 +127,45 @@ function cItemJsonSearchInput(cItems) {
     }
 }
 
-
-// 恋物列表模块
-read(table_Settings, table_Settings_key_FetishList_Html, result => {
-    // 生成 html 代码
-    categoryList_fetishDiv.innerHTML = result.value;
-    // 读取折叠并设置
-    var extendSpans = document.getElementsByClassName("category_extend_fetish");
-    read(table_Settings, table_Settings_key_CategoryList_Extend, extendResult => {
-        if (extendResult) {
-            extendDiv(extendSpans, extendResult.value);
-        }
+// 初始化本地列表页面
+function categoryInit() {
+    // 恋物列表模块
+    read(table_Settings, table_Settings_key_FetishList_Html, result => {
+        // 生成 html 代码
+        categoryList_fetishDiv.innerHTML = result.value;
+        // 读取折叠并设置
+        var extendSpans = document.getElementsByClassName("category_extend_fetish");
+        read(table_Settings, table_Settings_key_CategoryList_Extend, extendResult => {
+            if (extendResult) {
+                extendDiv(extendSpans, extendResult.value);
+            }
+        }, () => { });
+        // 单个展开折叠
+        parentItemsExtend(extendSpans);
+        // 具体小项点击加入搜索框
+        var cItems = document.getElementsByClassName("c_item_fetish");
+        cItemJsonSearchInput(cItems);
     }, () => { });
-    // 单个展开折叠
-    parentItemsExtend(extendSpans);
-    // 具体小项点击加入搜索框
-    var cItems = document.getElementsByClassName("c_item_fetish");
-    cItemJsonSearchInput(cItems);
-}, () => { });
 
-// EhTag列表模块
-read(table_Settings, table_Settings_key_EhTag_Html, result => {
-    // 生成 html 代码
-    categoryList_ehTagDiv.innerHTML = result.value;
-    // 读取折叠并设置
-    var extendSpans = document.getElementsByClassName("category_extend_ehTag");
-    read(table_Settings, table_Settings_key_CategoryList_Extend, extendResult => {
-        if (extendResult) {
-            extendDiv(extendSpans, extendResult.value);
-        }
+    // EhTag列表模块
+    read(table_Settings, table_Settings_key_EhTag_Html, result => {
+        // 生成 html 代码
+        categoryList_ehTagDiv.innerHTML = result.value;
+        // 读取折叠并设置
+        var extendSpans = document.getElementsByClassName("category_extend_ehTag");
+        read(table_Settings, table_Settings_key_CategoryList_Extend, extendResult => {
+            if (extendResult) {
+                extendDiv(extendSpans, extendResult.value);
+            }
+        }, () => { });
+        // 单个展开折叠
+        parentItemsExtend(extendSpans);
+        // 具体小项点击加入搜索框
+        var cItems = document.getElementsByClassName("c_item_ehTag");
+        cItemJsonSearchInput(cItems);
     }, () => { });
-    // 单个展开折叠
-    parentItemsExtend(extendSpans);
-    // 具体小项点击加入搜索框
-    var cItems = document.getElementsByClassName("c_item_ehTag");
-    cItemJsonSearchInput(cItems);
-}, () => { });
+}
+categoryInit();
 
 // 全部折叠
 allCollapse.onclick = function () {
@@ -180,7 +202,10 @@ allCollapse.onclick = function () {
                 item: table_Settings_key_CategoryList_Extend,
                 value: allParentDataArray
             }
-            update(table_Settings, setting_categoryExtend, () => { }, () => { });
+            update(table_Settings, setting_categoryExtend, () => {
+                // 通知折叠
+                setDbSyncMessage(sync_categoryList_Extend);
+            }, () => { });
         }, () => { });
     }, () => { });
 }
@@ -208,7 +233,10 @@ allExtend.onclick = function () {
     }
 
     // 清空折叠记录
-    remove(table_Settings, table_Settings_key_CategoryList_Extend, () => { }, () => { });
+    remove(table_Settings, table_Settings_key_CategoryList_Extend, () => {
+        // 通知折叠
+        setDbSyncMessage(sync_categoryList_Extend);
+    }, () => { });
 }
 
 //#endregion

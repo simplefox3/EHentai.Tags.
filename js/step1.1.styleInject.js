@@ -255,7 +255,7 @@ func_eh_ex(() => {
 	
 	#div_ee8413b2 #category_all_div .c_item,
 	#div_ee8413b2 #category_favorites_div #favorites_list .c_item {
-		margin: 3px 0 3px 10px;
+		margin: 3px 3px 3px 10px;
 		font-size: 15px;
 		cursor: pointer;
 		display: inline-block;
@@ -339,9 +339,10 @@ func_eh_ex(() => {
 	}
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items {
-		font-size: 10px;
+		font-size: 15px;
+    	padding: 5px;
+		font-weight: bold;
 		cursor: pointer;
-		padding: 2px 5px;
 		min-height: 20px;
     	line-height: 20px;
 		overflow: auto;
@@ -468,7 +469,8 @@ func_eh_ex(() => {
 	#div_ee8413b2 #favorites_edit_list .favorite_edit_clear:hover,
 	#div_ee8413b2 #category_list .c_item:hover,
 	#div_ee8413b2 #favorites_list .c_item:hover {
-		transform: scale(1.2);
+		transform: scale(2);
+		background-color: #e3e0d1;
 	}
 	
 	#dms #googleTranslateDiv {
@@ -594,6 +596,11 @@ func_eh_ex(() => {
 	
 	div#gdf a {
 		text-decoration: underline;
+	}
+
+	.glname table td.tc,
+	#taglist table td.tc {
+		min-width: 50px;
 	}
 	
 	#taglist::-webkit-scrollbar {
@@ -867,7 +874,7 @@ func_eh_ex(() => {
 	
 	#div_ee8413b2 #category_all_div .c_item,
 	#div_ee8413b2 #category_favorites_div #favorites_list .c_item {
-		margin: 3px 0 3px 10px;
+		margin: 3px 3px 3px 10px;
 		font-size: 15px;
 		cursor: pointer;
 		display: inline-block;
@@ -951,9 +958,9 @@ func_eh_ex(() => {
 	}
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items {
-		font-size: 10px;
+		font-size: 15px;
+    	padding: 5px;
 		cursor: pointer;
-		padding: 2px 5px;
 		color: #ffde74;
 		min-height: 20px;
     	line-height: 20px;
@@ -1081,7 +1088,8 @@ func_eh_ex(() => {
 	#div_ee8413b2 #favorites_edit_list .favorite_edit_clear:hover,
 	#div_ee8413b2 #category_list .c_item:hover,
 	#div_ee8413b2 #favorites_list .c_item:hover {
-		transform: scale(1.2);
+		transform: scale(2);
+		background-color: #40454b;
 	}
 	
 	#dms #googleTranslateDiv {
@@ -1204,6 +1212,11 @@ func_eh_ex(() => {
 		text-decoration: underline;
 	}
 	
+	.glname table td.tc,
+	#taglist table td.tc {
+		min-width: 50px;
+	}
+
 	#taglist::-webkit-scrollbar {
 		width: 10px;
 		height: 1px;
