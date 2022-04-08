@@ -3667,6 +3667,7 @@ function detailPageFavorite() {
 //#region main.js
 // 主方法
 
+//TODO 标记可用浏览器版本
 // 头部菜单汉化
 topMenuTranslateZh();
 
