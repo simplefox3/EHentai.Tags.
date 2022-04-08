@@ -444,8 +444,14 @@ function tagDataDispose(func_compelete) {
             var complete5 = false;
             var complete6 = false;
 
+            var isFetishUpdate = false;
+            var isEhTagUpdate = false;
+
             // 获取并更新恋物的父子项、父级信息，详情页父级信息
             fetishListDataInit(newData => {
+
+                // 存在更新
+                isFetishUpdate = true;
 
                 // 批量添加父子项
                 batchAdd(table_fetishListSubItems, table_fetishListSubItems_key, newData.data, newData.count, () => {
@@ -503,6 +509,9 @@ function tagDataDispose(func_compelete) {
             ehTagDataInit(newData => {
                 // 更新本地数据库 indexDB
                 // 存储完成之后，更新版本号
+
+                // 存在更新
+                isEhTagUpdate = true;
 
                 var psDict = {};
                 var psDictCount = 0;
@@ -609,11 +618,127 @@ function tagDataDispose(func_compelete) {
                 console.log('ehtag', "没有新数据");
             });
 
+            // 用户收藏更新
+            function updateFavoriteList(func_end) {
+                var favoriteUpdateDict = {};
+                var favoriteUpdateCount = 0;
+                var indexCount = 0;
+
+                var isNewUpdate = false; // 是否存在更新的收藏数据
+                readAll(table_favoriteSubItems, (k, v) => {
+                    if (v.sub_en == v.sub_zh) {
+                        favoriteUpdateDict[k] = v;
+                        favoriteUpdateCount++;
+                    }
+                }, () => {
+                    if (favoriteUpdateCount > 0) {
+                        for (const ps_en in favoriteUpdateDict) {
+                            if (Object.hasOwnProperty.call(favoriteUpdateDict, ps_en)) {
+                                const item = favoriteUpdateDict[ps_en];
+                                read(table_EhTagSubItems, ps_en, result => {
+                                    if (result) {
+                                        if (result.sub_zh != item.sub_zh) {
+                                            // 需要更新
+                                            isNewUpdate = true;
+                                            var updateFavorite = {
+                                                parent_en: result.parent_en,
+                                                parent_zh: result.parent_zh,
+                                                ps_en: result.ps_en,
+                                                sub_en: result.sub_en,
+                                                sub_zh: result.sub_zh,
+                                                sub_desc: result.sub_desc
+                                            };
+                                            update(table_favoriteSubItems, updateFavorite, () => { indexCount++; }, () => { indexCount++; });
+                                        } else {
+                                            indexCount++;
+                                        }
+                                    } else {
+                                        indexCount++;
+                                    }
+                                }, () => { indexCount++; });
+                            }
+                        }
+
+                        function getFavoriteListHtml(favoriteSubItems) {
+                            var favoritesListHtml = ``;
+                            var lastParentEn = ``;
+                            for (const ps_en in favoriteSubItems) {
+                                if (Object.hasOwnProperty.call(favoriteSubItems, ps_en)) {
+                                    var item = favoriteSubItems[ps_en];
+                                    if (item.parent_en != lastParentEn) {
+                                        if (lastParentEn != '') {
+                                            favoritesListHtml += `</div>`;
+                                        }
+                                        lastParentEn = item.parent_en;
+                                        // 新建父级
+                                        favoritesListHtml += `<h4 id="favorite_h4_${item.parent_en}">${item.parent_zh}<span data-category="${item.parent_en}"
+                                            class="favorite_extend">-</span></h4>`;
+                                        favoritesListHtml += `<div id="favorite_div_${item.parent_en}" class="favorite_items_div">`;
+                                    }
+
+                                    // 添加子级
+                                    favoritesListHtml += `<span class="c_item c_item_favorite" title="[${item.sub_en}] ${item.sub_desc}" data-item="${item.sub_en}" 
+                                                data-parent_en="${item.parent_en}" data-parent_zh="${item.parent_zh}" data-sub_desc="${item.sub_desc}">${item.sub_zh}</span>`;
+                                }
+                            }
+
+                            if (favoritesListHtml != ``) {
+                                favoritesListHtml += `</div>`;
+                            }
+
+                            return favoritesListHtml;
+                        }
+
+                        function saveFavoriteListHtml(favoritesListHtml, func_compelete) {
+                            var settings_favoriteList_html = {
+                                item: table_Settings_key_FavoriteList_Html,
+                                value: favoritesListHtml
+                            };
+
+                            update(table_Settings, settings_favoriteList_html, () => { func_compelete(); }, () => { });
+                        }
+
+                        var t1 = setInterval(() => {
+                            if (favoriteUpdateCount == indexCount) {
+                                t1 && clearInterval(t1);
+                                if (isNewUpdate) {
+                                    // 收藏存在更新，需要更新收藏html，并通知其他页面更新
+                                    var favoriteDict = {};
+                                    readAll(table_favoriteSubItems, (k, v) => {
+                                        favoriteDict[k] = v;
+                                    }, () => {
+                                        var favoritesListHtml = getFavoriteListHtml(favoriteDict);
+                                        saveFavoriteListHtml(favoritesListHtml, () => {
+                                            // 通知页面更新
+                                            setDbSyncMessage(sync_favoriteList);
+                                            func_end();
+                                        });
+                                    });
+                                } else {
+                                    func_end();
+                                }
+                            }
+                        }, 50);
+                    } else {
+                        func_end();
+                    }
+                });
+            }
 
             var t = setInterval(() => {
                 if (complete1 && complete2 && complete3 && complete4 && complete5 && complete6) {
                     t && clearInterval(t);
-                    func_compelete();
+                    if (isFetishUpdate || isEhTagUpdate) {
+                        // 通知本地列表更新
+                        setDbSyncMessage(sync_categoryList);
+                    }
+
+                    // 看看是否需要更新用户收藏表数据
+                    if (isEhTagUpdate) {
+                        updateFavoriteList(() => { func_compelete(); });
+                    } else {
+                        func_compelete();
+                    }
                 }
             }, 50);
 

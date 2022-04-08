@@ -117,6 +117,36 @@ function reBuildFavoriteByOldData(favoriteDict) {
     }, 50);
 }
 
+function getFavoriteListHtml(favoriteSubItems) {
+    var favoritesListHtml = ``;
+    var lastParentEn = ``;
+    for (const ps_en in favoriteSubItems) {
+        if (Object.hasOwnProperty.call(favoriteSubItems, ps_en)) {
+            var item = favoriteSubItems[ps_en];
+            if (item.parent_en != lastParentEn) {
+                if (lastParentEn != '') {
+                    favoritesListHtml += `</div>`;
+                }
+                lastParentEn = item.parent_en;
+                // 新建父级
+                favoritesListHtml += `<h4 id="favorite_h4_${item.parent_en}">${item.parent_zh}<span data-category="${item.parent_en}"
+                    class="favorite_extend">-</span></h4>`;
+                favoritesListHtml += `<div id="favorite_div_${item.parent_en}" class="favorite_items_div">`;
+            }
+
+            // 添加子级
+            favoritesListHtml += `<span class="c_item c_item_favorite" title="[${item.sub_en}] ${item.sub_desc}" data-item="${item.sub_en}" 
+                        data-parent_en="${item.parent_en}" data-parent_zh="${item.parent_zh}" data-sub_desc="${item.sub_desc}">${item.sub_zh}</span>`;
+        }
+    }
+
+    if (favoritesListHtml != ``) {
+        favoritesListHtml += `</div>`;
+    }
+
+    return favoritesListHtml;
+}
+
 // 首次更新本地收藏列表
 function firstUpdateFavoriteSubItems(favoriteSubItems, foundTotalCount) {
     // 更新本地收藏表
@@ -127,33 +157,9 @@ function firstUpdateFavoriteSubItems(favoriteSubItems, foundTotalCount) {
     });
 
     // 生成 html 和 同步
-    var favoritesListHtml = ``;
-    var lastParentEn = ``;
     if (!checkDictNull(favoriteSubItems)) {
         // 新版收藏，只可能增加，原有的不变
-        for (const ps_en in favoriteSubItems) {
-            if (Object.hasOwnProperty.call(favoriteSubItems, ps_en)) {
-                var item = favoriteSubItems[ps_en];
-                if (item.parent_en != lastParentEn) {
-                    if (lastParentEn != '') {
-                        favoritesListHtml += `</div>`;
-                    }
-                    lastParentEn = item.parent_en;
-                    // 新建父级
-                    favoritesListHtml += `<h4 id="favorite_h4_${item.parent_en}">${item.parent_zh}<span data-category="${item.parent_en}"
-                        class="favorite_extend">-</span></h4>`;
-                    favoritesListHtml += `<div id="favorite_div_${item.parent_en}" class="favorite_items_div">`;
-                }
-
-                // 添加子级
-                favoritesListHtml += `<span class="c_item c_item_favorite" title="[${item.sub_en}] ${item.sub_desc}" data-item="${item.sub_en}" 
-                            data-parent_en="${item.parent_en}" data-parent_zh="${item.parent_zh}" data-sub_desc="${item.sub_desc}">${item.sub_zh}</span>`;
-            }
-        }
-
-        if (favoritesListHtml != ``) {
-            favoritesListHtml += `</div>`;
-        }
+        var favoritesListHtml = getFavoriteListHtml(favoriteSubItems);
 
         // 页面附加Html
         favoriteListDiv.innerHTML = favoritesListHtml;
@@ -404,16 +410,16 @@ addFavoritesBtn.onclick = function () {
             if (span.innerHTML == "+") {
                 // 需要展开
                 span.innerHTML = "-";
-                document.getElementById("favorite_div_" + favoriteName).style.display = "block";
-                if (expendData.indexOf(favoriteName) != -1) {
-                    expendData.remove(favoriteName);
+                document.getElementById("favorite_div_" + parentEn).style.display = "block";
+                if (expendData.indexOf(parentEn) != -1) {
+                    expendData.remove(parentEn);
                 }
             } else {
                 // 需要折叠
                 span.innerHTML = "+";
-                document.getElementById("favorite_div_" + favoriteName).style.display = "none";
-                if (expendData.indexOf(favoriteName) == -1) {
-                    expendData.push(favoriteName);
+                document.getElementById("favorite_div_" + parentEn).style.display = "none";
+                if (expendData.indexOf(parentEn) == -1) {
+                    expendData.push(parentEn);
                 }
             }
 
