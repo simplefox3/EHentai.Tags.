@@ -720,6 +720,4 @@ function initUserSettings(func_compelete) {
     })
 }
 
-// TODO 用户收藏列表 等待转换 (本地从本地读取，网络从EhTag读取)
-
 //#endregion

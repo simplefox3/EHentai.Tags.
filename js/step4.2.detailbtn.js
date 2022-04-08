@@ -125,9 +125,10 @@ function translateDetailPageTitle() {
                     var str = '';
                     var lastSignIndex = -2;
                     if (signDictArray[0].i == 0) {
-                        // 符号在前 TODO 符号索引间隔是否为1
+                        // 符号在前
                         while (signIndex < signDictArray.length ||
                             translateIndex < txtArray.length) {
+                            // 符号索引间隔是否为1
                             if (signIndex < signDictArray.length) {
                                 str += signDictArray[signIndex].c;
                                 lastSignIndex = signDictArray[signIndex].i;
@@ -145,10 +146,10 @@ function translateDetailPageTitle() {
                             }
                         }
                     } else {
-                        // 文字在前 TODO 符号索引间隔是否为1
+                        // 文字在前 
                         while (signIndex < signDictArray.length ||
                             translateIndex < txtArray.length) {
-
+                            // 符号索引间隔是否为1
                             if (signDictArray[signIndex] && signDictArray[signIndex].i == lastSignIndex + 1) {
                                 // 符号连续
                                 if (signIndex < signDictArray.length) {
@@ -448,17 +449,58 @@ function detailPageFavorite() {
 
         function batchAddFavoriteAndMessage() {
             batchAdd(table_favoriteSubItems, table_favoriteSubItems_key, favoriteDict, favoriteCount, () => {
-                // localstroage 消息通知
-                setDbSyncMessage(sync_favoriteList);
-                // 显示完成
-                setTimeout(function () {
-                    addFavoriteBtn.innerText = "完成 √";
-                }, 250);
-                setTimeout(function () {
-                    addFavoriteBtn.innerText = "加入收藏";
-                }, 500);
-            })
+                // 读取收藏表，更新收藏列表html
+                var favoritesListHtml = ``;
+                var lastParentEn = ``;
+                readAll(table_favoriteSubItems, (k, v) => {
+                    if (v.parent_en != lastParentEn) {
+                        if (lastParentEn != '') {
+                            favoritesListHtml += `</div>`;
+                        }
+                        lastParentEn = v.parent_en;
+                        // 新建父级
+                        favoritesListHtml += `<h4 id="favorite_h4_${v.parent_en}">${v.parent_zh}<span data-category="${v.parent_en}"
+                class="favorite_extend">-</span></h4>`;
+                        favoritesListHtml += `<div id="favorite_div_${v.parent_en}" class="favorite_items_div">`;
+                    }
+
+                    // 添加子级
+                    favoritesListHtml += `<span class="c_item c_item_favorite" title="[${v.sub_en}] ${v.sub_desc}" data-item="${v.sub_en}" 
+                    data-parent_en="${v.parent_en}" data-parent_zh="${v.parent_zh}">${v.sub_zh}</span>`;
+                }, () => {
+                    // 读完后操作
+                    if (favoritesListHtml != ``) {
+                        favoritesListHtml += `</div>`;
+                    }
+
+                    // 存储收藏 Html
+                    var settings_favoriteList_html = {
+                        item: table_Settings_key_FavoriteList_Html,
+                        value: favoritesListHtml
+                    };
+                    update(table_Settings, settings_favoriteList_html, () => {
+                        // localstroage 消息通知
+                        setDbSyncMessage(sync_favoriteList);
+                        // 显示完成
+                        setTimeout(function () {
+                            addFavoriteBtn.innerText = "完成 √";
+                        }, 250);
+                        setTimeout(function () {
+                            addFavoriteBtn.innerText = "加入收藏";
+                        }, 500);
+                    }, () => { 
+                        setTimeout(function () {
+                            addFavoriteBtn.innerText = "完成 ×";
+                        }, 250);
+                        setTimeout(function () {
+                            addFavoriteBtn.innerText = "加入收藏";
+                        }, 500);
+                    });
+                });
+            });
         }
+
+        
     }
 
     // 搜索
