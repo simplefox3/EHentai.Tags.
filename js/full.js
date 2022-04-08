@@ -2484,13 +2484,21 @@ function initUserSettings(func_compelete) {
         // 头部搜索菜单显示隐藏开关，这个不需要删除
         var oldSearchDivVisible = getOldSearchDivVisible();
         if (oldSearchDivVisible != null) {
-            var settings_oldSearchDivVisible = {
-                item: table_Settings_key_OldSearchDiv_Visible,
-                value: oldSearchDivVisible == 1
-            };
-            update(table_Settings, settings_oldSearchDivVisible, () => {
-                complete2 = true;
-            }, error => { complete2 = true; });
+            read(table_Settings, table_Settings_key_OldSearchDiv_Visible, result => {
+                var visibleBoolean = oldSearchDivVisible == 1;
+                if (result && result.value == visibleBoolean) {
+                    complete2 = true;
+                } else {
+                    // 更新
+                    var settings_oldSearchDivVisible = {
+                        item: table_Settings_key_OldSearchDiv_Visible,
+                        value: visibleBoolean
+                    };
+                    update(table_Settings, settings_oldSearchDivVisible, () => {
+                        complete2 = true;
+                    }, () => { complete2 = true; });
+                }
+            }, () => { complete2 = true; });
         } else {
             complete2 = true;
         }
@@ -3664,7 +3672,6 @@ function mainPageCategory() {
 	// 首页框架搭建
 	frontPageHtml();
 
-	// TODO 检查莫名的更新数据库情况
 	// TODO 消息通知提前，只要数据改变就应该马上通知，方便快速其他页面快速反应	
 	// 初始化用户配置信息
 	initUserSettings(() => {
