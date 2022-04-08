@@ -6,13 +6,31 @@ read(table_Settings, table_Settings_key_FavoriteList, result => {
         // 首次使用，需要转换收藏数据，更新本地收藏表，更新收藏Html
         reBuildFavoriteByOldData(result.value);
     } else {
-        // 读取收藏 Html 数据，存在则更新页面
-        generalFavoriteListDiv(false, () => {
-            // 设置收藏折叠
-            setFavoriteExpend();
-            // 更新按钮状态
-            updateFavoriteListBtnStatus();
-        });
+        // 读取收藏HTML，如果存在，则直接生成页面，否则从收藏表读取数据手动生成
+        read(table_Settings, table_Settings_key_FavoriteList_Html, result => {
+            if (result && result.value) {
+                // 存在收藏 html
+                // 页面附加Html
+                favoriteListDiv.innerHTML = result.value;
+                // 小项添加点击事件
+                favoriteItemsClick();
+                // 折叠菜单添加点击事件
+                favoriteExtendClick();
+                // 设置收藏折叠
+                setFavoriteExpend();
+                // 更新按钮状态
+                updateFavoriteListBtnStatus();
+            } else {
+                // 不存在收藏 html
+                // 根据收藏表生成html
+                generalFavoriteListDiv(() => {
+                    // 设置收藏折叠
+                    setFavoriteExpend();
+                    // 更新按钮状态
+                    updateFavoriteListBtnStatus();
+                });
+            }
+        }, () => { });
     }
 }, () => { });
 
@@ -719,7 +737,7 @@ favoriteSave.onclick = function () {
         favoriteListDiv.innerHTML = "";
 
         // 生成收藏列表
-        generalFavoriteListDiv(true, () => {
+        generalFavoriteListDiv(() => {
             // 编辑列表清空
             favoriteRemoveKeys = [];
             favoriteDict = {};
@@ -735,7 +753,7 @@ favoriteSave.onclick = function () {
 }
 
 // 生成收藏列表、包含各种子项点击事件
-function generalFavoriteListDiv(isUpdateFavoriteHtml, func_compelete) {
+function generalFavoriteListDiv(func_compelete) {
     // 读取收藏表，生成 页面html
     var favoritesListHtml = ``;
     var lastParentEn = ``;
@@ -770,9 +788,7 @@ function generalFavoriteListDiv(isUpdateFavoriteHtml, func_compelete) {
         favoriteExtendClick();
 
         // 存储收藏Html
-        if (isUpdateFavoriteHtml) {
-            saveFavoriteListHtml(favoritesListHtml);
-        }
+        saveFavoriteListHtml(favoritesListHtml);
 
         func_compelete();
     })
@@ -788,6 +804,9 @@ favoriteClear.onclick = function () {
         favoriteListDiv.innerHTML = "";
         // 清空收藏数据
         clearTable(table_favoriteSubItems, () => { });
+
+        // 清空收藏Html
+        remove(table_Settings, table_Settings_key_FavoriteList_Html, () => { }, () => { });
 
         // 清空收藏折叠
         remove(table_Settings, table_Settings_Key_FavoriteList_Extend, () => { }, () => { });
