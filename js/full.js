@@ -2438,8 +2438,15 @@ function translateMainPageTitle() {
 		item: table_Settings_key_TranslateFrontPageTitles,
 		value: isChecked
 	};
-	update(table_Settings, settings_translateFrontPageTitles, () => { }, () => { });
+	update(table_Settings, settings_translateFrontPageTitles, () => {
+		// 通知通知，翻译标题
+		setDbSyncMessage(sync_googleTranslate_frontPage_title);
+		translateMainPageTitleDisplay();
+	}, () => { });
+}
 
+function translateMainPageTitleDisplay() {
+	var isChecked = document.getElementById("googleTranslateCheckbox").checked;
 	var titleDivs = document.getElementsByClassName("glink");
 	if (isChecked) {
 		// 翻译标题
@@ -2576,7 +2583,7 @@ function mainPageTranslate() {
 	read(table_Settings, table_Settings_key_TranslateFrontPageTitles, result => {
 		if (result && result.value) {
 			translateCheckbox.setAttribute("checked", true);
-			translateMainPageTitle();
+			translateMainPageTitleDisplay();
 		}
 	}, () => { });
 
@@ -2780,7 +2787,9 @@ function frontPageTopStyleStep02() {
 			item: table_Settings_key_OldSearchDiv_Visible,
 			value: false
 		};
-		update(table_Settings, settings_oldSearchDivVisible, () => { }, error => { });
+		update(table_Settings, settings_oldSearchDivVisible, () => {
+			setDbSyncMessage(sync_oldSearchTopVisible);
+		}, error => { });
 	}
 
 	function showTopIndexedDb() {
@@ -2788,7 +2797,9 @@ function frontPageTopStyleStep02() {
 			item: table_Settings_key_OldSearchDiv_Visible,
 			value: true
 		};
-		update(table_Settings, settings_oldSearchDivVisible, () => { }, error => { });
+		update(table_Settings, settings_oldSearchDivVisible, () => {
+			setDbSyncMessage(sync_oldSearchTopVisible);
+		}, error => { });
 	}
 }
 
@@ -2988,8 +2999,14 @@ function translateDetailPageTitle() {
 		item: table_Settings_key_TranslateDetailPageTitles,
 		value: isChecked
 	};
-	update(table_Settings, settings_translateDetailPageTitles, () => { }, () => { });
+	update(table_Settings, settings_translateDetailPageTitles, () => {
+		setDbSyncMessage(sync_googleTranslate_detailPage_title);
+		translateDetailPageTitleDisplay();
+	}, () => { });
+}
 
+function translateDetailPageTitleDisplay() {
+	var isChecked = document.getElementById("googleTranslateCheckbox").checked;
 	var h1 = document.getElementById("gj");
 	if (!h1.innerText) {
 		h1 = document.getElementById("gn");
@@ -3187,7 +3204,7 @@ function detailPageFavorite() {
 	read(table_Settings, table_Settings_key_TranslateDetailPageTitles, result => {
 		if (result && result.value) {
 			translateCheckbox.setAttribute("checked", true);
-			translateDetailPageTitle();
+			translateDetailPageTitleDisplay();
 		}
 	}, () => { });
 
@@ -3497,7 +3514,6 @@ function detailPageFavorite() {
 //#endregion
 
 
-
 //#region main.js
 // 主方法
 
@@ -3522,7 +3538,8 @@ function mainPageCategory() {
 	// 首页框架搭建
 	frontPageHtml();
 
-	// TODO 如果 EhTag 版本更新，这尝试更新用户收藏（可能没有翻译过的标签进行翻译）
+	// TODO 检查莫名的更新数据库情况
+	// TODO 消息通知提前，只要数据改变就应该马上通知，方便快速其他页面快速反应	
 	// 初始化用户配置信息
 	initUserSettings(() => {
 		console.log('初始化用户配置信息完毕');
@@ -4337,7 +4354,10 @@ function mainPageCategory() {
 					favoriteListDiv.innerHTML = favoritesListHtml;
 
 					// 存储收藏Html
-					saveFavoriteListHtml(favoritesListHtml);
+					saveFavoriteListHtml(favoritesListHtml, () => {
+						// 通知页面更新
+						setDbSyncMessage(sync_favoriteList);
+					});
 
 					// 小项添加点击事件
 					favoriteItemsClick();
@@ -4347,7 +4367,6 @@ function mainPageCategory() {
 
 					// 折叠的菜单显示隐藏
 					setFavoriteExpend();
-
 				}
 
 				// 更新按钮状态
@@ -4376,13 +4395,13 @@ function mainPageCategory() {
 			}
 
 			// 更新收藏列表Html存储
-			function saveFavoriteListHtml(favoritesListHtml) {
+			function saveFavoriteListHtml(favoritesListHtml, func_compelete) {
 				var settings_favoriteList_html = {
 					item: table_Settings_key_FavoriteList_Html,
 					value: favoritesListHtml
 				};
 
-				update(table_Settings, settings_favoriteList_html, () => { }, () => { });
+				update(table_Settings, settings_favoriteList_html, () => { func_compelete(); }, () => { });
 			}
 
 			// 为每个收藏子项添加点击事件
@@ -4550,13 +4569,16 @@ function mainPageCategory() {
 							}
 
 							// 获取html并更新收藏html
-							saveFavoriteListHtml(favoriteListDiv.innerHTML);
+							saveFavoriteListHtml(favoriteListDiv.innerHTML, () => {
+								// 通知更新收藏列表
+								setDbSyncMessage(sync_favoriteList);
 
-							// 设置折叠
-							setFavoriteExpend();
+								// 设置折叠
+								setFavoriteExpend();
 
-							// 完成
-							finishFavorite();
+								// 完成
+								finishFavorite();
+							});
 						})
 					} else {
 						// 无更新
@@ -4916,6 +4938,9 @@ function mainPageCategory() {
 
 					// 生成收藏列表
 					generalFavoriteListDiv(() => {
+						// 通知页面刷新
+						setDbSyncMessage(sync_favoriteList);
+
 						// 编辑列表清空
 						favoriteRemoveKeys = [];
 						favoriteDict = {};
@@ -4966,9 +4991,9 @@ function mainPageCategory() {
 					favoriteExtendClick();
 
 					// 存储收藏Html
-					saveFavoriteListHtml(favoritesListHtml);
-
-					func_compelete();
+					saveFavoriteListHtml(favoritesListHtml, () => {
+						func_compelete();
+					});
 				})
 			}
 
@@ -4980,17 +5005,20 @@ function mainPageCategory() {
 				var confirmResult = confirm("是否清空本地收藏?");
 				if (confirmResult) {
 					favoriteListDiv.innerHTML = "";
+
+					// 清空收藏Html
+					remove(table_Settings, table_Settings_key_FavoriteList_Html, () => {
+						// 通知收藏页面更新
+						setDbSyncMessage(sync_favoriteList);
+						// 更新收藏按钮
+						updateFavoriteListBtnStatus();
+					}, () => { });
+
 					// 清空收藏数据
 					clearTable(table_favoriteSubItems, () => { });
 
-					// 清空收藏Html
-					remove(table_Settings, table_Settings_key_FavoriteList_Html, () => { }, () => { });
-
 					// 清空收藏折叠
 					remove(table_Settings, table_Settings_Key_FavoriteList_Extend, () => { }, () => { });
-
-					// 更新收藏按钮
-					updateFavoriteListBtnStatus();
 				}
 			}
 
@@ -5077,10 +5105,138 @@ function mainPageCategory() {
 			//#endregion
 
 
+			//#region step5.1.dataSync.frontPage.js 首页数据同步
+
+			window.onstorage = function (e) {
+				// try {
+				console.log(e);
+				switch (e.newValue) {
+					case sync_oldSearchTopVisible:
+						updatePageTopVisible();
+						break;
+					case sync_categoryList:
+						updatePageCategoryList();
+						break;
+					case sync_favoriteList:
+						updatePageFavoriteList();
+						break;
+					case sync_categoryList_Extend:
+						updatePageCategoryListExtend();
+						break;
+					case sync_favoriteList_Extend:
+						updatePageFavoriteListExtend();
+						break;
+					case sync_googleTranslate_frontPage_title:
+						updateGoogleTranslateFrontPageTitle();
+						break;
+				}
+				// } catch (error) {
+				//     removeDbSyncMessage();
+				// }
+			}
+
+			// 头部搜索折叠隐藏
+			function updatePageTopVisible() {
+				indexDbInit(() => {
+					read(table_Settings, table_Settings_key_OldSearchDiv_Visible, result => {
+						var searchBoxDiv = document.getElementById("searchbox");
+						var hiddenOldDiv = document.getElementById("div_old_hidden_btn");
+						var showOldDiv = document.getElementById("div_old_show_btn");
+						if (result && result.value) {
+							// 显示
+							searchBoxDiv.children[0].style.display = "block";
+							hiddenOldDiv.style.display = "block";
+							showOldDiv.style.display = "none";
+						} else {
+							// 隐藏
+							searchBoxDiv.children[0].style.display = "none";
+							hiddenOldDiv.style.display = "none";
+							showOldDiv.style.display = "block";
+						}
+						removeDbSyncMessage();
+					}, () => {
+						removeDbSyncMessage();
+					});
+				});
+			}
+
+			// 本地列表更新
+			function updatePageCategoryList() {
+
+				removeDbSyncMessage();
+			}
+
+			// 本地收藏更新
+			function updatePageFavoriteList() {
+				// 读取收藏 html 应用到页面，如果为空，直接清空收藏页面即可
+				// 读取收藏折叠并应用，每个收藏项的点击事件
+				indexDbInit(() => {
+					var favoriteListDiv = document.getElementById("favorites_list");
+					// 退出编辑模式
+					editToFavorite();
+
+					read(table_Settings, table_Settings_key_FavoriteList_Html, result => {
+						if (result && result.value) {
+							// 存在收藏 html
+							// 页面附加Html
+							favoriteListDiv.innerHTML = result.value;
+							// 小项添加点击事件
+							favoriteItemsClick();
+							// 折叠菜单添加点击事件
+							favoriteExtendClick();
+							// 设置收藏折叠
+							setFavoriteExpend();
+							// 更新按钮状态
+							updateFavoriteListBtnStatus();
+						} else {
+							// 不存在收藏 html
+							// 清理收藏页面
+							favoriteListDiv.innerHTML = '';
+							// 更新按钮状态
+							updateFavoriteListBtnStatus();
+						}
+						// 清理通知
+						removeDbSyncMessage();
+					}, () => {
+						// 清理通知
+						removeDbSyncMessage();
+					});
+				});
+
+			}
+
+			// 本地列表折叠更新
+			function updatePageCategoryListExtend() {
+
+				removeDbSyncMessage();
+			}
+
+			// 本地收藏折叠更新
+			function updatePageFavoriteListExtend() {
+
+				removeDbSyncMessage();
+			}
+
+			// 首页谷歌翻译标题
+			function updateGoogleTranslateFrontPageTitle() {
+				indexDbInit(() => {
+					read(table_Settings, table_Settings_key_TranslateFrontPageTitles, result => {
+						var translateCheckbox = document.getElementById("googleTranslateCheckbox");
+						translateCheckbox.checked = result && result.value;
+						translateMainPageTitleDisplay();
+						removeDbSyncMessage();
+					}, () => { removeDbSyncMessage(); });
+				})
+			}
+
+			//#endregion
 
 
 		});
-	})
+	});
+
+
+
 }
 
 function detailPage() {
@@ -5091,81 +5247,36 @@ function detailPage() {
 			detailPageTranslate();
 			detailPageFavorite();
 		});
+
+		//#region step5.2.dataSync.detailPage.js 详情页数据同步
+
+		window.onstorage = function (e) {
+			// try {
+			console.log(e);
+			switch (e.newValue) {
+				case sync_googleTranslate_detailPage_title:
+					updateGoogleTranslateDetailPageTitle();
+					break;
+			}
+			// } catch (error) {
+			//     removeDbSyncMessage();
+			// }
+		}
+
+		// 详情页谷歌翻译标题
+		function updateGoogleTranslateDetailPageTitle() {
+			indexDbInit(() => {
+				read(table_Settings, table_Settings_key_TranslateDetailPageTitles, result => {
+					var translateCheckbox = document.getElementById("googleTranslateCheckbox");
+					translateCheckbox.checked = result && result.value;
+					translateDetailPageTitleDisplay();
+					removeDbSyncMessage();
+				}, () => { removeDbSyncMessage(); });
+			})
+		}
+
+		//#endregion
 	});
 }
-
-//#region step3.9.dataSync.js 数据同步
-
-window.onstorage = function (e) {
-	console.log(e);
-	switch (e.newValue) {
-		case sync_oldSearchTopVisible:
-			updatePageTopVisible();
-			break;
-		case sync_categoryList:
-			updatePageCategoryList();
-			break;
-		case sync_favoriteList:
-			updatePageFavoriteList();
-			break;
-		case sync_categoryList_Extend:
-			updatePageCategoryListExtend();
-			break;
-		case sync_favoriteList_Extend:
-			updatePageFavoriteListExtend();
-			break;
-		case sync_googleTranslate_frontPage_title:
-			updateGoogleTranslateFrontPageTitle();
-			break;
-		case sync_googleTranslate_detailPage_title:
-			updateGoogleTranslateDetailPageTitle();
-			break;
-	}
-}
-
-// 头部搜索折叠隐藏
-function updatePageTopVisible() {
-
-	removeDbSyncMessage();
-}
-
-// 本地列表更新
-function updatePageCategoryList() {
-
-	removeDbSyncMessage();
-}
-
-// 本地收藏更新
-function updatePageFavoriteList() {
-
-	removeDbSyncMessage();
-}
-
-// 本地列表折叠更新
-function updatePageCategoryListExtend() {
-
-	removeDbSyncMessage();
-}
-
-// 本地收藏折叠更新
-function updatePageFavoriteListExtend() {
-
-	removeDbSyncMessage();
-}
-
-// 首页谷歌翻译标题
-function updateGoogleTranslateFrontPageTitle() {
-
-	removeDbSyncMessage();
-}
-
-// 详情页谷歌翻译标题
-function updateGoogleTranslateDetailPageTitle() {
-
-	removeDbSyncMessage();
-}
-
-//#endregion
-
 
 //#endregion

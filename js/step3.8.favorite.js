@@ -159,7 +159,10 @@ function firstUpdateFavoriteSubItems(favoriteSubItems, foundTotalCount) {
         favoriteListDiv.innerHTML = favoritesListHtml;
 
         // 存储收藏Html
-        saveFavoriteListHtml(favoritesListHtml);
+        saveFavoriteListHtml(favoritesListHtml, () => {
+            // 通知页面更新
+            setDbSyncMessage(sync_favoriteList);
+        });
 
         // 小项添加点击事件
         favoriteItemsClick();
@@ -169,7 +172,6 @@ function firstUpdateFavoriteSubItems(favoriteSubItems, foundTotalCount) {
 
         // 折叠的菜单显示隐藏
         setFavoriteExpend();
-
     }
 
     // 更新按钮状态
@@ -198,13 +200,13 @@ function setFavoriteExpend() {
 }
 
 // 更新收藏列表Html存储
-function saveFavoriteListHtml(favoritesListHtml) {
+function saveFavoriteListHtml(favoritesListHtml, func_compelete) {
     var settings_favoriteList_html = {
         item: table_Settings_key_FavoriteList_Html,
         value: favoritesListHtml
     };
 
-    update(table_Settings, settings_favoriteList_html, () => { }, () => { });
+    update(table_Settings, settings_favoriteList_html, () => { func_compelete(); }, () => { });
 }
 
 // 为每个收藏子项添加点击事件
@@ -372,13 +374,16 @@ addFavoritesBtn.onclick = function () {
                 }
 
                 // 获取html并更新收藏html
-                saveFavoriteListHtml(favoriteListDiv.innerHTML);
+                saveFavoriteListHtml(favoriteListDiv.innerHTML, () => {
+                    // 通知更新收藏列表
+                    setDbSyncMessage(sync_favoriteList);
 
-                // 设置折叠
-                setFavoriteExpend();
+                    // 设置折叠
+                    setFavoriteExpend();
 
-                // 完成
-                finishFavorite();
+                    // 完成
+                    finishFavorite();
+                });
             })
         } else {
             // 无更新
@@ -738,6 +743,9 @@ favoriteSave.onclick = function () {
 
         // 生成收藏列表
         generalFavoriteListDiv(() => {
+            // 通知页面刷新
+            setDbSyncMessage(sync_favoriteList);
+
             // 编辑列表清空
             favoriteRemoveKeys = [];
             favoriteDict = {};
@@ -788,9 +796,9 @@ function generalFavoriteListDiv(func_compelete) {
         favoriteExtendClick();
 
         // 存储收藏Html
-        saveFavoriteListHtml(favoritesListHtml);
-
-        func_compelete();
+        saveFavoriteListHtml(favoritesListHtml, () => {
+            func_compelete();
+        });
     })
 }
 
@@ -802,17 +810,20 @@ favoriteClear.onclick = function () {
     var confirmResult = confirm("是否清空本地收藏?");
     if (confirmResult) {
         favoriteListDiv.innerHTML = "";
+
+        // 清空收藏Html
+        remove(table_Settings, table_Settings_key_FavoriteList_Html, () => {
+            // 通知收藏页面更新
+            setDbSyncMessage(sync_favoriteList);
+            // 更新收藏按钮
+            updateFavoriteListBtnStatus();
+        }, () => { });
+
         // 清空收藏数据
         clearTable(table_favoriteSubItems, () => { });
 
-        // 清空收藏Html
-        remove(table_Settings, table_Settings_key_FavoriteList_Html, () => { }, () => { });
-
         // 清空收藏折叠
         remove(table_Settings, table_Settings_Key_FavoriteList_Extend, () => { }, () => { });
-
-        // 更新收藏按钮
-        updateFavoriteListBtnStatus();
     }
 }
 

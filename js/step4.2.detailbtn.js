@@ -12,8 +12,14 @@ function translateDetailPageTitle() {
         item: table_Settings_key_TranslateDetailPageTitles,
         value: isChecked
     };
-    update(table_Settings, settings_translateDetailPageTitles, () => { }, () => { });
+    update(table_Settings, settings_translateDetailPageTitles, () => {
+        setDbSyncMessage(sync_googleTranslate_detailPage_title);
+        translateDetailPageTitleDisplay();
+     }, () => { });
+}
 
+function translateDetailPageTitleDisplay() {
+    var isChecked = document.getElementById("googleTranslateCheckbox").checked;
     var h1 = document.getElementById("gj");
     if (!h1.innerText) {
         h1 = document.getElementById("gn");
@@ -211,7 +217,7 @@ function detailPageFavorite() {
     read(table_Settings, table_Settings_key_TranslateDetailPageTitles, result => {
         if (result && result.value) {
             translateCheckbox.setAttribute("checked", true);
-            translateDetailPageTitle();
+            translateDetailPageTitleDisplay();
         }
     }, () => { });
 
@@ -488,7 +494,7 @@ function detailPageFavorite() {
                         setTimeout(function () {
                             addFavoriteBtn.innerText = "加入收藏";
                         }, 500);
-                    }, () => { 
+                    }, () => {
                         setTimeout(function () {
                             addFavoriteBtn.innerText = "完成 ×";
                         }, 250);
@@ -500,7 +506,7 @@ function detailPageFavorite() {
             });
         }
 
-        
+
     }
 
     // 搜索

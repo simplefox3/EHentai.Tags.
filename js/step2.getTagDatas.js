@@ -498,6 +498,7 @@ function tagDataDispose(func_compelete) {
                 console.log('fet', "没有新数据");
             });
 
+            // TODO 如果 EhTag 版本更新，这尝试更新用户收藏（可能没有翻译过的标签进行翻译）
             // 获取并更新EhTag的父子项、父级信息
             ehTagDataInit(newData => {
                 // 更新本地数据库 indexDB

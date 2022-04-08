@@ -9,8 +9,15 @@ function translateMainPageTitle() {
 		item: table_Settings_key_TranslateFrontPageTitles,
 		value: isChecked
 	};
-	update(table_Settings, settings_translateFrontPageTitles, () => { }, () => { });
+	update(table_Settings, settings_translateFrontPageTitles, () => {
+		// 通知通知，翻译标题
+		setDbSyncMessage(sync_googleTranslate_frontPage_title);
+		translateMainPageTitleDisplay();
+	}, () => { });
+}
 
+function translateMainPageTitleDisplay() {
+	var isChecked = document.getElementById("googleTranslateCheckbox").checked;
 	var titleDivs = document.getElementsByClassName("glink");
 	if (isChecked) {
 		// 翻译标题
@@ -147,7 +154,7 @@ function mainPageTranslate() {
 	read(table_Settings, table_Settings_key_TranslateFrontPageTitles, result => {
 		if (result && result.value) {
 			translateCheckbox.setAttribute("checked", true);
-			translateMainPageTitle();
+			translateMainPageTitleDisplay();
 		}
 	}, () => { });
 

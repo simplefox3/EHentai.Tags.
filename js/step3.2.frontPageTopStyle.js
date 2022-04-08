@@ -73,7 +73,9 @@ function frontPageTopStyleStep02() {
             item: table_Settings_key_OldSearchDiv_Visible,
             value: false
         };
-        update(table_Settings, settings_oldSearchDivVisible, () => { }, error => { });
+        update(table_Settings, settings_oldSearchDivVisible, () => {
+            setDbSyncMessage(sync_oldSearchTopVisible);
+         }, error => { });
     }
 
     function showTopIndexedDb() {
@@ -81,7 +83,9 @@ function frontPageTopStyleStep02() {
             item: table_Settings_key_OldSearchDiv_Visible,
             value: true
         };
-        update(table_Settings, settings_oldSearchDivVisible, () => { }, error => { });
+        update(table_Settings, settings_oldSearchDivVisible, () => {
+            setDbSyncMessage(sync_oldSearchTopVisible);
+         }, error => { });
     }
 }
 
