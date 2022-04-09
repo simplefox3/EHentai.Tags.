@@ -508,27 +508,25 @@ func_eh_ex(() => {
 		width: 70px;
 		height: 20px;
 		line-height: 20px;
-		background-color: #e3e0d1;
+		background-color: #34353b;
 		text-align: center;
 		vertical-align: middle;
 		cursor: pointer;
 		font-size: 10px;
-		border: 1px solid #5c0d12;
-		margin-top: -1px;
-		margin-right: -1px;
 	}
 	
-	#searchbox #div_background_btn {    
+	#searchbox #div_background_btn {
 		right: 0;
 	}
 	
 	#searchbox #div_top_visible_btn {
 		right: 70px;
+		border-right: 1px solid black;
 	}
 	
 	#searchbox #div_background_btn:hover,
 	#searchbox #div_top_visible_btn:hover {
-		background-color: #e0ded3;
+		background-color: #43464e;
 	}
 	
 	#div_ee8413b2 {
@@ -539,17 +537,104 @@ func_eh_ex(() => {
 		z-index: 3;
 	}
 	
+	#div_ee8413b2 #background_form {
+		border: 1px solid black;
+		width: 340px;
+		height: 270px;
+		background-color: #40454b;
+		position: absolute;
+		left: calc(50% - 170px);
+		top: 100px;
+		color: white;
+		padding-top: 30px;
+		display: none;
+	}
+	
+	#div_ee8413b2 #background_form #background_form_close{
+		float: right;
+		cursor: pointer;
+		text-align: center;
+		border-left: 1px solid black;
+		border-bottom: 1px solid black;
+		width:30px;
+		height: 30px;
+		line-height: 30px;
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+	
+	#div_ee8413b2 #background_form .background_form_item {
+		padding: 15px 0 15px 40px;
+		min-height: 30px;
+	}
+	
+	#div_ee8413b2 #background_form label {
+		float: left;
+		height: 30px;
+		line-height: 30px;
+		min-width: 90px;
+	}
+	
+	#div_ee8413b2 #background_form #bgImg_save_btn,
+	#div_ee8413b2 #background_form #bgImg_cancel_btn,
+	#div_ee8413b2 #background_form #bgUploadBtn {
+		border: 1px solid black;
+		width: 60px;
+		height: 30px;
+		text-align: center;
+		line-height: 30px;
+		padding: 0 10px;
+		background-color: #3a3939;
+		cursor: pointer;
+		float: left;
+	}
+	
+	#div_ee8413b2 #background_form #bgUploadBtn{
+		width: 100px;
+		margin-left: 5px;
+	}
+	
+	#div_ee8413b2 #background_form #bgImg_save_btn {
+		margin-right: 30px;
+		margin-left: 20px;
+	}
+	
+	#div_ee8413b2 #background_form #bgUploadBtn:hover {
+		background-color: #4e4e4e;
+	}
+	
+	#div_ee8413b2 #background_form #opacity_range,
+	#div_ee8413b2 #background_form #mask_range{
+		height: 27px;
+		margin-right: 10px;
+		float: left;
+	}
+	
+	#div_ee8413b2 #background_form #opacity_val,
+	#div_ee8413b2 #background_form #mask_val{
+		float: left;
+		width: 50px;
+		height: 30px;
+		line-height: 30px;
+		text-align: center;
+	}
+	
+	
+	
 	#div_ee8413b2 #search_wrapper {
 		width: calc(100% - 20px);
 		min-height: 50px;
-		background-color: #e3e0d1;
-		border: 1px solid #5c0d12;
+		background-color: #40454B;
+		border: 1px solid black;
 		margin: 0 auto;
 		padding: 10px;
+		color: #F1F1F1;
 	}
 	
 	#div_ee8413b2 #search_wrapper #search_close {
-		border: 1px solid #5c0d12;
+		background-color: #40454B;
+		border: 1px solid #f1f1f1;
 		border-left: 0;
 		float: left;
 		margin-right: -11px;
@@ -575,7 +660,7 @@ func_eh_ex(() => {
 		width: 100px;
 		height: 48px;
 		line-height: 48px;
-		border: 1px solid #5c0d12;
+		border: 1px solid #F1F1F1;
 		text-align: center;
 		vertical-align: middle;
 		float: left;
@@ -591,7 +676,7 @@ func_eh_ex(() => {
 		width: 100px;
 		height: 48px;
 		line-height: 48px;
-		border: 1px solid #5c0d12;
+		border: 1px solid #F1F1F1;
 		text-align: center;
 		vertical-align: middle;
 		float: right;
@@ -604,19 +689,19 @@ func_eh_ex(() => {
 		width: 100px;
 		height: 48px;
 		line-height: 48px;
-		border: 1px solid #5c0d1245;
+		border: 1px solid #f1f1f145;
 		text-align: center;
 		vertical-align: middle;
 		float: right;
 		cursor: not-allowed;
 		font-size: 18px;
-		color: #5c0d1245;
+		color: #f1f1f145;
 	}
 	
 	#div_ee8413b2 #search_top #category_search_input {
 		width: calc(100% - 392px);
 		height: 48px;
-		border: 1px solid #5c0d12;
+		border: 1px solid #F1F1F1;
 		float: left;
 		margin: 0 10px 0 40px;
 	}
@@ -645,7 +730,7 @@ func_eh_ex(() => {
 		margin-left: -15px;
 		cursor: pointer;
 		display: inline-block;
-		color: #e3e0d1;
+		color: #40454b;
 	}
 	
 	.user_input_null_backcolor {
@@ -705,7 +790,7 @@ func_eh_ex(() => {
 	}
 	
 	#div_ee8413b2 #category_search_input #category_enter_button {
-		border-left: 1px solid #5c0d12;
+		border-left: 1px solid #F1F1F1;
 	}
 	
 	#div_ee8413b2 #category_search_input #input_clear {
@@ -719,7 +804,7 @@ func_eh_ex(() => {
 	#div_ee8413b2 #search_wrapper #category_favorites_div,
 	#div_ee8413b2 #search_wrapper #category_all_div {
 		width: calc(100% - 2px);
-		border: 1px solid #5c0d12;
+		border: 1px solid #F1F1F1;
 		margin-top: 10px;
 		overflow: hidden;
 	}
@@ -739,7 +824,7 @@ func_eh_ex(() => {
 	#div_ee8413b2 #favorites_edit_list h4 {
 		padding: 0;
 		margin: 10px;
-		color: #5c0d11;
+		color: #fadfc0;
 	}
 	
 	#div_ee8413b2 #category_all_div .c_item,
@@ -748,19 +833,19 @@ func_eh_ex(() => {
 		font-size: 15px;
 		cursor: pointer;
 		display: inline-block;
-		color: #5c0d11;
+		color: #F5CC9C;
 	}
 	
 	#div_ee8413b2 #category_all_div .c_item:hover,
 	#div_ee8413b2 #category_favorites_div #favorites_list .c_item:hover {
-		color: #ff4500;
+		color: gold;
 	}
 	
 	#div_ee8413b2 #category_all_div .category_extend,
 	#div_ee8413b2 #favorites_list .favorite_extend,
 	#div_ee8413b2 #favorites_edit_list .favorite_edit_clear {
 		margin: 3px 0 3px 10px;
-		border: 1px solid #5c0d11;
+		border: 1px solid #F5CC9C;
 		width: 13px;
 		display: inline-block;
 		text-align: center;
@@ -768,11 +853,11 @@ func_eh_ex(() => {
 		height: 13px;
 		font-size: 12px;
 		cursor: pointer;
-		color: #5c0d11;
+		color: #F5CC9C;
 	}
 	
 	.chooseTab {
-		background-color: #f2efdf;
+		background-color: #7b7e85c2;
 	}
 	
 	#div_ee8413b2 #category_all_div #category_editor,
@@ -789,8 +874,8 @@ func_eh_ex(() => {
 	#div_ee8413b2 #favorites_editor #favorites_clear,
 	#div_ee8413b2 #favorites_editor #favorites_save,
 	#div_ee8413b2 #favorites_editor #favorites_cancel {
-		border-bottom: 1px solid #5c0d12;
-		border-right: 1px solid #5c0d12;
+		border-bottom: 1px solid #F1F1F1;
+		border-right: 1px solid #F1F1F1;
 		width: 49.5px;
 		float: left;
 		text-align: center;
@@ -801,8 +886,8 @@ func_eh_ex(() => {
 	
 	#div_ee8413b2 #favorites_editor #favorites_export,
 	#div_ee8413b2 #favorites_editor #favorites_recover {
-		border-bottom: 1px solid #5c0d12;
-		border-left: 1px solid #5c0d12;
+		border-bottom: 1px solid #F1F1F1;
+		border-left: 1px solid #F1F1F1;
 		width: 49.5px;
 		float: right;
 		text-align: center;
@@ -818,9 +903,9 @@ func_eh_ex(() => {
 	#div_ee8413b2 #category_search_input #category_user_input_recommend {
 		width: calc(100% - 48px);
 		margin-left: -1px;
-		border: 1px solid #5c0d12;
+		border: 1px solid #F1F1F1;
 		border-top: 0;
-		background-color: #e3e0d1;
+		background-color: #40454B;
 		max-height: 500px;
 		overflow-y: scroll;
 		position: relative;
@@ -829,15 +914,15 @@ func_eh_ex(() => {
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items {
 		font-size: 15px;
 		padding: 5px;
-		font-weight: bold;
 		cursor: pointer;
+		color: #ffde74;
 		min-height: 20px;
 		line-height: 20px;
 		overflow: auto;
 	}
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items:first-child {
-		border-top: 1px solid #5c0d12;
+		border-top: 1px solid #f1f1f1;
 	}
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items:not(:first-child) {
@@ -845,7 +930,7 @@ func_eh_ex(() => {
 	}
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items:hover {
-		background-color: #c5c3b8;
+		background-color: #7b7e85c2;
 	}
 	
 	#div_ee8413b2 #search_top #search_close,
@@ -894,7 +979,7 @@ func_eh_ex(() => {
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list::-webkit-scrollbar-track {
-		background-color: #cdcaba;
+		background-color: #2d2e32;
 		border-radius: 10px;
 	}
 	
@@ -903,7 +988,7 @@ func_eh_ex(() => {
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar-thumb,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar-thumb,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list::-webkit-scrollbar-thumb {
-		background-color: #b5a297;
+		background-color: #a5a5a5;
 		border-radius: 10px;
 	}
 	
@@ -959,12 +1044,12 @@ func_eh_ex(() => {
 	#div_ee8413b2 #category_list .c_item:hover,
 	#div_ee8413b2 #favorites_list .c_item:hover {
 		transform: scale(2);
-		background-color: #e3e0d1;
+		background-color: #40454b;
 	}
 	
 	#dms #googleTranslateDiv {
 		float: left;
-		background-color: #edebdf;
+		background-color: #34353b;
 		padding: 2px 3px 6px 7px;
 		margin-left: 10px;
 		width: 120px;
@@ -991,12 +1076,8 @@ func_eh_ex(() => {
 		background-color: darkred !important;
 	}
 	
-	.div_ee8413b2_category_checked a {
-		color: white;
-	}
-	
 	#gd5 #googleTranslateDiv {
-		background-color: #edebdf;
+		background-color: #34353b;
 		padding: 2px 3px 6px 7px;
 		margin-left: 10px;
 		width: 120px;
@@ -1027,7 +1108,7 @@ func_eh_ex(() => {
 		font-weight: bold;
 		font-size: 13px;
 		border: 1px solid #8d8d8d;
-		background-color: #edebdf;
+		background-color: #34353b;
 		border-radius: 3px;
 		text-align: center;
 		vertical-align: middle;
@@ -1054,7 +1135,7 @@ func_eh_ex(() => {
 	}
 	
 	#nb div a:hover {
-		color: red;
+		color: gold;
 	}
 	
 	#dms>div>select {
@@ -1072,12 +1153,12 @@ func_eh_ex(() => {
 	}
 	
 	table.itg tr:not(:first-child):hover {
-		background-color: #e0ded3;
+		background-color: #4f535b;
 	}
 	
 	table.itg tr:first-child:hover,
 	div.itg .gl1t:hover {
-		background-color: #e0ded3;
+		background-color: #4f535b;
 	}
 	
 	div#gdf a {
@@ -1104,9 +1185,8 @@ func_eh_ex(() => {
 		border-radius: 10px;
 	}
 	
-	#gmid #gd5 .g3,
 	#gmid #gd5 .g2 {
-		padding-bottom: 10px;
+		padding-bottom: 15px;
 	}`;
 	styleInject(category_style);
 }, () => {
@@ -1126,12 +1206,12 @@ func_eh_ex(() => {
 	}
 	
 	#searchbox #div_background_btn {
-		right: 0;
+		right: 70px;
+		border-left: 1px solid black;
 	}
 	
 	#searchbox #div_top_visible_btn {
-		right: 70px;
-		border-right: 1px solid black;
+		right: 0;
 	}
 	
 	#searchbox #div_background_btn:hover,
@@ -1146,6 +1226,95 @@ func_eh_ex(() => {
 		position: relative;
 		z-index: 3;
 	}
+	
+	#div_ee8413b2 #background_form {
+		border: 1px solid black;
+		width: 340px;
+		height: 270px;
+		background-color: #40454b;
+		position: absolute;
+		left: calc(50% - 170px);
+		top: 100px;
+		color: white;
+		padding-top: 30px;
+		display: none;
+	}
+	
+	#div_ee8413b2 #background_form #bg_upload_file {
+		display: none;
+	}
+	
+	#div_ee8413b2 #background_form #background_form_close {
+		float: right;
+		cursor: pointer;
+		text-align: center;
+		border-left: 1px solid black;
+		border-bottom: 1px solid black;
+		width: 30px;
+		height: 30px;
+		line-height: 30px;
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+	
+	#div_ee8413b2 #background_form .background_form_item {
+		padding: 15px 0 15px 40px;
+		min-height: 30px;
+	}
+	
+	#div_ee8413b2 #background_form label {
+		float: left;
+		height: 30px;
+		line-height: 30px;
+		min-width: 90px;
+	}
+	
+	#div_ee8413b2 #background_form #bgImg_save_btn,
+	#div_ee8413b2 #background_form #bgImg_cancel_btn,
+	#div_ee8413b2 #background_form #bgUploadBtn {
+		border: 1px solid black;
+		width: 60px;
+		height: 30px;
+		text-align: center;
+		line-height: 30px;
+		padding: 0 10px;
+		background-color: #3a3939;
+		cursor: pointer;
+		float: left;
+	}
+	
+	#div_ee8413b2 #background_form #bgUploadBtn {
+		width: 100px;
+		margin-left: 5px;
+	}
+	
+	#div_ee8413b2 #background_form #bgImg_save_btn {
+		margin-right: 30px;
+		margin-left: 20px;
+	}
+	
+	#div_ee8413b2 #background_form #bgUploadBtn:hover {
+		background-color: #4e4e4e;
+	}
+	
+	#div_ee8413b2 #background_form #opacity_range,
+	#div_ee8413b2 #background_form #mask_range {
+		height: 27px;
+		margin-right: 10px;
+		float: left;
+	}
+	
+	#div_ee8413b2 #background_form #opacity_val,
+	#div_ee8413b2 #background_form #mask_val {
+		float: left;
+		width: 50px;
+		height: 30px;
+		line-height: 30px;
+		text-align: center;
+	}
+	
+	
 	
 	#div_ee8413b2 #search_wrapper {
 		width: calc(100% - 20px);
@@ -2880,91 +3049,84 @@ function mainPageTranslate() {
 
 // 添加样式和逻辑，从 localstroage 中读取显示隐藏
 function frontPageTopStyleStep01() {
-    // 调整头部样式
-    var searchBoxDiv = document.getElementById("searchbox");
-    searchBoxDiv.style.width = "auto";
-    searchBoxDiv.style.border = "0";
+	// 调整头部样式
+	var searchBoxDiv = document.getElementById("searchbox");
+	searchBoxDiv.style.width = "auto";
+	searchBoxDiv.style.border = "0";
 
-    // 头部添加背景图片按钮
-    var bgDiv = document.createElement("div");
-    bgDiv.id = "div_background_btn";
-    var bgText = document.createTextNode("背景图片");
-    bgDiv.appendChild(bgText);
-    bgDiv.addEventListener("click", setBgImg);
-    searchBoxDiv.appendChild(bgDiv);
+	// 头部添加背景图片按钮
+	var bgDiv = document.createElement("div");
+	bgDiv.id = "div_background_btn";
+	var bgText = document.createTextNode("背景图片");
+	bgDiv.appendChild(bgText);
+	searchBoxDiv.appendChild(bgDiv);
 
-    function setBgImg() {
-        console.log('设置背景图片');
-    }
+	// 头部显示隐藏按钮
+	var topVisibleDiv = document.createElement("div");
+	topVisibleDiv.id = "div_top_visible_btn";
+	topVisibleDiv.addEventListener("click", topVisibleChange);
+	searchBoxDiv.appendChild(topVisibleDiv);
 
-    // 头部显示隐藏按钮
-    var topVisibleDiv = document.createElement("div");
-    topVisibleDiv.id = "div_top_visible_btn";
-    topVisibleDiv.addEventListener("click", topVisibleChange);
-    searchBoxDiv.appendChild(topVisibleDiv);
+	function topVisibleChange() {
+		if (topVisibleDiv.innerText == "头部显示") {
+			// 头部显示
+			searchBoxDiv.children[0].style.display = "block";
+			topVisibleDiv.innerText = "头部隐藏";
+			setOldSearchDivVisible(1);
 
-    function topVisibleChange() {
-        if (topVisibleDiv.innerText == "头部显示") {
-            // 头部显示
-            searchBoxDiv.children[0].style.display = "block";
-            topVisibleDiv.innerText = "头部隐藏";
-            setOldSearchDivVisible(1);
+		} else {
+			// 头部隐藏
+			searchBoxDiv.children[0].style.display = "none";
+			topVisibleDiv.innerText = "头部显示";
+			setOldSearchDivVisible(0);
+		}
+	}
 
-        } else {
-            // 头部隐藏
-            searchBoxDiv.children[0].style.display = "none";
-            topVisibleDiv.innerText = "头部显示";
-            setOldSearchDivVisible(0);
-        }
-
-        // TODO 折叠动画
-    }
-
-    // 读取头部是否隐藏，并应用到页面中
-    var oldSearchDivVisible = getOldSearchDivVisible();
-    if (oldSearchDivVisible == 0) {
-        topVisibleDiv.innerText = "头部显示";
-        searchBoxDiv.children[0].style.display = "none";
-    } else {
-        topVisibleDiv.innerText = "头部隐藏";
-    }
+	// 读取头部是否隐藏，并应用到页面中
+	var oldSearchDivVisible = getOldSearchDivVisible();
+	if (oldSearchDivVisible == 0) {
+		topVisibleDiv.innerText = "头部显示";
+		searchBoxDiv.children[0].style.display = "none";
+	} else {
+		topVisibleDiv.innerText = "头部隐藏";
+	}
 }
 
 // 从indexedDB 中读取隐藏折叠
 function frontPageTopStyleStep02() {
-    var searchBoxDiv = document.getElementById("searchbox");
-    var topVisibleDiv = document.getElementById("div_top_visible_btn");
+	var searchBoxDiv = document.getElementById("searchbox");
+	var topVisibleDiv = document.getElementById("div_top_visible_btn");
 
-    var oldSearchDivVisible = getOldSearchDivVisible();
-    if (oldSearchDivVisible == null) {
-        // 尝试从 indexedDB 中读取配置，如果存在则说明 localstroage 配置丢失，需要补充，页面对应隐藏折叠
-        read(table_Settings, table_Settings_key_OldSearchDiv_Visible, result => {
-            if (result) {
-                if (!result.value) {
-                    searchBoxDiv.children[0].style.display = "none";
-                }
-                setOldSearchDivVisible(result.value ? 1 : 0);
-            }
-        }, () => { });
+	var oldSearchDivVisible = getOldSearchDivVisible();
+	if (oldSearchDivVisible == null) {
+		// 尝试从 indexedDB 中读取配置，如果存在则说明 localstroage 配置丢失，需要补充，页面对应隐藏折叠
+		read(table_Settings, table_Settings_key_OldSearchDiv_Visible, result => {
+			if (result) {
+				if (!result.value) {
+					searchBoxDiv.children[0].style.display = "none";
+				}
+				setOldSearchDivVisible(result.value ? 1 : 0);
+			}
+		}, () => { });
 
-    }
+	}
 
-    // 添加按钮点击事件，用于将配置存储到 indexDB 中
-    topVisibleDiv.addEventListener("click", () => {
-        var settings_oldSearchDivVisible = {
-            item: table_Settings_key_OldSearchDiv_Visible,
-            value: topVisibleDiv.innerText == "头部隐藏"
-        };
-        update(table_Settings, settings_oldSearchDivVisible, () => {
-            setDbSyncMessage(sync_oldSearchTopVisible);
-        }, () => { });
-    });
+	// 添加按钮点击事件，用于将配置存储到 indexDB 中
+	topVisibleDiv.addEventListener("click", () => {
+		var settings_oldSearchDivVisible = {
+			item: table_Settings_key_OldSearchDiv_Visible,
+			value: topVisibleDiv.innerText == "头部隐藏"
+		};
+		update(table_Settings, settings_oldSearchDivVisible, () => {
+			setDbSyncMessage(sync_oldSearchTopVisible);
+		}, () => { });
+	});
 }
 
 //#endregion
 
 
-//#region step3.3.frontHtml.js 首页HTML 
+//#region step3.3.frontPageHtml.js 首页HTML 
 
 // 首页代码
 const category_html = `
@@ -3014,6 +3176,28 @@ const category_html = `
 		</div>
 	</div>
 </div>
+<div id="background_form">
+	<div id="background_form_close" title="关闭">X</div>
+	<div class="background_form_item">
+		<label>背景图片：</label>
+		<input type="file" id="bg_upload_file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" />
+		<div id="bgUploadBtn"> + 上传图片</div>
+	</div>
+	<div class="background_form_item">
+		<label>不透明度：</label>
+		<input id="opacity_range" type="range" max="1" min="0.1" id="range" step="0.1" value="0.1">
+		<div id="opacity_val">0.1</div>
+	</div>
+	<div class="background_form_item">
+		<label>模糊程度：</label>
+		<input id="mask_range" type="range" max="100" min="0" id="range" step="1" value="0">
+		<div id="mask_val">0</div>
+	</div>
+	<div class="background_form_item">
+		<div id="bgImg_save_btn">保存 √</div>
+		<div id="bgImg_cancel_btn">取消 ×</div>
+	</div>
+</div>
 `;
 
 function frontPageHtml() {
@@ -3027,6 +3211,7 @@ function frontPageHtml() {
 }
 
 //#endregion
+
 
 //#region step4.1.detailTranslate.js 详情页翻译
 
@@ -3756,7 +3941,37 @@ function mainPageCategory() {
 		var favoriteRecover = document.getElementById("favorites_recover");
 		var favoriteUploadFiles = document.getElementById("favorite_upload_files");
 
+		// 背景图片包裹层div、上传图片按钮、不透明度、不透明度值、模糊程度、模糊程度值、保存按钮、取消按钮、关闭按钮
+		var backgroundFormDiv = document.getElementById("background_form");
+		var bgUploadBtn = document.getElementById("bgUploadBtn");
+		var bgUploadFile = document.getElementById("bg_upload_file");
+		var opacityRange = document.getElementById("opacity_range");
+		var opacityVal = document.getElementById("opacity_val");
+		var maskRange = document.getElementById("mask_range");
+		var maskVal = document.getElementById("mask_val");
+		var bgImgSaveBtn = document.getElementById("bgImg_save_btn");
+		var bgImgCancelBtn = document.getElementById("bgImg_cancel_btn");
+		var bgImgCloseBtn = document.getElementById("background_form_close");
+
 		//#endregion
+
+		//#region step6.1.backgroundImage.js 设置背景图片
+
+		// 头部按钮点击事件
+		var bgDiv = document.getElementById("div_background_btn");
+		bgDiv.onclick = function () {
+			backgroundFormDiv.style.display = "block";
+			bgDiv.style.display = "none";
+		}
+
+		opacityRange.oninput = function () {
+			opacityVal.innerText = opacityRange.value;
+		}
+
+
+		//#endregion
+
+
 
 		var searchItemDict = {}; // 搜索框字典
 

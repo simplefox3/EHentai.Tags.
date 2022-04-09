@@ -13,12 +13,12 @@
 }
 
 #searchbox #div_background_btn {
-    right: 0;
+    right: 70px;
+    border-left: 1px solid black;
 }
 
 #searchbox #div_top_visible_btn {
-    right: 70px;
-    border-right: 1px solid black;
+    right: 0;
 }
 
 #searchbox #div_background_btn:hover,
@@ -33,6 +33,95 @@
     position: relative;
     z-index: 3;
 }
+
+#div_ee8413b2 #background_form {
+    border: 1px solid black;
+    width: 340px;
+    height: 270px;
+    background-color: #40454b;
+    position: absolute;
+    left: calc(50% - 170px);
+    top: 100px;
+    color: white;
+    padding-top: 30px;
+    display: none;
+}
+
+#div_ee8413b2 #background_form #bg_upload_file {
+    display: none;
+}
+
+#div_ee8413b2 #background_form #background_form_close {
+    float: right;
+    cursor: pointer;
+    text-align: center;
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+#div_ee8413b2 #background_form .background_form_item {
+    padding: 15px 0 15px 40px;
+    min-height: 30px;
+}
+
+#div_ee8413b2 #background_form label {
+    float: left;
+    height: 30px;
+    line-height: 30px;
+    min-width: 90px;
+}
+
+#div_ee8413b2 #background_form #bgImg_save_btn,
+#div_ee8413b2 #background_form #bgImg_cancel_btn,
+#div_ee8413b2 #background_form #bgUploadBtn {
+    border: 1px solid black;
+    width: 60px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    padding: 0 10px;
+    background-color: #3a3939;
+    cursor: pointer;
+    float: left;
+}
+
+#div_ee8413b2 #background_form #bgUploadBtn {
+    width: 100px;
+    margin-left: 5px;
+}
+
+#div_ee8413b2 #background_form #bgImg_save_btn {
+    margin-right: 30px;
+    margin-left: 20px;
+}
+
+#div_ee8413b2 #background_form #bgUploadBtn:hover {
+    background-color: #4e4e4e;
+}
+
+#div_ee8413b2 #background_form #opacity_range,
+#div_ee8413b2 #background_form #mask_range {
+    height: 27px;
+    margin-right: 10px;
+    float: left;
+}
+
+#div_ee8413b2 #background_form #opacity_val,
+#div_ee8413b2 #background_form #mask_val {
+    float: left;
+    width: 50px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}
+
+
 
 #div_ee8413b2 #search_wrapper {
     width: calc(100% - 20px);

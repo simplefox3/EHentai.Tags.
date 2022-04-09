@@ -1,4 +1,4 @@
-//#region step3.3.frontHtml.js 首页HTML 
+//#region step3.3.frontPageHtml.js 首页HTML 
 
 // 首页代码
 const category_html = `
@@ -46,6 +46,28 @@ const category_html = `
 			<div id="favorites_list"></div>
 			<div id="favorites_edit_list"></div>
 		</div>
+	</div>
+</div>
+<div id="background_form">
+	<div id="background_form_close" title="关闭">X</div>
+	<div class="background_form_item">
+		<label>背景图片：</label>
+		<input type="file" id="bg_upload_file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" />
+		<div id="bgUploadBtn"> + 上传图片</div>
+	</div>
+	<div class="background_form_item">
+		<label>不透明度：</label>
+		<input id="opacity_range" type="range" max="1" min="0.1" id="range" step="0.1" value="0.1">
+		<div id="opacity_val">0.1</div>
+	</div>
+	<div class="background_form_item">
+		<label>模糊程度：</label>
+		<input id="mask_range" type="range" max="100" min="0" id="range" step="1" value="0">
+		<div id="mask_val">0</div>
+	</div>
+	<div class="background_form_item">
+		<div id="bgImg_save_btn">保存 √</div>
+		<div id="bgImg_cancel_btn">取消 ×</div>
 	</div>
 </div>
 `;

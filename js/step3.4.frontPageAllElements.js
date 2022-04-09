@@ -47,4 +47,16 @@ var favoriteExport = document.getElementById("favorites_export");
 var favoriteRecover = document.getElementById("favorites_recover");
 var favoriteUploadFiles = document.getElementById("favorite_upload_files");
 
+// 背景图片包裹层div、上传图片按钮、不透明度、不透明度值、模糊程度、模糊程度值、保存按钮、取消按钮、关闭按钮
+var backgroundFormDiv = document.getElementById("background_form");
+var bgUploadBtn = document.getElementById("bgUploadBtn");
+var bgUploadFile = document.getElementById("bg_upload_file");
+var opacityRange = document.getElementById("opacity_range");
+var opacityVal = document.getElementById("opacity_val");
+var maskRange = document.getElementById("mask_range");
+var maskVal = document.getElementById("mask_val");
+var bgImgSaveBtn = document.getElementById("bgImg_save_btn");
+var bgImgCancelBtn = document.getElementById("bgImg_cancel_btn");
+var bgImgCloseBtn = document.getElementById("background_form_close");
+
 //#endregion

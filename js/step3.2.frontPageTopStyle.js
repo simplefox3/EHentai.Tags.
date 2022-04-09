@@ -12,12 +12,7 @@ function frontPageTopStyleStep01() {
     bgDiv.id = "div_background_btn";
     var bgText = document.createTextNode("背景图片");
     bgDiv.appendChild(bgText);
-    bgDiv.addEventListener("click", setBgImg);
     searchBoxDiv.appendChild(bgDiv);
-
-    function setBgImg() {
-        console.log('设置背景图片');
-    }
 
     // 头部显示隐藏按钮
     var topVisibleDiv = document.createElement("div");
@@ -38,8 +33,6 @@ function frontPageTopStyleStep01() {
             topVisibleDiv.innerText = "头部显示";
             setOldSearchDivVisible(0);
         }
-
-        // TODO 折叠动画
     }
 
     // 读取头部是否隐藏，并应用到页面中

@@ -5,25 +5,6 @@
     <meta charset="UTF-8">
     <title>网页大致页面</title>
     <link rel="stylesheet" href="../css/ex.css">
-    <script src="../js/step0.commonFunc.js"></script>
-    <script src="../js/step0.constDatas.js"></script>
-    <script src="../js/step0.localstorage.js"></script>
-    <script src="../js/step0.switch.js"></script>
-    <script src="../js/step1.1.styleInject.js"></script>
-    <script src="../js/step1.2.translateTopMenu.js"></script>
-    <script src="../js/step1.3.main.js"></script>
-    <script src="../js/step2.getTagDatas.js"></script>
-    <script src="../js/step3.1.frontTranslate.js"></script>
-    <script src="../js/step3.2.frontPageTopStyle.js"></script>
-    <script src="../js/step3.3.frontPageHtml.js"></script>
-    <script src="../js/step3.4.frontPageAllElements.js"></script>
-    <script src="../js/step3.5.frontPageBtnEvents.js"></script>
-    <script src="../js/step3.6.category.js"></script>
-    <script src="../js/step3.7.search.js"></script>
-    <script src="../js/step3.8.favorite.js"></script>
-    <script src="../js/step3.9.dataSync.js"></script>
-    <script src="../js/step4.1.detailTranslate.js"></script>
-    <script src="../js/step4.2.detailbtn.js"></script>
 </head>
 
 <body style="margin: 0;padding: 0;background-color: #4F535B;">
@@ -73,6 +54,29 @@
                     <div id="favorites_list"></div>
                     <div id="favorites_edit_list"></div>
                 </div>
+            </div>
+        </div>
+
+        <div id="background_form">
+            <div id="background_form_close" title="关闭">X</div>
+            <div class="background_form_item">
+                <label>背景图片：</label>
+                <input type="file" id="bg_upload_file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" />
+                <div id="bgUploadBtn"> + 上传图片</div>
+            </div>
+            <div class="background_form_item">
+                <label>不透明度：</label>
+                <input id="opacity_range" type="range" max="1" min="0.1" id="range" step="0.1" value="0.1">
+                <div id="opacity_val">0.1</div>
+            </div>
+            <div class="background_form_item">
+                <label>模糊程度：</label>
+                <input id="mask_range" type="range" max="100" min="0" id="range" step="1" value="0">
+                <div id="mask_val">0</div>
+            </div>
+            <div class="background_form_item">
+                <div id="bgImg_save_btn">保存 √</div>
+                <div id="bgImg_cancel_btn">取消 ×</div>
             </div>
         </div>
     </div>
