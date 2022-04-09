@@ -1,44 +1,33 @@
 //#region step1.styleInject.js 样式注入
 func_eh_ex(() => {
 	// e-hentai 样式 eh.css
-	const category_style = `#searchbox #div_old_hidden_btn {
+	const category_style = `#searchbox #div_background_btn,
+	#searchbox #div_top_visible_btn {
 		position: absolute;
-		right: 20px;
-		top: 22px;
-		width: 100px;
-		height: 48px;
-		line-height: 48px;
-		background-color: #edebdf;
-		text-align: center;
-		vertical-align: middle;
-		cursor: pointer;
-		font-size: 18px;
-		border: 1px solid #5c0d12;
-	}
-	
-	#searchbox #div_old_show_btn {
-		position: absolute;
-		right: 0;
 		top: 0;
-		width: 40px;
-		height: 15px;
-		line-height: 15px;
+		width: 70px;
+		height: 20px;
+		line-height: 20px;
 		background-color: #e3e0d1;
 		text-align: center;
 		vertical-align: middle;
 		cursor: pointer;
 		font-size: 10px;
-		display: none;
 		border: 1px solid #5c0d12;
-	}
-	
-	#searchbox #div_old_show_btn {
 		margin-top: -1px;
 		margin-right: -1px;
 	}
 	
-	#searchbox #div_old_hidden_btn:hover,
-	#searchbox #div_old_show_btn:hover {
+	#searchbox #div_background_btn {    
+		right: 0;
+	}
+	
+	#searchbox #div_top_visible_btn {
+		right: 70px;
+	}
+	
+	#searchbox #div_background_btn:hover,
+	#searchbox #div_top_visible_btn:hover {
 		background-color: #e0ded3;
 	}
 	
@@ -73,7 +62,9 @@ func_eh_ex(() => {
 		overflow: hidden;
 	}
 	
+	
 	/* 头部按钮 */
+	
 	#div_ee8413b2 #search_wrapper #search_top {
 		width: 100%;
 		height: 50px;
@@ -185,14 +176,13 @@ func_eh_ex(() => {
 	
 	#div_ee8413b2 #category_search_input #input_info .input_item {
 		margin-right: 4px;
-    	margin-top: 4px;
+		margin-top: 4px;
 	}
 	
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list .f_edit_item {
 		margin-left: 5px;
 		padding: 4px 6px;
 	}
-	
 	
 	#div_ee8413b2 #category_search_input #input_info .input_item:hover,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list .f_edit_item:hover {
@@ -241,7 +231,7 @@ func_eh_ex(() => {
 	
 	#div_ee8413b2 #favorites_list .favorite_items_div,
 	#div_ee8413b2 #favorites_edit_list .favorite_edit_items_div {
-    	padding-bottom: 20px;
+		padding-bottom: 20px;
 	}
 	
 	#div_ee8413b2 #category_all_div h4,
@@ -325,7 +315,6 @@ func_eh_ex(() => {
 		display: none;
 	}
 	
-	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend {
 		width: calc(100% - 48px);
 		margin-left: -1px;
@@ -339,11 +328,11 @@ func_eh_ex(() => {
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items {
 		font-size: 15px;
-    	padding: 5px;
+		padding: 5px;
 		font-weight: bold;
 		cursor: pointer;
 		min-height: 20px;
-    	line-height: 20px;
+		line-height: 20px;
 		overflow: auto;
 	}
 	
@@ -485,7 +474,6 @@ func_eh_ex(() => {
 		border-radius: 3px;
 	}
 	
-	
 	#dms #translateLabel {
 		padding-left: 5px;
 		font-weight: bold;
@@ -499,7 +487,6 @@ func_eh_ex(() => {
 		cursor: pointer;
 	}
 	
-	
 	.div_ee8413b2_category_checked {
 		background-color: darkred !important;
 	}
@@ -507,7 +494,6 @@ func_eh_ex(() => {
 	.div_ee8413b2_category_checked a {
 		color: white;
 	}
-	
 	
 	#gd5 #googleTranslateDiv {
 		background-color: #edebdf;
@@ -597,7 +583,7 @@ func_eh_ex(() => {
 	div#gdf a {
 		text-decoration: underline;
 	}
-
+	
 	.glname table td.tc,
 	#taglist table td.tc {
 		min-width: 50px;
@@ -625,37 +611,31 @@ func_eh_ex(() => {
 	styleInject(category_style);
 }, () => {
 	// exhentai 样式 ex.css
-	const category_style = `#searchbox #div_old_hidden_btn {
+	const category_style = `#searchbox #div_background_btn,
+	#searchbox #div_top_visible_btn {
 		position: absolute;
-		right: 20px;
-		top: 22px;
-		width: 100px;
-		height: 48px;
-		line-height: 48px;
-		background-color: #34353b;
-		text-align: center;
-		vertical-align: middle;
-		cursor: pointer;
-		font-size: 18px;
-	}
-	
-	#searchbox #div_old_show_btn {
-		position: absolute;
-		right: 0;
 		top: 0;
-		width: 40px;
-		height: 15px;
-		line-height: 15px;
+		width: 70px;
+		height: 20px;
+		line-height: 20px;
 		background-color: #34353b;
 		text-align: center;
 		vertical-align: middle;
 		cursor: pointer;
 		font-size: 10px;
-		display: none;
 	}
 	
-	#searchbox #div_old_hidden_btn:hover,
-	#searchbox #div_old_show_btn:hover {
+	#searchbox #div_background_btn {
+		right: 0;
+	}
+	
+	#searchbox #div_top_visible_btn {
+		right: 70px;
+		border-right: 1px solid black;
+	}
+	
+	#searchbox #div_background_btn:hover,
+	#searchbox #div_top_visible_btn:hover {
 		background-color: #43464e;
 	}
 	
@@ -692,7 +672,9 @@ func_eh_ex(() => {
 		overflow: hidden;
 	}
 	
+	
 	/* 头部按钮 */
+	
 	#div_ee8413b2 #search_wrapper #search_top {
 		width: 100%;
 		height: 50px;
@@ -804,14 +786,13 @@ func_eh_ex(() => {
 	
 	#div_ee8413b2 #category_search_input #input_info .input_item {
 		margin-right: 4px;
-    	margin-top: 4px;
+		margin-top: 4px;
 	}
 	
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list .f_edit_item {
 		margin-left: 5px;
 		padding: 4px 6px;
 	}
-	
 	
 	#div_ee8413b2 #category_search_input #input_info .input_item:hover,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list .f_edit_item:hover {
@@ -860,7 +841,7 @@ func_eh_ex(() => {
 	
 	#div_ee8413b2 #favorites_list .favorite_items_div,
 	#div_ee8413b2 #favorites_edit_list .favorite_edit_items_div {
-    	padding-bottom: 20px;
+		padding-bottom: 20px;
 	}
 	
 	#div_ee8413b2 #category_all_div h4,
@@ -944,7 +925,6 @@ func_eh_ex(() => {
 		display: none;
 	}
 	
-	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend {
 		width: calc(100% - 48px);
 		margin-left: -1px;
@@ -958,11 +938,11 @@ func_eh_ex(() => {
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items {
 		font-size: 15px;
-    	padding: 5px;
+		padding: 5px;
 		cursor: pointer;
 		color: #ffde74;
 		min-height: 20px;
-    	line-height: 20px;
+		line-height: 20px;
 		overflow: auto;
 	}
 	
@@ -1104,7 +1084,6 @@ func_eh_ex(() => {
 		border-radius: 3px;
 	}
 	
-	
 	#dms #translateLabel {
 		padding-left: 5px;
 		font-weight: bold;
@@ -1117,7 +1096,6 @@ func_eh_ex(() => {
 	#dms #translateLabel {
 		cursor: pointer;
 	}
-	
 	
 	.div_ee8413b2_category_checked {
 		background-color: darkred !important;
@@ -1216,7 +1194,7 @@ func_eh_ex(() => {
 	#taglist table td.tc {
 		min-width: 50px;
 	}
-
+	
 	#taglist::-webkit-scrollbar {
 		width: 10px;
 		height: 1px;

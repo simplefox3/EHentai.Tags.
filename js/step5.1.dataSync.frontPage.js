@@ -33,18 +33,15 @@ function updatePageTopVisible() {
     indexDbInit(() => {
         read(table_Settings, table_Settings_key_OldSearchDiv_Visible, result => {
             var searchBoxDiv = document.getElementById("searchbox");
-            var hiddenOldDiv = document.getElementById("div_old_hidden_btn");
-            var showOldDiv = document.getElementById("div_old_show_btn");
+            var topVisibleDiv = document.getElementById("div_top_visible_btn");
             if (result && result.value) {
                 // 显示
                 searchBoxDiv.children[0].style.display = "block";
-                hiddenOldDiv.style.display = "block";
-                showOldDiv.style.display = "none";
+                topVisibleDiv.innerText = "头部隐藏";
             } else {
                 // 隐藏
                 searchBoxDiv.children[0].style.display = "none";
-                hiddenOldDiv.style.display = "none";
-                showOldDiv.style.display = "block";
+                topVisibleDiv.innerText = "头部显示";
             }
             removeDbSyncMessage();
         }, () => {

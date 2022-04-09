@@ -1,34 +1,28 @@
-﻿#searchbox #div_old_hidden_btn {
+﻿#searchbox #div_background_btn,
+#searchbox #div_top_visible_btn {
     position: absolute;
-    right: 20px;
-    top: 22px;
-    width: 100px;
-    height: 48px;
-    line-height: 48px;
-    background-color: #34353b;
-    text-align: center;
-    vertical-align: middle;
-    cursor: pointer;
-    font-size: 18px;
-}
-
-#searchbox #div_old_show_btn {
-    position: absolute;
-    right: 0;
     top: 0;
-    width: 40px;
-    height: 15px;
-    line-height: 15px;
+    width: 70px;
+    height: 20px;
+    line-height: 20px;
     background-color: #34353b;
     text-align: center;
     vertical-align: middle;
     cursor: pointer;
     font-size: 10px;
-    display: none;
 }
 
-#searchbox #div_old_hidden_btn:hover,
-#searchbox #div_old_show_btn:hover {
+#searchbox #div_background_btn {
+    right: 0;
+}
+
+#searchbox #div_top_visible_btn {
+    right: 70px;
+    border-right: 1px solid black;
+}
+
+#searchbox #div_background_btn:hover,
+#searchbox #div_top_visible_btn:hover {
     background-color: #43464e;
 }
 

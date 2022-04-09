@@ -501,44 +501,33 @@ function func_eh_ex(ehFunc, exFunc) {
 //#region step1.styleInject.js 样式注入
 func_eh_ex(() => {
 	// e-hentai 样式 eh.css
-	const category_style = `#searchbox #div_old_hidden_btn {
+	const category_style = `#searchbox #div_background_btn,
+	#searchbox #div_top_visible_btn {
 		position: absolute;
-		right: 20px;
-		top: 22px;
-		width: 100px;
-		height: 48px;
-		line-height: 48px;
-		background-color: #edebdf;
-		text-align: center;
-		vertical-align: middle;
-		cursor: pointer;
-		font-size: 18px;
-		border: 1px solid #5c0d12;
-	}
-	
-	#searchbox #div_old_show_btn {
-		position: absolute;
-		right: 0;
 		top: 0;
-		width: 40px;
-		height: 15px;
-		line-height: 15px;
+		width: 70px;
+		height: 20px;
+		line-height: 20px;
 		background-color: #e3e0d1;
 		text-align: center;
 		vertical-align: middle;
 		cursor: pointer;
 		font-size: 10px;
-		display: none;
 		border: 1px solid #5c0d12;
-	}
-	
-	#searchbox #div_old_show_btn {
 		margin-top: -1px;
 		margin-right: -1px;
 	}
 	
-	#searchbox #div_old_hidden_btn:hover,
-	#searchbox #div_old_show_btn:hover {
+	#searchbox #div_background_btn {    
+		right: 0;
+	}
+	
+	#searchbox #div_top_visible_btn {
+		right: 70px;
+	}
+	
+	#searchbox #div_background_btn:hover,
+	#searchbox #div_top_visible_btn:hover {
 		background-color: #e0ded3;
 	}
 	
@@ -573,7 +562,9 @@ func_eh_ex(() => {
 		overflow: hidden;
 	}
 	
+	
 	/* 头部按钮 */
+	
 	#div_ee8413b2 #search_wrapper #search_top {
 		width: 100%;
 		height: 50px;
@@ -685,14 +676,13 @@ func_eh_ex(() => {
 	
 	#div_ee8413b2 #category_search_input #input_info .input_item {
 		margin-right: 4px;
-    	margin-top: 4px;
+		margin-top: 4px;
 	}
 	
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list .f_edit_item {
 		margin-left: 5px;
 		padding: 4px 6px;
 	}
-	
 	
 	#div_ee8413b2 #category_search_input #input_info .input_item:hover,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list .f_edit_item:hover {
@@ -741,7 +731,7 @@ func_eh_ex(() => {
 	
 	#div_ee8413b2 #favorites_list .favorite_items_div,
 	#div_ee8413b2 #favorites_edit_list .favorite_edit_items_div {
-    	padding-bottom: 20px;
+		padding-bottom: 20px;
 	}
 	
 	#div_ee8413b2 #category_all_div h4,
@@ -825,7 +815,6 @@ func_eh_ex(() => {
 		display: none;
 	}
 	
-	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend {
 		width: calc(100% - 48px);
 		margin-left: -1px;
@@ -839,11 +828,11 @@ func_eh_ex(() => {
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items {
 		font-size: 15px;
-    	padding: 5px;
+		padding: 5px;
 		font-weight: bold;
 		cursor: pointer;
 		min-height: 20px;
-    	line-height: 20px;
+		line-height: 20px;
 		overflow: auto;
 	}
 	
@@ -985,7 +974,6 @@ func_eh_ex(() => {
 		border-radius: 3px;
 	}
 	
-	
 	#dms #translateLabel {
 		padding-left: 5px;
 		font-weight: bold;
@@ -999,7 +987,6 @@ func_eh_ex(() => {
 		cursor: pointer;
 	}
 	
-	
 	.div_ee8413b2_category_checked {
 		background-color: darkred !important;
 	}
@@ -1007,7 +994,6 @@ func_eh_ex(() => {
 	.div_ee8413b2_category_checked a {
 		color: white;
 	}
-	
 	
 	#gd5 #googleTranslateDiv {
 		background-color: #edebdf;
@@ -1097,7 +1083,7 @@ func_eh_ex(() => {
 	div#gdf a {
 		text-decoration: underline;
 	}
-
+	
 	.glname table td.tc,
 	#taglist table td.tc {
 		min-width: 50px;
@@ -1125,37 +1111,31 @@ func_eh_ex(() => {
 	styleInject(category_style);
 }, () => {
 	// exhentai 样式 ex.css
-	const category_style = `#searchbox #div_old_hidden_btn {
+	const category_style = `#searchbox #div_background_btn,
+	#searchbox #div_top_visible_btn {
 		position: absolute;
-		right: 20px;
-		top: 22px;
-		width: 100px;
-		height: 48px;
-		line-height: 48px;
-		background-color: #34353b;
-		text-align: center;
-		vertical-align: middle;
-		cursor: pointer;
-		font-size: 18px;
-	}
-	
-	#searchbox #div_old_show_btn {
-		position: absolute;
-		right: 0;
 		top: 0;
-		width: 40px;
-		height: 15px;
-		line-height: 15px;
+		width: 70px;
+		height: 20px;
+		line-height: 20px;
 		background-color: #34353b;
 		text-align: center;
 		vertical-align: middle;
 		cursor: pointer;
 		font-size: 10px;
-		display: none;
 	}
 	
-	#searchbox #div_old_hidden_btn:hover,
-	#searchbox #div_old_show_btn:hover {
+	#searchbox #div_background_btn {
+		right: 0;
+	}
+	
+	#searchbox #div_top_visible_btn {
+		right: 70px;
+		border-right: 1px solid black;
+	}
+	
+	#searchbox #div_background_btn:hover,
+	#searchbox #div_top_visible_btn:hover {
 		background-color: #43464e;
 	}
 	
@@ -1192,7 +1172,9 @@ func_eh_ex(() => {
 		overflow: hidden;
 	}
 	
+	
 	/* 头部按钮 */
+	
 	#div_ee8413b2 #search_wrapper #search_top {
 		width: 100%;
 		height: 50px;
@@ -1304,14 +1286,13 @@ func_eh_ex(() => {
 	
 	#div_ee8413b2 #category_search_input #input_info .input_item {
 		margin-right: 4px;
-    	margin-top: 4px;
+		margin-top: 4px;
 	}
 	
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list .f_edit_item {
 		margin-left: 5px;
 		padding: 4px 6px;
 	}
-	
 	
 	#div_ee8413b2 #category_search_input #input_info .input_item:hover,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list .f_edit_item:hover {
@@ -1360,7 +1341,7 @@ func_eh_ex(() => {
 	
 	#div_ee8413b2 #favorites_list .favorite_items_div,
 	#div_ee8413b2 #favorites_edit_list .favorite_edit_items_div {
-    	padding-bottom: 20px;
+		padding-bottom: 20px;
 	}
 	
 	#div_ee8413b2 #category_all_div h4,
@@ -1444,7 +1425,6 @@ func_eh_ex(() => {
 		display: none;
 	}
 	
-	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend {
 		width: calc(100% - 48px);
 		margin-left: -1px;
@@ -1458,11 +1438,11 @@ func_eh_ex(() => {
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items {
 		font-size: 15px;
-    	padding: 5px;
+		padding: 5px;
 		cursor: pointer;
 		color: #ffde74;
 		min-height: 20px;
-    	line-height: 20px;
+		line-height: 20px;
 		overflow: auto;
 	}
 	
@@ -1604,7 +1584,6 @@ func_eh_ex(() => {
 		border-radius: 3px;
 	}
 	
-	
 	#dms #translateLabel {
 		padding-left: 5px;
 		font-weight: bold;
@@ -1617,7 +1596,6 @@ func_eh_ex(() => {
 	#dms #translateLabel {
 		cursor: pointer;
 	}
-	
 	
 	.div_ee8413b2_category_checked {
 		background-color: darkred !important;
@@ -1716,7 +1694,7 @@ func_eh_ex(() => {
 	#taglist table td.tc {
 		min-width: 50px;
 	}
-
+	
 	#taglist::-webkit-scrollbar {
 		width: 10px;
 		height: 1px;
@@ -1739,6 +1717,7 @@ func_eh_ex(() => {
 });
 
 //#endregion
+
 
 //#region step1.2.translateTopMenu.js 头部菜单翻译
 function topMenuTranslateZh() {
@@ -2901,94 +2880,89 @@ function mainPageTranslate() {
 
 // 添加样式和逻辑，从 localstroage 中读取显示隐藏
 function frontPageTopStyleStep01() {
-	// 调整头部样式
-	var searchBoxDiv = document.getElementById("searchbox");
-	searchBoxDiv.style.width = "auto";
-	searchBoxDiv.style.border = "0";
+    // 调整头部样式
+    var searchBoxDiv = document.getElementById("searchbox");
+    searchBoxDiv.style.width = "auto";
+    searchBoxDiv.style.border = "0";
 
-	// 头部添加隐藏按钮和显示按钮
-	var hiddenOldDiv = document.createElement("div");
-	hiddenOldDiv.id = "div_old_hidden_btn";
-	var hiddenOldText = document.createTextNode("隐藏");
-	hiddenOldDiv.appendChild(hiddenOldText);
-	hiddenOldDiv.addEventListener("click", hideOldSearchDiv);
-	searchBoxDiv.appendChild(hiddenOldDiv);
-	var showOldDiv = document.createElement("div");
-	showOldDiv.id = "div_old_show_btn";
-	var showOldText = document.createTextNode("显示");
-	showOldDiv.appendChild(showOldText);
-	showOldDiv.addEventListener("click", showOldSearchDiv);
-	searchBoxDiv.appendChild(showOldDiv);
+    // 头部添加背景图片按钮
+    var bgDiv = document.createElement("div");
+    bgDiv.id = "div_background_btn";
+    var bgText = document.createTextNode("背景图片");
+    bgDiv.appendChild(bgText);
+    bgDiv.addEventListener("click", setBgImg);
+    searchBoxDiv.appendChild(bgDiv);
 
-	function hideOldSearchDiv() {
-		searchBoxDiv.children[0].style.display = "none";
-		hiddenOldDiv.style.display = "none";
-		showOldDiv.style.display = "block";
-		setOldSearchDivVisible(0);
-	}
-	function showOldSearchDiv() {
-		searchBoxDiv.children[0].style.display = "block";
-		hiddenOldDiv.style.display = "block";
-		showOldDiv.style.display = "none";
-		setOldSearchDivVisible(1);
-	}
+    function setBgImg() {
+        console.log('设置背景图片');
+    }
 
-	// 读取头部是否隐藏，并应用到页面中
-	var oldSearchDivVisible = getOldSearchDivVisible();
-	if (oldSearchDivVisible == 0) {
-		searchBoxDiv.children[0].style.display = "none";
-		hiddenOldDiv.style.display = "none";
-		showOldDiv.style.display = "block";
-	}
+    // 头部显示隐藏按钮
+    var topVisibleDiv = document.createElement("div");
+    topVisibleDiv.id = "div_top_visible_btn";
+    topVisibleDiv.addEventListener("click", topVisibleChange);
+    searchBoxDiv.appendChild(topVisibleDiv);
+
+    function topVisibleChange() {
+        if (topVisibleDiv.innerText == "头部显示") {
+            // 头部显示
+            searchBoxDiv.children[0].style.display = "block";
+            topVisibleDiv.innerText = "头部隐藏";
+            setOldSearchDivVisible(1);
+
+        } else {
+            // 头部隐藏
+            searchBoxDiv.children[0].style.display = "none";
+            topVisibleDiv.innerText = "头部显示";
+            setOldSearchDivVisible(0);
+        }
+
+        // TODO 折叠动画
+    }
+
+    // 读取头部是否隐藏，并应用到页面中
+    var oldSearchDivVisible = getOldSearchDivVisible();
+    if (oldSearchDivVisible == 0) {
+        topVisibleDiv.innerText = "头部显示";
+        searchBoxDiv.children[0].style.display = "none";
+    } else {
+        topVisibleDiv.innerText = "头部隐藏";
+    }
 }
 
 // 从indexedDB 中读取隐藏折叠
 function frontPageTopStyleStep02() {
-	var searchBoxDiv = document.getElementById("searchbox");
-	var hiddenOldDiv = document.getElementById("div_old_hidden_btn");
-	var showOldDiv = document.getElementById("div_old_show_btn");
+    var searchBoxDiv = document.getElementById("searchbox");
+    var topVisibleDiv = document.getElementById("div_top_visible_btn");
 
-	var oldSearchDivVisible = getOldSearchDivVisible();
-	if (oldSearchDivVisible == null) {
-		// 尝试从 indexedDB 中读取配置，如果存在则说明 localstroage 配置丢失，需要补充，页面对应隐藏折叠
-		read(table_Settings, table_Settings_key_OldSearchDiv_Visible, result => {
-			if (result) {
-				if (!result.value) {
-					searchBoxDiv.children[0].style.display = "none";
-					hiddenOldDiv.style.display = "none";
-					showOldDiv.style.display = "block";
-				}
-				setOldSearchDivVisible(result.value ? 1 : 0);
-			}
-		}, () => { });
+    var oldSearchDivVisible = getOldSearchDivVisible();
+    if (oldSearchDivVisible == null) {
+        // 尝试从 indexedDB 中读取配置，如果存在则说明 localstroage 配置丢失，需要补充，页面对应隐藏折叠
+        read(table_Settings, table_Settings_key_OldSearchDiv_Visible, result => {
+            if (result) {
+                if (!result.value) {
+                    searchBoxDiv.children[0].style.display = "none";
+                }
+                setOldSearchDivVisible(result.value ? 1 : 0);
+            }
+        }, () => { });
 
-	}
+    }
 
-	// 添加按钮点击事件，用于将配置存储到 indexDB 中
-	hiddenOldDiv.addEventListener("click", hiddenTopIndexedDb);
-	showOldDiv.addEventListener("click", showTopIndexedDb);
-	function hiddenTopIndexedDb() {
-		var settings_oldSearchDivVisible = {
-			item: table_Settings_key_OldSearchDiv_Visible,
-			value: false
-		};
-		update(table_Settings, settings_oldSearchDivVisible, () => {
-			setDbSyncMessage(sync_oldSearchTopVisible);
-		}, error => { });
-	}
-
-	function showTopIndexedDb() {
-		var settings_oldSearchDivVisible = {
-			item: table_Settings_key_OldSearchDiv_Visible,
-			value: true
-		};
-		update(table_Settings, settings_oldSearchDivVisible, () => {
-			setDbSyncMessage(sync_oldSearchTopVisible);
-		}, error => { });
-	}
+    // 添加按钮点击事件，用于将配置存储到 indexDB 中
+    topVisibleDiv.addEventListener("click", () => {
+        var settings_oldSearchDivVisible = {
+            item: table_Settings_key_OldSearchDiv_Visible,
+            value: topVisibleDiv.innerText == "头部隐藏"
+        };
+        update(table_Settings, settings_oldSearchDivVisible, () => {
+            setDbSyncMessage(sync_oldSearchTopVisible);
+        }, () => { });
+    });
 }
 
 //#endregion
+
 
 //#region step3.3.frontHtml.js 首页HTML 
 
@@ -5379,18 +5353,15 @@ function mainPageCategory() {
 				indexDbInit(() => {
 					read(table_Settings, table_Settings_key_OldSearchDiv_Visible, result => {
 						var searchBoxDiv = document.getElementById("searchbox");
-						var hiddenOldDiv = document.getElementById("div_old_hidden_btn");
-						var showOldDiv = document.getElementById("div_old_show_btn");
+						var topVisibleDiv = document.getElementById("div_top_visible_btn");
 						if (result && result.value) {
 							// 显示
 							searchBoxDiv.children[0].style.display = "block";
-							hiddenOldDiv.style.display = "block";
-							showOldDiv.style.display = "none";
+							topVisibleDiv.innerText = "头部隐藏";
 						} else {
 							// 隐藏
 							searchBoxDiv.children[0].style.display = "none";
-							hiddenOldDiv.style.display = "none";
-							showOldDiv.style.display = "block";
+							topVisibleDiv.innerText = "头部显示";
 						}
 						removeDbSyncMessage();
 					}, () => {
