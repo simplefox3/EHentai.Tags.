@@ -117,13 +117,13 @@ function getGoogleTranslate(text, func) {
 	}
 }
 
-// 展开折叠动画
+// 展开折叠动画 (下上)
 var slideTimer = null;
 function slideDown(element, realHeight, speed, func) {
 	clearInterval(slideTimer);
 	var h = 0;
 	slideTimer = setInterval(function () {
-		// 但目标高度与实际高度小于10px时，以1px的速度步进
+		// 当目标高度与实际高度小于10px时，以1px的速度步进
 		var step = (realHeight - h) / 10;
 		step = Math.ceil(step);
 		h += step;
@@ -150,6 +150,41 @@ function slideUp(element, speed, func) {
 		}
 	}, speed);
 }
+
+// 展开折叠动画 (右左)
+var slideTimer2 = null;
+function slideRight(element, realWidth, speed, func) {
+	clearInterval(slideTimer2);
+	var w = 0;
+	slideTimer2 = setInterval(function () {
+		// 当目标宽度与实际宽度小于10px, 以 1px 的速度步进
+		var step = (realWidth - w) / 10;
+		step = Math.ceil(step);
+		w += step;
+		if (Math.abs(realWidth - w) <= Math.abs(step)) {
+			w = realWidth;
+			element.style.width = `${realWidth}px`;
+			func();
+			clearInterval(slideTimer2);
+		} else {
+			element.style.width = `${w}px`;
+		}
+	}, speed);
+}
+function slideLeft(element, speed, func) {
+	clearInterval(slideTimer2);
+	slideTimer2 = setInterval(function () {
+		var step = (0 - element.clientWidth) / 10;
+		step = Math.floor(step);
+		element.style.width = `${element.clientWidth + step}px`;
+		if (Math.abs(0 - element.clientWidth) <= Math.abs(step)) {
+			element.style.width = "0px";
+			func();
+			clearInterval(slideTimer2);
+		}
+	})
+}
+
 
 // 页面样式注入
 function styleInject(css, ref) {
@@ -188,6 +223,7 @@ function urlEncode(str) {
 }
 
 //#endregion
+
 
 //#region step0.constDatas.js 数据字典
 
@@ -528,13 +564,13 @@ func_eh_ex(() => {
 		border-left: 0;
 		float: left;
 		margin-right: -11px;
-		width: 20px;
-		height: 42px;
-		line-height: 20px;
+		width: 0;
+		height: 48px;
+		line-height: 42px;
 		text-align: center;
-		font-size: 14px;
+		font-size: 20px;
 		cursor: pointer;
-		padding: 3px;
+		overflow: hidden;
 	}
 	
 	/* 头部按钮 */
@@ -698,7 +734,6 @@ func_eh_ex(() => {
 		overflow: hidden;
 	}
 	
-	#div_ee8413b2 #search_wrapper #search_close,
 	#div_ee8413b2 #search_wrapper #category_all_div,
 	#div_ee8413b2 #search_wrapper #category_favorites_div {
 		display: none;
@@ -824,6 +859,7 @@ func_eh_ex(() => {
 		background-color: #c5c3b8;
 	}
 	
+	#div_ee8413b2 #search_top #search_close,
 	#div_ee8413b2 #favorites_editor #favorites_save,
 	#div_ee8413b2 #favorites_editor #favorites_cancel {
 		display: none;
@@ -1147,13 +1183,13 @@ func_eh_ex(() => {
 		border-left: 0;
 		float: left;
 		margin-right: -11px;
-		width: 20px;
-		height: 42px;
-		line-height: 20px;
+		width: 0;
+		height: 48px;
+		line-height: 42px;
 		text-align: center;
-		font-size: 14px;
+		font-size: 20px;
 		cursor: pointer;
-		padding: 3px;
+		overflow: hidden;
 	}
 	
 	/* 头部按钮 */
@@ -1317,7 +1353,6 @@ func_eh_ex(() => {
 		overflow: hidden;
 	}
 	
-	#div_ee8413b2 #search_wrapper #search_close,
 	#div_ee8413b2 #search_wrapper #category_all_div,
 	#div_ee8413b2 #search_wrapper #category_favorites_div {
 		display: none;
@@ -1443,6 +1478,7 @@ func_eh_ex(() => {
 		background-color: #7b7e85c2;
 	}
 	
+	#div_ee8413b2 #search_top #search_close,
 	#div_ee8413b2 #favorites_editor #favorites_save,
 	#div_ee8413b2 #favorites_editor #favorites_cancel {
 		display: none;
@@ -1703,7 +1739,6 @@ func_eh_ex(() => {
 });
 
 //#endregion
-
 
 //#region step1.2.translateTopMenu.js 头部菜单翻译
 function topMenuTranslateZh() {
@@ -2963,7 +2998,7 @@ const category_html = `
 	<div id="search_top">
 		<div id="category_all_button">全部类别</div>
 		<div id="category_favorites_button">本地收藏</div>
-		<div id="search_close">收起</div>
+		<div id="search_close">↑</div>
 		<div id="category_search_input">
 			<div id="input_info">
 				<span id="readonly_div"></span>
@@ -3771,9 +3806,10 @@ function mainPageCategory() {
 
 			// 展开动画
 			if (isDisplay) {
-				slideDown(displayDiv, 537, 15, function () {
-					searchCloseBtn.style.display = "block";
-				});
+				slideDown(displayDiv, 537, 15, function () { });
+
+				searchCloseBtn.style.display = "block";
+				slideRight(searchCloseBtn, 20, 10, function () { });
 			}
 		};
 
@@ -3796,8 +3832,10 @@ function mainPageCategory() {
 
 			// 展开动画
 			if (isDisplay) {
-				slideDown(displayDiv, 537, 15, function () {
-					searchCloseBtn.style.display = "block";
+				slideDown(displayDiv, 537, 15, function () { });
+
+				searchCloseBtn.style.display = "block";
+				slideRight(searchCloseBtn, 20, 10, function () {
 				});
 			}
 		}
@@ -3808,23 +3846,19 @@ function mainPageCategory() {
 			categoryFavoritesBtn.classList.remove("chooseTab");
 			allCategoryBtn.classList.remove("chooseTab");
 
+			slideLeft(searchCloseBtn, 10, function () {
+				searchCloseBtn.style.display = "none";
+			});
+
 			// 折叠动画
 			slideUp(displayDiv, 15, function () {
 				categoryDisplayDiv.style.display = "none";
 				favoritesDisplayDiv.style.display = "none";
-				searchCloseBtn.style.display = "none";
 			});
 		}
 
 
-		// 搜索按钮
-
-		// 加入收藏按钮
-
-
-
 		//#endregion
-
 
 		// indexedDB 数据存储初始化
 		tagDataDispose(() => {

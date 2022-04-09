@@ -17,9 +17,10 @@ allCategoryBtn.onclick = function () {
 
     // 展开动画
     if (isDisplay) {
-        slideDown(displayDiv, 537, 15, function () {
-            searchCloseBtn.style.display = "block";
-        });
+        slideDown(displayDiv, 537, 15, function () { });
+
+        searchCloseBtn.style.display = "block";
+        slideRight(searchCloseBtn, 20, 10, function () { });
     }
 };
 
@@ -42,8 +43,10 @@ categoryFavoritesBtn.onclick = function () {
 
     // 展开动画
     if (isDisplay) {
-        slideDown(displayDiv, 537, 15, function () {
-            searchCloseBtn.style.display = "block";
+        slideDown(displayDiv, 537, 15, function () { });
+
+        searchCloseBtn.style.display = "block";
+        slideRight(searchCloseBtn, 20, 10, function () {
         });
     }
 }
@@ -54,19 +57,16 @@ searchCloseBtn.onclick = function () {
     categoryFavoritesBtn.classList.remove("chooseTab");
     allCategoryBtn.classList.remove("chooseTab");
 
+    slideLeft(searchCloseBtn, 10, function(){
+        searchCloseBtn.style.display = "none";
+    });
+
     // 折叠动画
     slideUp(displayDiv, 15, function () {
         categoryDisplayDiv.style.display = "none";
         favoritesDisplayDiv.style.display = "none";
-        searchCloseBtn.style.display = "none";
     });
 }
-
-
-    // 搜索按钮
-
-    // 加入收藏按钮
-
 
 
 //#endregion

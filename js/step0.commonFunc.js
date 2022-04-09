@@ -97,13 +97,13 @@ function getGoogleTranslate(text, func) {
     }
 }
 
-// 展开折叠动画
+// 展开折叠动画 (下上)
 var slideTimer = null;
 function slideDown(element, realHeight, speed, func) {
     clearInterval(slideTimer);
     var h = 0;
     slideTimer = setInterval(function () {
-        // 但目标高度与实际高度小于10px时，以1px的速度步进
+        // 当目标高度与实际高度小于10px时，以1px的速度步进
         var step = (realHeight - h) / 10;
         step = Math.ceil(step);
         h += step;
@@ -130,6 +130,41 @@ function slideUp(element, speed, func) {
         }
     }, speed);
 }
+
+// 展开折叠动画 (右左)
+var slideTimer2 = null;
+function slideRight(element, realWidth, speed, func) {
+    clearInterval(slideTimer2);
+    var w = 0;
+    slideTimer2 = setInterval(function () {
+        // 当目标宽度与实际宽度小于10px, 以 1px 的速度步进
+        var step = (realWidth - w) / 10;
+        step = Math.ceil(step);
+        w += step;
+        if (Math.abs(realWidth - w) <= Math.abs(step)) {
+            w = realWidth;
+            element.style.width = `${realWidth}px`;
+            func();
+            clearInterval(slideTimer2);
+        } else {
+            element.style.width = `${w}px`;
+        }
+    }, speed);
+}
+function slideLeft(element, speed, func) {
+    clearInterval(slideTimer2);
+    slideTimer2 = setInterval(function(){
+        var step = (0 - element.clientWidth) / 10;
+        step = Math.floor(step);
+        element.style.width = `${element.clientWidth + step}px`;
+        if (Math.abs(0 - element.clientWidth) <= Math.abs(step)) {
+            element.style.width = "0px";
+            func();
+            clearInterval(slideTimer2);
+        }
+    })
+}
+
 
 // 页面样式注入
 function styleInject(css, ref) {

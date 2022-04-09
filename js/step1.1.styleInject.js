@@ -64,13 +64,13 @@ func_eh_ex(() => {
 		border-left: 0;
 		float: left;
 		margin-right: -11px;
-		width: 20px;
-		height: 42px;
-		line-height: 20px;
+		width: 0;
+		height: 48px;
+		line-height: 42px;
 		text-align: center;
-		font-size: 14px;
+		font-size: 20px;
 		cursor: pointer;
-		padding: 3px;
+		overflow: hidden;
 	}
 	
 	/* 头部按钮 */
@@ -234,7 +234,6 @@ func_eh_ex(() => {
 		overflow: hidden;
 	}
 	
-	#div_ee8413b2 #search_wrapper #search_close,
 	#div_ee8413b2 #search_wrapper #category_all_div,
 	#div_ee8413b2 #search_wrapper #category_favorites_div {
 		display: none;
@@ -360,6 +359,7 @@ func_eh_ex(() => {
 		background-color: #c5c3b8;
 	}
 	
+	#div_ee8413b2 #search_top #search_close,
 	#div_ee8413b2 #favorites_editor #favorites_save,
 	#div_ee8413b2 #favorites_editor #favorites_cancel {
 		display: none;
@@ -683,13 +683,13 @@ func_eh_ex(() => {
 		border-left: 0;
 		float: left;
 		margin-right: -11px;
-		width: 20px;
-		height: 42px;
-		line-height: 20px;
+		width: 0;
+		height: 48px;
+		line-height: 42px;
 		text-align: center;
-		font-size: 14px;
+		font-size: 20px;
 		cursor: pointer;
-		padding: 3px;
+		overflow: hidden;
 	}
 	
 	/* 头部按钮 */
@@ -853,7 +853,6 @@ func_eh_ex(() => {
 		overflow: hidden;
 	}
 	
-	#div_ee8413b2 #search_wrapper #search_close,
 	#div_ee8413b2 #search_wrapper #category_all_div,
 	#div_ee8413b2 #search_wrapper #category_favorites_div {
 		display: none;
@@ -979,6 +978,7 @@ func_eh_ex(() => {
 		background-color: #7b7e85c2;
 	}
 	
+	#div_ee8413b2 #search_top #search_close,
 	#div_ee8413b2 #favorites_editor #favorites_save,
 	#div_ee8413b2 #favorites_editor #favorites_cancel {
 		display: none;
