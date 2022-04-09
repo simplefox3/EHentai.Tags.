@@ -1225,6 +1225,31 @@ func_eh_ex(() => {
 		margin-top: 10px;
 		position: relative;
 		z-index: 3;
+		background-color: #40454B;
+	}
+	
+	#div_ee8413b2_bg::before {
+		background-size: 100%;
+		opacity: 0.5;
+	}
+	
+	#div_ee8413b2_bg {
+		z-index: -9999;
+		overflow: hidden;
+		position: absolute;
+		width: 100%;
+		height: 100%;
+	}
+	
+	#div_ee8413b2_bg::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		filter: blur(2px);
+	
 	}
 	
 	#div_ee8413b2 #background_form {
@@ -1238,6 +1263,14 @@ func_eh_ex(() => {
 		color: white;
 		padding-top: 30px;
 		display: none;
+	}
+	
+	#div_ee8413b2 #background_form #background_form_top {
+		height: 30px;
+		width: 310px;
+		position: absolute;
+		top: 0;
+		cursor: move;
 	}
 	
 	#div_ee8413b2 #background_form #bg_upload_file {
@@ -1271,6 +1304,7 @@ func_eh_ex(() => {
 	}
 	
 	#div_ee8413b2 #background_form #bgImg_save_btn,
+	#div_ee8413b2 #background_form #bgImg_clear_btn,
 	#div_ee8413b2 #background_form #bgImg_cancel_btn,
 	#div_ee8413b2 #background_form #bgUploadBtn {
 		border: 1px solid black;
@@ -1284,16 +1318,39 @@ func_eh_ex(() => {
 		float: left;
 	}
 	
+	#div_ee8413b2 #background_form #bgImg_clear_btn {
+		background-color: darkred;
+		margin-right: 8px;
+	}
+	
+	#div_ee8413b2 #background_form #bgImg_clear_btn:hover {
+		background-color: red;
+	}
+	
+	
+	#div_ee8413b2 #background_form #bgImg_save_btn {
+		background-color: darkgreen;
+		margin-right: 8px;
+	}
+	
+	#div_ee8413b2 #background_form #bgImg_save_btn:hover {
+		background-color: green;
+	}
+	
+	#div_ee8413b2 #background_form #bgImg_cancel_btn {
+		background-color: darkslateblue;
+	}
+	
+	#div_ee8413b2 #background_form #bgImg_cancel_btn:hover {
+		background-color: slateblue;
+	}
+	
 	#div_ee8413b2 #background_form #bgUploadBtn {
 		width: 100px;
 		margin-left: 5px;
 	}
 	
-	#div_ee8413b2 #background_form #bgImg_save_btn {
-		margin-right: 30px;
-		margin-left: 20px;
-	}
-	
+	#div_ee8413b2 #background_form #background_form_close:hover,
 	#div_ee8413b2 #background_form #bgUploadBtn:hover {
 		background-color: #4e4e4e;
 	}
@@ -1319,7 +1376,6 @@ func_eh_ex(() => {
 	#div_ee8413b2 #search_wrapper {
 		width: calc(100% - 20px);
 		min-height: 50px;
-		background-color: #40454B;
 		border: 1px solid black;
 		margin: 0 auto;
 		padding: 10px;
@@ -1327,7 +1383,6 @@ func_eh_ex(() => {
 	}
 	
 	#div_ee8413b2 #search_wrapper #search_close {
-		background-color: #40454B;
 		border: 1px solid #f1f1f1;
 		border-left: 0;
 		float: left;
@@ -1669,10 +1724,7 @@ func_eh_ex(() => {
 	}
 	
 	#div_ee8413b2 #category_search_input #input_info::-webkit-scrollbar-track,
-	#div_ee8413b2 #category_search_input #category_user_input_recommend::-webkit-scrollbar-track,
-	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar-track,
-	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar-track,
-	#div_ee8413b2 #category_favorites_div #favorites_edit_list::-webkit-scrollbar-track {
+	#div_ee8413b2 #category_search_input #category_user_input_recommend::-webkit-scrollbar-track {
 		background-color: #2d2e32;
 		border-radius: 10px;
 	}
@@ -1738,7 +1790,6 @@ func_eh_ex(() => {
 	#div_ee8413b2 #category_list .c_item:hover,
 	#div_ee8413b2 #favorites_list .c_item:hover {
 		transform: scale(2);
-		background-color: #40454b;
 	}
 	
 	#dms #googleTranslateDiv {
@@ -1886,6 +1937,8 @@ func_eh_ex(() => {
 });
 
 //#endregion
+
+
 
 
 //#region step1.2.translateTopMenu.js 头部菜单翻译
@@ -3130,6 +3183,7 @@ function frontPageTopStyleStep02() {
 
 // 首页代码
 const category_html = `
+<div id="div_ee8413b2_bg"></div>
 <div id="search_wrapper">
 	<div id="search_top">
 		<div id="category_all_button">全部类别</div>
@@ -3177,6 +3231,7 @@ const category_html = `
 	</div>
 </div>
 <div id="background_form">
+	<div id="background_form_top"></div>
 	<div id="background_form_close" title="关闭">X</div>
 	<div class="background_form_item">
 		<label>背景图片：</label>
@@ -3190,10 +3245,11 @@ const category_html = `
 	</div>
 	<div class="background_form_item">
 		<label>模糊程度：</label>
-		<input id="mask_range" type="range" max="100" min="0" id="range" step="1" value="0">
+		<input id="mask_range" type="range" max="100" min="0" id="range" step="0.1" value="0">
 		<div id="mask_val">0</div>
 	</div>
 	<div class="background_form_item">
+		<div id="bgImg_clear_btn">清空 !</div>
 		<div id="bgImg_save_btn">保存 √</div>
 		<div id="bgImg_cancel_btn">取消 ×</div>
 	</div>
@@ -3201,13 +3257,13 @@ const category_html = `
 `;
 
 function frontPageHtml() {
-	// 基本框架代码插入，先创建包裹层div，然后构造包裹层内容
-	var webdiv = document.createElement("div");
-	webdiv.id = "div_ee8413b2";
-	var searchBoxDiv = document.getElementById("searchbox");
-	searchBoxDiv.appendChild(webdiv);
-	//searchBoxDiv.insertBefore(webdiv, searchBoxDiv.children[0]);
-	webdiv.innerHTML = category_html;
+    // 基本框架代码插入，先创建包裹层div，然后构造包裹层内容
+    var webdiv = document.createElement("div");
+    webdiv.id = "div_ee8413b2";
+    var searchBoxDiv = document.getElementById("searchbox");
+    searchBoxDiv.appendChild(webdiv);
+    //searchBoxDiv.insertBefore(webdiv, searchBoxDiv.children[0]);
+    webdiv.innerHTML = category_html;
 }
 
 //#endregion
@@ -3941,8 +3997,9 @@ function mainPageCategory() {
 		var favoriteRecover = document.getElementById("favorites_recover");
 		var favoriteUploadFiles = document.getElementById("favorite_upload_files");
 
-		// 背景图片包裹层div、上传图片按钮、不透明度、不透明度值、模糊程度、模糊程度值、保存按钮、取消按钮、关闭按钮
+		// 背景图片包裹层div、头部div、上传图片按钮、不透明度、不透明度值、模糊程度、模糊程度值、保存按钮、取消按钮、关闭按钮
 		var backgroundFormDiv = document.getElementById("background_form");
+		var backgroundFormTop = document.getElementById("background_form_top");
 		var bgUploadBtn = document.getElementById("bgUploadBtn");
 		var bgUploadFile = document.getElementById("bg_upload_file");
 		var opacityRange = document.getElementById("opacity_range");
@@ -3952,7 +4009,6 @@ function mainPageCategory() {
 		var bgImgSaveBtn = document.getElementById("bgImg_save_btn");
 		var bgImgCancelBtn = document.getElementById("bgImg_cancel_btn");
 		var bgImgCloseBtn = document.getElementById("background_form_close");
-
 		//#endregion
 
 		//#region step6.1.backgroundImage.js 设置背景图片
@@ -3962,15 +4018,95 @@ function mainPageCategory() {
 		bgDiv.onclick = function () {
 			backgroundFormDiv.style.display = "block";
 			bgDiv.style.display = "none";
+
+			// TODO 读取存储设置值
 		}
 
+
+
+		// div头部拖拽事件
+		var x = 0, y = 0;
+		var left = 0, top = 0;
+		var isMouseDown = false;
+		// 鼠标按下事件
+		backgroundFormTop.onmousedown = function (e) {
+			// 获取坐标xy
+			x = e.clientX;
+			y = e.clientY;
+
+			// 获取左和头的偏移量
+			left = backgroundFormDiv.offsetLeft;
+			top = backgroundFormDiv.offsetTop;
+
+			// 鼠标按下
+			isMouseDown = true;
+		}
+		// 鼠标移动
+		window.onmousemove = function (e) {
+			if (!isMouseDown) return;
+			// 计算偏移量
+			var nLeft = e.clientX - (x - left);
+			var nTop = e.clientY - (y - top);
+			backgroundFormDiv.style.left = `${nLeft}px`;
+			backgroundFormDiv.style.top = `${nTop}px`;
+		}
+		// 鼠标抬起
+		backgroundFormTop.onmouseup = function () {
+			isMouseDown = false;
+		}
+
+		// 点击上传图片
+		bgUploadBtn.onclick = function () {
+			bgUploadFile.click();
+		}
+
+		var imgBase64 = '';
+
+		bgUploadFile.onchange = function () {
+			var resultFile = bgUploadFile.files[0];
+			if (resultFile) {
+				var reader = new FileReader();
+				reader.readAsDataURL(resultFile);
+				reader.onload = function (e) {
+					var fileContent = e.target.result;
+					console.log(fileContent);
+
+					var arr = fileContent.split(",");
+					imgBase64 = arr[1];
+					var bg = 'url(' + 'data:image/png;base64,' + imgBase64 + ') 0 / cover';
+					var style = document.createElement('style');
+					style.innerHTML = `#div_ee8413b2_bg::before{background:${bg}}`;
+					document.head.appendChild(style);
+
+					// 上传置空
+					bgUploadFile.value = "";
+				}
+			}
+		}
+
+		var t_opacity = 0;
+
+		// 不透明度
 		opacityRange.oninput = function () {
-			opacityVal.innerText = opacityRange.value;
+			t_opacity = opacityRange.value;
+			opacityVal.innerText = t_opacity;
+			var style = document.createElement('style');
+			style.innerHTML = `#div_ee8413b2_bg::before{opacity:${t_opacity}}`;
+			document.head.appendChild(style);
 		}
 
+		var t_mask = 0;
+
+		// 遮罩浓度
+		maskRange.oninput = function () {
+			t_mask = maskRange.value;
+			maskVal.innerText = t_mask;
+			var style = document.createElement('style');
+			style.innerHTML = `#div_ee8413b2_bg::before{filter:blur(${t_mask}px)}`;
+			document.head.appendChild(style);
+		}
 
 		//#endregion
-
 
 
 		var searchItemDict = {}; // 搜索框字典

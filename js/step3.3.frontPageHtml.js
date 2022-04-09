@@ -2,6 +2,7 @@
 
 // 首页代码
 const category_html = `
+<div id="div_ee8413b2_bg"></div>
 <div id="search_wrapper">
 	<div id="search_top">
 		<div id="category_all_button">全部类别</div>
@@ -49,6 +50,7 @@ const category_html = `
 	</div>
 </div>
 <div id="background_form">
+	<div id="background_form_top"></div>
 	<div id="background_form_close" title="关闭">X</div>
 	<div class="background_form_item">
 		<label>背景图片：</label>
@@ -62,10 +64,11 @@ const category_html = `
 	</div>
 	<div class="background_form_item">
 		<label>模糊程度：</label>
-		<input id="mask_range" type="range" max="100" min="0" id="range" step="1" value="0">
+		<input id="mask_range" type="range" max="100" min="0" id="range" step="0.1" value="0">
 		<div id="mask_val">0</div>
 	</div>
 	<div class="background_form_item">
+		<div id="bgImg_clear_btn">清空 !</div>
 		<div id="bgImg_save_btn">保存 √</div>
 		<div id="bgImg_cancel_btn">取消 ×</div>
 	</div>

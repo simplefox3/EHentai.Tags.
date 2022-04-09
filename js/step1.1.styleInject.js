@@ -725,6 +725,31 @@ func_eh_ex(() => {
 		margin-top: 10px;
 		position: relative;
 		z-index: 3;
+		background-color: #40454B;
+	}
+	
+	#div_ee8413b2_bg::before {
+		background-size: 100%;
+		opacity: 0.5;
+	}
+	
+	#div_ee8413b2_bg {
+		z-index: -9999;
+		overflow: hidden;
+		position: absolute;
+		width: 100%;
+		height: 100%;
+	}
+	
+	#div_ee8413b2_bg::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		filter: blur(2px);
+	
 	}
 	
 	#div_ee8413b2 #background_form {
@@ -738,6 +763,14 @@ func_eh_ex(() => {
 		color: white;
 		padding-top: 30px;
 		display: none;
+	}
+	
+	#div_ee8413b2 #background_form #background_form_top {
+		height: 30px;
+		width: 310px;
+		position: absolute;
+		top: 0;
+		cursor: move;
 	}
 	
 	#div_ee8413b2 #background_form #bg_upload_file {
@@ -771,6 +804,7 @@ func_eh_ex(() => {
 	}
 	
 	#div_ee8413b2 #background_form #bgImg_save_btn,
+	#div_ee8413b2 #background_form #bgImg_clear_btn,
 	#div_ee8413b2 #background_form #bgImg_cancel_btn,
 	#div_ee8413b2 #background_form #bgUploadBtn {
 		border: 1px solid black;
@@ -784,16 +818,39 @@ func_eh_ex(() => {
 		float: left;
 	}
 	
+	#div_ee8413b2 #background_form #bgImg_clear_btn {
+		background-color: darkred;
+		margin-right: 8px;
+	}
+	
+	#div_ee8413b2 #background_form #bgImg_clear_btn:hover {
+		background-color: red;
+	}
+	
+	
+	#div_ee8413b2 #background_form #bgImg_save_btn {
+		background-color: darkgreen;
+		margin-right: 8px;
+	}
+	
+	#div_ee8413b2 #background_form #bgImg_save_btn:hover {
+		background-color: green;
+	}
+	
+	#div_ee8413b2 #background_form #bgImg_cancel_btn {
+		background-color: darkslateblue;
+	}
+	
+	#div_ee8413b2 #background_form #bgImg_cancel_btn:hover {
+		background-color: slateblue;
+	}
+	
 	#div_ee8413b2 #background_form #bgUploadBtn {
 		width: 100px;
 		margin-left: 5px;
 	}
 	
-	#div_ee8413b2 #background_form #bgImg_save_btn {
-		margin-right: 30px;
-		margin-left: 20px;
-	}
-	
+	#div_ee8413b2 #background_form #background_form_close:hover,
 	#div_ee8413b2 #background_form #bgUploadBtn:hover {
 		background-color: #4e4e4e;
 	}
@@ -819,7 +876,6 @@ func_eh_ex(() => {
 	#div_ee8413b2 #search_wrapper {
 		width: calc(100% - 20px);
 		min-height: 50px;
-		background-color: #40454B;
 		border: 1px solid black;
 		margin: 0 auto;
 		padding: 10px;
@@ -827,7 +883,6 @@ func_eh_ex(() => {
 	}
 	
 	#div_ee8413b2 #search_wrapper #search_close {
-		background-color: #40454B;
 		border: 1px solid #f1f1f1;
 		border-left: 0;
 		float: left;
@@ -1169,10 +1224,7 @@ func_eh_ex(() => {
 	}
 	
 	#div_ee8413b2 #category_search_input #input_info::-webkit-scrollbar-track,
-	#div_ee8413b2 #category_search_input #category_user_input_recommend::-webkit-scrollbar-track,
-	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar-track,
-	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar-track,
-	#div_ee8413b2 #category_favorites_div #favorites_edit_list::-webkit-scrollbar-track {
+	#div_ee8413b2 #category_search_input #category_user_input_recommend::-webkit-scrollbar-track {
 		background-color: #2d2e32;
 		border-radius: 10px;
 	}
@@ -1238,7 +1290,6 @@ func_eh_ex(() => {
 	#div_ee8413b2 #category_list .c_item:hover,
 	#div_ee8413b2 #favorites_list .c_item:hover {
 		transform: scale(2);
-		background-color: #40454b;
 	}
 	
 	#dms #googleTranslateDiv {
