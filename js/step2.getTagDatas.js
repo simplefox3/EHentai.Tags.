@@ -545,6 +545,7 @@ function tagDataDispose(func_compelete) {
                                     detailDictCount++;
                                 }
                             }
+                            continue;
                         }
 
                         // 过滤重新分类

@@ -863,7 +863,8 @@ func_eh_ex(() => {
 	}
 	
 	table .gt,
-	table .gtl {
+	table .gtl,
+	table .gtw {
 		height: 18px;
 		line-height: 18px;
 	}`;
@@ -1713,7 +1714,8 @@ func_eh_ex(() => {
 	}
 	
 	table .gt,
-	table .gtl {
+	table .gtl,
+	table .gtw {
 		height: 18px;
 		line-height: 18px;
 	}`;

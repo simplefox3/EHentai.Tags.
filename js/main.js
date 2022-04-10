@@ -1,6 +1,7 @@
 //#region main.js
 // 主方法
 
+// 标记可用浏览器版本
 // 头部菜单汉化
 topMenuTranslateZh();
 
@@ -22,7 +23,7 @@ function mainPageCategory() {
 	// 首页框架搭建
 	frontPageHtml();
 
-	// TODO 消息通知提前，只要数据改变就应该马上通知，方便快速其他页面快速反应	
+	// 消息通知提前，只要数据改变就应该马上通知，方便快速其他页面快速反应	
 	// 初始化用户配置信息
 	initUserSettings(() => {
 		console.log('初始化用户配置信息完毕');
@@ -80,7 +81,579 @@ function mainPageCategory() {
 		var favoriteRecover = document.getElementById("favorites_recover");
 		var favoriteUploadFiles = document.getElementById("favorite_upload_files");
 
+		// 背景图片包裹层div、头部div、上传图片按钮、不透明度、不透明度值、模糊程度、模糊程度值、重置按钮、保存按钮、取消按钮、关闭按钮
+		var backgroundFormDiv = document.getElementById("background_form");
+		var backgroundFormTop = document.getElementById("background_form_top");
+		var bgUploadBtn = document.getElementById("bgUploadBtn");
+		var bgUploadFile = document.getElementById("bg_upload_file");
+		var opacityRange = document.getElementById("opacity_range");
+		var opacityVal = document.getElementById("opacity_val");
+		var maskRange = document.getElementById("mask_range");
+		var maskVal = document.getElementById("mask_val");
+		var bgImgClearBtn = document.getElementById("bgImg_clear_btn");
+		var bgImgSaveBtn = document.getElementById("bgImg_save_btn");
+		var bgImgCancelBtn = document.getElementById("bgImg_cancel_btn");
+		var bgImgCloseBtn = document.getElementById("background_form_close");
+
+		// 列表字体颜色包裹层div、头部div、父级字体调色板、父级字体颜色、子级字体调色板、子级字体颜色、子级悬浮调色板、子级悬浮颜色、重置按钮、保存按钮、取消按钮、关闭按钮
+		var listFontColorDiv = document.getElementById("frontPage_listFontColor");
+		var listFontColorTop = document.getElementById("frontPage_listFontColor_top");
+		var listFontColorParentColor = document.getElementById("parent_color");
+		var listFontColorParentColorVal = document.getElementById("parent_color_val");
+		var listFontColorSubColor = document.getElementById("sub_color");
+		var listFontColorSubColorVal = document.getElementById("sub_color_val");
+		var listFontColorSubHoverColor = document.getElementById("sub_hover_color");
+		var listFontColorSubHoverColorVal = document.getElementById("sub_hover_color_val");
+		var listFontColorClearBtn = document.getElementById("listFontColor_clear_btn");
+		var listFontColorSaveBtn = document.getElementById("listFontColor_save_btn");
+		var listFontColorCancelBtn = document.getElementById("listFontColor_cancel_btn");
+		var listFontColorCloseBtn = document.getElementById("frontPage_listFontColor_close");
 		//#endregion
+
+		//#region step6.1.backgroundImage.js 设置背景图片
+
+		var t_imgBase64 = ''; // 背景图片
+		var t_opacity = defaultSetting_Opacity; // 透明度
+		var t_mask = defaultSetting_Mask; // 遮罩浓度
+
+
+		// 头部按钮点击事件
+		var bgDiv = document.getElementById("div_background_btn");
+		bgDiv.onclick = function () {
+			backgroundFormDiv.style.display = "block";
+			bgDiv.style.display = "none";
+		}
+
+		// 读取存储设置值，读取完成前，隐藏头部按钮，读取完成在显示出来
+		function initBackground(func_compelete) {
+			bgDiv.style.display = "none";
+			var completeGetImg = false;
+			var completeGetOpacity = false;
+			var completeGetMask = false;
+			read(table_Settings, table_Settings_Key_Bg_ImgBase64, result => {
+				if (result && result.value) {
+					t_imgBase64 = result.value;
+				} else {
+					t_imgBase64 = '';
+				}
+				// 设置页面背景
+				setListBackgroundImage(t_imgBase64);
+				completeGetImg = true;
+			}, () => { completeGetImg = true; });
+			read(table_Settings, table_Settings_Key_Bg_Opacity, result => {
+				if (result && result.value) {
+					t_opacity = result.value;
+				} else {
+					t_opacity = defaultSetting_Opacity;
+				}
+				// 设置背景不透明度
+				setListOpacity(t_opacity);
+				// 设置弹窗不透明度数值
+				setDialogOpacityValue(t_opacity);
+				completeGetOpacity = true;
+			}, () => { completeGetOpacity = true; });
+			read(table_Settings, table_Settings_Key_Bg_Mask, result => {
+				if (result && result.value) {
+					t_mask = result.value;
+				} else {
+					t_mask = defaultSetting_Mask;
+				}
+				// 设置背景遮罩浓度
+				setListMask(t_mask);
+				// 设置弹窗遮罩浓度数值
+				setDialogMaskValue(t_mask);
+				completeGetMask = true;
+			}, () => { completeGetMask = true; });
+
+			var tInit = setInterval(() => {
+				if (completeGetImg && completeGetOpacity && completeGetMask) {
+					tInit && clearInterval(tInit);
+					bgDiv.style.display = "block";
+					func_compelete();
+				}
+			}, 50);
+		}
+
+		initBackground(() => { });
+
+		// 点击上传图片
+		bgUploadBtn.onclick = function () {
+			bgUploadFile.click();
+		}
+		bgUploadFile.onchange = function () {
+			var resultFile = bgUploadFile.files[0];
+			if (resultFile) {
+				var reader = new FileReader();
+				reader.readAsDataURL(resultFile);
+				reader.onload = function (e) {
+					var fileContent = e.target.result;
+					console.log(fileContent);
+					t_imgBase64 = fileContent;
+					setListBackgroundImage(t_imgBase64);
+
+					// 上传置空
+					bgUploadFile.value = "";
+				}
+			}
+		}
+
+		// 设置列表背景图片
+		function setListBackgroundImage(imageBase64) {
+			var bg = `url(${imageBase64}) 0 / cover`;
+			var style = document.createElement('style');
+			style.innerHTML = `#div_ee8413b2_bg::before{background:${bg}}`;
+			document.head.appendChild(style);
+		}
+
+
+		// 不透明度
+		opacityRange.oninput = function () {
+			t_opacity = opacityRange.value;
+			opacityVal.innerText = t_opacity;
+			setListOpacity(t_opacity);
+		}
+		// 设置不透明度效果
+		function setListOpacity(opacityValue) {
+			var style = document.createElement('style');
+			style.innerHTML = `#div_ee8413b2_bg::before{opacity:${opacityValue}}`;
+			document.head.appendChild(style);
+		}
+		// 设置弹窗不透明度数值
+		function setDialogOpacityValue(opacityValue) {
+			opacityRange.value = opacityValue;
+			opacityVal.innerText = opacityValue;
+		}
+
+
+		// 遮罩浓度
+		maskRange.oninput = function () {
+			t_mask = maskRange.value;
+			maskVal.innerText = t_mask;
+			setListMask(t_mask);
+		}
+		// 设置遮罩浓度效果
+		function setListMask(maskValue) {
+			var style = document.createElement('style');
+			style.innerHTML = `#div_ee8413b2_bg::before{filter:blur(${maskValue}px)}`;
+			document.head.appendChild(style);
+		}
+		// 设置弹窗遮罩浓度数值
+		function setDialogMaskValue(maskValue) {
+			maskRange.value = maskValue;
+			maskVal.innerText = maskValue;
+		}
+
+		// 点击关闭 + 取消关闭
+		function closeBgSetDialog() {
+			// 初始化设置
+			initBackground(() => {
+				backgroundFormDiv.style.display = "none";
+				bgDiv.style.display = "block";
+			});
+		}
+		bgImgCancelBtn.onclick = closeBgSetDialog;
+		bgImgCloseBtn.onclick = closeBgSetDialog;
+
+		// 重置
+		bgImgClearBtn.onclick = function () {
+			var confirmResult = confirm("是否删除背景图片，重置相关参数?");
+			if (confirmResult) {
+				bgImgClearBtn.innerText = "重置中...";
+				var clearcomplete1 = false;
+				var clearcomplete2 = false;
+				var clearcomplete3 = false;
+				remove(table_Settings, table_Settings_Key_Bg_ImgBase64, () => {
+					t_imgBase64 = '';
+					setListBackgroundImage(t_imgBase64);
+					clearcomplete1 = true;
+				}, () => { clearcomplete1 = true; });
+				remove(table_Settings, table_Settings_Key_Bg_Opacity, () => {
+					t_opacity = defaultSetting_Opacity;
+					setListOpacity(t_opacity);
+					setDialogOpacityValue(t_opacity);
+					clearcomplete2 = true;
+				}, () => { clearcomplete2 = true; });
+				remove(table_Settings, table_Settings_Key_Bg_Mask, () => {
+					t_mask = defaultSetting_Mask;
+					setListMask(t_mask);
+					setDialogMaskValue(t_mask);
+					clearcomplete3 = true;
+				}, () => { clearcomplete3 = true; });
+
+				var tClear = setInterval(() => {
+					if (clearcomplete1 && clearcomplete2 && clearcomplete3) {
+						tClear && clearInterval(tClear);
+						setDbSyncMessage(sync_setting_backgroundImage);
+						setTimeout(function () {
+							bgImgClearBtn.innerText = "重置成功";
+						}, 250);
+						setTimeout(function () {
+							bgImgClearBtn.innerText = "重置 !";
+						}, 500);
+					}
+				}, 50);
+			}
+		}
+
+		// 保存
+		bgImgSaveBtn.onclick = function () {
+			bgImgSaveBtn.innerText = "保存中...";
+
+			// 存储
+			var complete1 = false;
+			var complete2 = false;
+			var complete3 = false;
+
+			// 背景图片
+			var settings_Key_Bg_ImgBase64 = {
+				item: table_Settings_Key_Bg_ImgBase64,
+				value: t_imgBase64
+			};
+			update(table_Settings, settings_Key_Bg_ImgBase64, () => { complete1 = true }, () => { complete1 = true });
+
+			// 不透明度
+			var settings_Key_Bg_Opacity = {
+				item: table_Settings_Key_Bg_Opacity,
+				value: t_opacity
+			};
+			update(table_Settings, settings_Key_Bg_Opacity, () => { complete2 = true }, () => { complete2 = true });
+
+			// 遮罩浓度
+			var settings_Key_Bg_Mask = {
+				item: table_Settings_Key_Bg_Mask,
+				value: t_mask
+			};
+			update(table_Settings, settings_Key_Bg_Mask, () => { complete3 = true }, () => { complete3 = true });
+
+			var t = setInterval(() => {
+				if (complete1 && complete2 && complete3) {
+					t && clearInterval(t);
+					setDbSyncMessage(sync_setting_backgroundImage);
+					setTimeout(function () {
+						bgImgSaveBtn.innerText = "保存成功";
+					}, 250);
+					setTimeout(function () {
+						bgImgSaveBtn.innerText = "保存 √";
+					}, 500);
+				}
+			}, 50);
+		}
+
+		//#endregion
+
+		//#region step6.2.listFontColor.js 列表字体颜色设置
+
+		var defaultFrontParentColor;
+		var defaultFrontSubColor;
+		var defaultFrontSubHoverColor;
+
+		func_eh_ex(() => {
+			defaultFrontParentColor = defaultFontParentColor_EH;
+			defaultFrontSubColor = defaultFontSubColor_EH;
+			defaultFrontSubHoverColor = defaultFontSubHoverColor_EH;
+		}, () => {
+			defaultFrontParentColor = defaultFontParentColor_EX;
+			defaultFrontSubColor = defaultFontSubColor_EX;
+			defaultFrontSubHoverColor = defaultFontSubHoverColor_EX;
+		});
+
+		var t_parentColor = defaultFrontParentColor;
+		var t_subColor = defaultFrontSubColor;
+		var t_subHoverColor = defaultFrontSubHoverColor;
+
+		// 头部按钮点击事件
+		var frontDiv = document.getElementById("div_fontColor_btn");
+		frontDiv.onclick = function () {
+			listFontColorDiv.style.display = "block";
+			frontDiv.style.display = "none";
+		}
+
+		// 读取存储的值，读取完成前，隐藏头部按钮，读取完成在显示出来
+		function initFontColor(func_compelete) {
+			frontDiv.style.display = "none";
+			var completeParentColor = false;
+			var completeSubColor = false;
+			var completeSubHoverColor = false;
+			read(table_Settings, table_Settings_key_FrontPageFontParentColor, result => {
+				if (result && result.value) {
+					t_parentColor = result.value;
+				} else {
+					t_parentColor = defaultFrontParentColor;
+				}
+				// 设置父级颜色
+				setFontPrentColor(t_parentColor);
+				setDialogFontParentColor(t_parentColor);
+				completeParentColor = true;
+			}, () => { completeParentColor = true; });
+			read(table_Settings, table_Settings_key_FrontPageFontSubColor, result => {
+				if (result && result.value) {
+					t_subColor = result.value;
+				} else {
+					t_subColor = defaultFrontSubColor;
+				}
+				// 设置子级颜色
+				setFontSubColor(t_subColor);
+				setDialogFontSubColor(t_subColor);
+				completeSubColor = true;
+			}, () => { completeSubColor = true; });
+			read(table_Settings, table_Settings_Key_FrontPageFontSubHoverColor, result => {
+				if (result && result.value) {
+					t_subHoverColor = result.value;
+				} else {
+					t_subHoverColor = defaultFrontSubHoverColor;
+				}
+				// 设置子级悬浮颜色
+				setFontSubHoverColor(t_subHoverColor);
+				setDialogFontSubHoverColor(t_subHoverColor);
+				completeSubHoverColor = true;
+			}, () => { completeSubHoverColor = true; });
+
+			var tInit = setInterval(() => {
+				if (completeParentColor && completeSubColor && completeSubHoverColor) {
+					tInit && clearInterval(tInit);
+					frontDiv.style.display = "block";
+					func_compelete();
+				}
+			}, 50);
+		}
+
+		initFontColor(() => { });
+
+		// 父级颜色
+		listFontColorParentColor.onchange = function () {
+			t_parentColor = listFontColorParentColor.value;
+			listFontColorParentColorVal.innerText = t_parentColor;
+			setFontPrentColor(t_parentColor);
+		}
+		// 设置父级颜色效果
+		function setFontPrentColor(parentColor) {
+			var style = document.createElement('style');
+			style.innerHTML = `#div_ee8413b2 #category_all_div h4, 
+    #div_ee8413b2 #favorites_list h4, 
+    #div_ee8413b2 #favorites_edit_list h4
+    {color:${parentColor}}
+    
+    #div_ee8413b2 #category_all_div .category_extend, 
+    #div_ee8413b2 #favorites_list .favorite_extend, 
+    #div_ee8413b2 #favorites_edit_list .favorite_edit_clear
+    {border: 1px solid ${parentColor}; color:${parentColor};}`;
+			document.head.appendChild(style);
+		}
+
+		// 设置弹窗页父级颜色数值
+		function setDialogFontParentColor(parentColor) {
+			listFontColorParentColor.value = parentColor;
+			listFontColorParentColorVal.innerText = parentColor;
+		}
+
+		// 子级颜色
+		listFontColorSubColor.onchange = function () {
+			t_subColor = listFontColorSubColor.value;
+			listFontColorSubColorVal.innerText = t_subColor;
+			setFontSubColor(t_subColor);
+		}
+		// 设置子级颜色效果
+		function setFontSubColor(subColor) {
+			var style = document.createElement('style');
+			style.innerHTML = `#div_ee8413b2 #category_all_div .c_item, 
+    #div_ee8413b2 #category_favorites_div #favorites_list .c_item
+    {color:${subColor}}`;
+			document.head.appendChild(style);
+		}
+		// 设置弹窗页子级颜色数值
+		function setDialogFontSubColor(subColor) {
+			listFontColorSubColor.value = subColor;
+			listFontColorSubColorVal.innerText = subColor;
+		}
+
+		// 子级悬浮颜色
+		listFontColorSubHoverColor.onchange = function () {
+			t_subHoverColor = listFontColorSubHoverColor.value;
+			listFontColorSubHoverColorVal.innerText = t_subHoverColor;
+			setFontSubHoverColor(t_subHoverColor);
+		}
+		// 设置子级悬浮颜色效果
+		function setFontSubHoverColor(subHoverColor) {
+			var style = document.createElement('style');
+			style.innerHTML = `#div_ee8413b2 #category_all_div .c_item:hover,
+    #div_ee8413b2 #category_favorites_div #favorites_list .c_item:hover
+    {color:${subHoverColor}}`;
+			document.head.appendChild(style);
+		}
+
+		// 设置弹窗页子级悬浮颜色数值
+		function setDialogFontSubHoverColor(subHoverColor) {
+			listFontColorSubHoverColor.value = subHoverColor;
+			listFontColorSubHoverColorVal.innerText = subHoverColor;
+		}
+
+		// 点击关闭 + 取消关闭
+		function closeFontColorDialog() {
+			// 初始化设置
+			initFontColor(() => {
+				listFontColorDiv.style.display = "none";
+				frontDiv.style.display = "block";
+			});
+		}
+		listFontColorCancelBtn.onclick = closeFontColorDialog;
+		listFontColorCloseBtn.onclick = closeFontColorDialog;
+
+
+		// 重置
+		listFontColorClearBtn.onclick = function () {
+			var confirmResult = confirm("是否重置字体颜色相关参数?");
+			if (confirmResult) {
+				listFontColorClearBtn.innerText = "重置中...";
+				var clearcomplete1 = false;
+				var clearcomplete2 = false;
+				var clearcomplete3 = false;
+				remove(table_Settings, table_Settings_key_FrontPageFontParentColor, () => {
+					t_parentColor = defaultFrontParentColor;
+					setFontPrentColor(t_parentColor);
+					setDialogFontParentColor(t_parentColor);
+					clearcomplete1 = true;
+				}, () => { clearcomplete1 = true; });
+				remove(table_Settings, table_Settings_key_FrontPageFontSubColor, () => {
+					t_subColor = defaultFrontSubColor;
+					setFontSubColor(t_subColor);
+					setDialogFontSubColor(t_subColor);
+					clearcomplete2 = true;
+				}, () => { clearcomplete2 = true; });
+				remove(table_Settings, table_Settings_Key_FrontPageFontSubHoverColor, () => {
+					t_subHoverColor = defaultFrontSubHoverColor;
+					setFontSubHoverColor(t_subHoverColor);
+					setDialogFontSubHoverColor(t_subHoverColor);
+					clearcomplete3 = true;
+				}, () => { clearcomplete3 = true; });
+
+				var tClear = setInterval(() => {
+					if (clearcomplete1 && clearcomplete2 && clearcomplete3) {
+						tClear && clearInterval(tClear);
+						setDbSyncMessage(sync_setting_frontPageFontColor);
+						setTimeout(function () {
+							listFontColorClearBtn.innerText = "重置成功";
+						}, 250);
+						setTimeout(function () {
+							listFontColorClearBtn.innerText = "重置 !";
+						}, 500);
+					}
+				}, 50);
+			}
+		}
+
+		// 保存
+		listFontColorSaveBtn.onclick = function () {
+			listFontColorSaveBtn.innerText = "保存中...";
+
+			// 存储
+			var complete1 = false;
+			var complete2 = false;
+			var complete3 = false;
+
+			// 父级颜色
+			var settings_Key_FrontPageFontParentColor = {
+				item: table_Settings_key_FrontPageFontParentColor,
+				value: t_parentColor
+			};
+			update(table_Settings, settings_Key_FrontPageFontParentColor, () => { complete1 = true; }, () => { complete1 = true; });
+
+			// 子级颜色
+			var settings_Key_FrontPageFontSubColor = {
+				item: table_Settings_key_FrontPageFontSubColor,
+				value: t_subColor
+			};
+			update(table_Settings, settings_Key_FrontPageFontSubColor, () => { complete2 = true; }, () => { complete2 = true; });
+
+			// 子级悬浮颜色
+			var settings_Key_FrontPageFontSubHoverColor = {
+				item: table_Settings_Key_FrontPageFontSubHoverColor,
+				value: t_subHoverColor
+			};
+			update(table_Settings, settings_Key_FrontPageFontSubHoverColor, () => { complete3 = true; }, () => { complete3 = true; });
+
+			var t = setInterval(() => {
+				if (complete1 && complete2 && complete3) {
+					t && clearInterval(t);
+					setDbSyncMessage(sync_setting_frontPageFontColor);
+					setTimeout(function () {
+						listFontColorSaveBtn.innerText = "保存成功";
+					}, 250);
+					setTimeout(function () {
+						listFontColorSaveBtn.innerText = "保存 √";
+					}, 500);
+				}
+			}, 50);
+		}
+
+		//#endregion
+
+
+		//#region step6.3.drugDialog.js 鼠标拖拽设置对话框
+
+		var x = 0, y = 0;
+		var left = 0, top = 0;
+		var isMouseDown = false;
+
+		var x1 = 0, y1 = 0;
+		var left1 = 0, top1 = 0;
+		var isMouseDown1 = false;
+
+		// 背景对话框 鼠标按下事件
+		backgroundFormTop.onmousedown = function (e) {
+			// 获取坐标xy
+			x = e.clientX;
+			y = e.clientY;
+
+			// 获取左和头的偏移量
+			left = backgroundFormDiv.offsetLeft;
+			top = backgroundFormDiv.offsetTop;
+
+			// 鼠标按下
+			isMouseDown = true;
+		}
+
+		// 字体对话框 鼠标按下事件
+		listFontColorTop.onmousedown = function (e) {
+			//获取坐标x1,y1
+			x1 = e.clientX;
+			y1 = e.clientY;
+
+			// 获取左和头的偏移量
+			left1 = listFontColorDiv.offsetLeft;
+			top1 = listFontColorDiv.offsetTop;
+
+			// 鼠标按下
+			isMouseDown1 = true;
+		}
+
+		// 鼠标移动
+		window.onmousemove = function (e) {
+			if (isMouseDown) {
+				var nLeft = e.clientX - (x - left);
+				var nTop = e.clientY - (y - top);
+				backgroundFormDiv.style.left = `${nLeft}px`;
+				backgroundFormDiv.style.top = `${nTop}px`;
+			}
+
+			if (isMouseDown1) {
+				var nLeft1 = e.clientX - (x1 - left1);
+				var nTop1 = e.clientY - (y1 - top1);
+				listFontColorDiv.style.left = `${nLeft1}px`;
+				listFontColorDiv.style.top = `${nTop1}px`;
+			}
+		}
+
+		// 鼠标抬起
+		backgroundFormTop.onmouseup = function () {
+			isMouseDown = false;
+		}
+
+		listFontColorDiv.onmouseup = function () {
+			isMouseDown1 = false;
+		}
+
+		//#endregion
+
 
 		var searchItemDict = {}; // 搜索框字典
 
@@ -104,9 +677,10 @@ function mainPageCategory() {
 
 			// 展开动画
 			if (isDisplay) {
-				slideDown(displayDiv, 537, 15, function () {
-					searchCloseBtn.style.display = "block";
-				});
+				slideDown(displayDiv, 537, 15, function () { });
+
+				searchCloseBtn.style.display = "block";
+				slideRight(searchCloseBtn, 20, 10, function () { });
 			}
 		};
 
@@ -129,8 +703,10 @@ function mainPageCategory() {
 
 			// 展开动画
 			if (isDisplay) {
-				slideDown(displayDiv, 537, 15, function () {
-					searchCloseBtn.style.display = "block";
+				slideDown(displayDiv, 537, 15, function () { });
+
+				searchCloseBtn.style.display = "block";
+				slideRight(searchCloseBtn, 20, 10, function () {
 				});
 			}
 		}
@@ -141,23 +717,19 @@ function mainPageCategory() {
 			categoryFavoritesBtn.classList.remove("chooseTab");
 			allCategoryBtn.classList.remove("chooseTab");
 
+			slideLeft(searchCloseBtn, 10, function () {
+				searchCloseBtn.style.display = "none";
+			});
+
 			// 折叠动画
 			slideUp(displayDiv, 15, function () {
 				categoryDisplayDiv.style.display = "none";
 				favoritesDisplayDiv.style.display = "none";
-				searchCloseBtn.style.display = "none";
 			});
 		}
 
 
-		// 搜索按钮
-
-		// 加入收藏按钮
-
-
-
 		//#endregion
-
 
 		// indexedDB 数据存储初始化
 		tagDataDispose(() => {
@@ -171,17 +743,33 @@ function mainPageCategory() {
 
 			// 折叠方法
 			function extendDiv(extendSpans, extendArray) {
-				for (const i in extendSpans) {
-					if (Object.hasOwnProperty.call(extendSpans, i)) {
-						const span = extendSpans[i];
-						var parent_en = span.dataset.category;
-						if (extendArray.indexOf(parent_en) != -1) {
-							span.innerText = "+";
+				if (extendArray.length > 0) {
+					for (const i in extendSpans) {
+						if (Object.hasOwnProperty.call(extendSpans, i)) {
+							const span = extendSpans[i];
+							var parent_en = span.dataset.category;
 							var itemDiv = document.getElementById("items_div_" + parent_en);
-							itemDiv.style.display = "none";
+							if (extendArray.indexOf(parent_en) != -1) {
+								span.innerText = "+";
+								itemDiv.style.display = "none";
+							} else {
+								span.innerText = "-";
+								itemDiv.style.display = "block";
+							}
+						}
+					}
+				} else {
+					for (const i in extendSpans) {
+						if (Object.hasOwnProperty.call(extendSpans, i)) {
+							const span = extendSpans[i];
+							var parent_en = span.dataset.category;
+							var itemDiv = document.getElementById("items_div_" + parent_en);
+							span.innerText = "-";
+							itemDiv.style.display = "block";
 						}
 					}
 				}
+
 			}
 
 			// 单个折叠、展开
@@ -220,7 +808,10 @@ function mainPageCategory() {
 									item: table_Settings_key_CategoryList_Extend,
 									value: extendData
 								}
-								update(table_Settings, setting_categoryExtend, () => { }, () => { });
+								update(table_Settings, setting_categoryExtend, () => {
+									// 通知折叠
+									setDbSyncMessage(sync_categoryList_Extend);
+								}, () => { });
 
 							}, () => { });
 						});
@@ -277,42 +868,45 @@ function mainPageCategory() {
 				}
 			}
 
-
-			// 恋物列表模块
-			read(table_Settings, table_Settings_key_FetishList_Html, result => {
-				// 生成 html 代码
-				categoryList_fetishDiv.innerHTML = result.value;
-				// 读取折叠并设置
-				var extendSpans = document.getElementsByClassName("category_extend_fetish");
-				read(table_Settings, table_Settings_key_CategoryList_Extend, extendResult => {
-					if (extendResult) {
-						extendDiv(extendSpans, extendResult.value);
-					}
+			// 初始化本地列表页面
+			function categoryInit() {
+				// 恋物列表模块
+				read(table_Settings, table_Settings_key_FetishList_Html, result => {
+					// 生成 html 代码
+					categoryList_fetishDiv.innerHTML = result.value;
+					// 读取折叠并设置
+					var extendSpans = document.getElementsByClassName("category_extend_fetish");
+					read(table_Settings, table_Settings_key_CategoryList_Extend, extendResult => {
+						if (extendResult) {
+							extendDiv(extendSpans, extendResult.value);
+						}
+					}, () => { });
+					// 单个展开折叠
+					parentItemsExtend(extendSpans);
+					// 具体小项点击加入搜索框
+					var cItems = document.getElementsByClassName("c_item_fetish");
+					cItemJsonSearchInput(cItems);
 				}, () => { });
-				// 单个展开折叠
-				parentItemsExtend(extendSpans);
-				// 具体小项点击加入搜索框
-				var cItems = document.getElementsByClassName("c_item_fetish");
-				cItemJsonSearchInput(cItems);
-			}, () => { });
 
-			// EhTag列表模块
-			read(table_Settings, table_Settings_key_EhTag_Html, result => {
-				// 生成 html 代码
-				categoryList_ehTagDiv.innerHTML = result.value;
-				// 读取折叠并设置
-				var extendSpans = document.getElementsByClassName("category_extend_ehTag");
-				read(table_Settings, table_Settings_key_CategoryList_Extend, extendResult => {
-					if (extendResult) {
-						extendDiv(extendSpans, extendResult.value);
-					}
+				// EhTag列表模块
+				read(table_Settings, table_Settings_key_EhTag_Html, result => {
+					// 生成 html 代码
+					categoryList_ehTagDiv.innerHTML = result.value;
+					// 读取折叠并设置
+					var extendSpans = document.getElementsByClassName("category_extend_ehTag");
+					read(table_Settings, table_Settings_key_CategoryList_Extend, extendResult => {
+						if (extendResult) {
+							extendDiv(extendSpans, extendResult.value);
+						}
+					}, () => { });
+					// 单个展开折叠
+					parentItemsExtend(extendSpans);
+					// 具体小项点击加入搜索框
+					var cItems = document.getElementsByClassName("c_item_ehTag");
+					cItemJsonSearchInput(cItems);
 				}, () => { });
-				// 单个展开折叠
-				parentItemsExtend(extendSpans);
-				// 具体小项点击加入搜索框
-				var cItems = document.getElementsByClassName("c_item_ehTag");
-				cItemJsonSearchInput(cItems);
-			}, () => { });
+			}
+			categoryInit();
 
 			// 全部折叠
 			allCollapse.onclick = function () {
@@ -349,7 +943,10 @@ function mainPageCategory() {
 							item: table_Settings_key_CategoryList_Extend,
 							value: allParentDataArray
 						}
-						update(table_Settings, setting_categoryExtend, () => { }, () => { });
+						update(table_Settings, setting_categoryExtend, () => {
+							// 通知折叠
+							setDbSyncMessage(sync_categoryList_Extend);
+						}, () => { });
 					}, () => { });
 				}, () => { });
 			}
@@ -377,7 +974,10 @@ function mainPageCategory() {
 				}
 
 				// 清空折叠记录
-				remove(table_Settings, table_Settings_key_CategoryList_Extend, () => { }, () => { });
+				remove(table_Settings, table_Settings_key_CategoryList_Extend, () => {
+					// 通知折叠
+					setDbSyncMessage(sync_categoryList_Extend);
+				}, () => { });
 			}
 
 			//#endregion
@@ -813,7 +1413,7 @@ function mainPageCategory() {
 						}
 
 						// 添加子级
-						favoritesListHtml += `<span class="c_item c_item_favorite" title="[${item.sub_en}] ${item.sub_desc}" data-item="${item.sub_en}" 
+						favoritesListHtml += `<span class="c_item c_item_favorite" title="${item.sub_zh} [${item.sub_en}]&#10;&#13;${item.sub_desc}" data-item="${item.sub_en}" 
                         data-parent_en="${item.parent_en}" data-parent_zh="${item.parent_zh}" data-sub_desc="${item.sub_desc}">${item.sub_zh}</span>`;
 					}
 				}
@@ -865,18 +1465,31 @@ function mainPageCategory() {
 			// 设置收藏折叠
 			function setFavoriteExpend() {
 				read(table_Settings, table_Settings_Key_FavoriteList_Extend, result => {
+					var expendBtns = document.getElementsByClassName("favorite_extend");
 					if (result && result.value) {
 						var expendArray = result.value;
-						var expendBtns = document.getElementsByClassName("favorite_extend");
 						for (const i in expendBtns) {
 							if (Object.hasOwnProperty.call(expendBtns, i)) {
 								const btn = expendBtns[i];
 								var category = btn.dataset.category;
+								var itemDiv = document.getElementById("favorite_div_" + category);
 								if (expendArray.indexOf(category) != -1) {
 									btn.innerText = "+";
-									var itemDiv = document.getElementById("favorite_div_" + category);
 									itemDiv.style.display = "none";
+								} else {
+									btn.innerText = "-";
+									itemDiv.style.display = "block";
 								}
+							}
+						}
+					} else {
+						for (const i in expendBtns) {
+							if (Object.hasOwnProperty.call(expendBtns, i)) {
+								const btn = expendBtns[i];
+								btn.innerText = "-";
+								var category = btn.dataset.category;
+								var itemDiv = document.getElementById("favorite_div_" + category);
+								itemDiv.style.display = "block";
 							}
 						}
 					}
@@ -949,7 +1562,10 @@ function mainPageCategory() {
 									value: expendData
 								};
 
-								update(table_Settings, settings_favoriteList_extend, () => { }, () => { });
+								update(table_Settings, settings_favoriteList_extend, () => {
+									// 通知折叠
+									setDbSyncMessage(sync_favoriteList_Extend);
+								}, () => { });
 
 							}, () => { });
 						});
@@ -1043,7 +1659,7 @@ function mainPageCategory() {
 									newFavoriteItem.dataset.parent_en = item.parent_en;
 									newFavoriteItem.dataset.parent_zh = item.parent_zh;
 									newFavoriteItem.dataset.sub_desc = item.sub_desc;
-									newFavoriteItem.title = `[${item.sub_en}] ${item.sub_desc}`;
+									newFavoriteItem.title = `${item.sub_zh} [${item.sub_en}]\n\n${item.sub_desc}`;
 
 									var itemText = document.createTextNode(item.sub_zh);
 									newFavoriteItem.appendChild(itemText);
@@ -1149,7 +1765,10 @@ function mainPageCategory() {
 				}
 
 				// 清空折叠记录
-				remove(table_Settings, table_Settings_Key_FavoriteList_Extend, () => { }, () => { });
+				remove(table_Settings, table_Settings_Key_FavoriteList_Extend, () => {
+					// 通知折叠
+					setDbSyncMessage(sync_favoriteList_Extend);
+				}, () => { });
 			}
 
 			// 全部折叠
@@ -1182,7 +1801,10 @@ function mainPageCategory() {
 					value: favoriteParentData
 				};
 
-				update(table_Settings, settings_favoriteList_extend, () => { }, () => { });
+				update(table_Settings, settings_favoriteList_extend, () => {
+					// 通知折叠
+					setDbSyncMessage(sync_favoriteList_Extend);
+				}, () => { });
 			}
 
 			// 编辑
@@ -1593,35 +2215,40 @@ function mainPageCategory() {
 
 			//#endregion
 
-
 			//#region step5.1.dataSync.frontPage.js 首页数据同步
 
 			window.onstorage = function (e) {
-				// try {
-				console.log(e);
-				switch (e.newValue) {
-					case sync_oldSearchTopVisible:
-						updatePageTopVisible();
-						break;
-					case sync_categoryList:
-						updatePageCategoryList();
-						break;
-					case sync_favoriteList:
-						updatePageFavoriteList();
-						break;
-					case sync_categoryList_Extend:
-						updatePageCategoryListExtend();
-						break;
-					case sync_favoriteList_Extend:
-						updatePageFavoriteListExtend();
-						break;
-					case sync_googleTranslate_frontPage_title:
-						updateGoogleTranslateFrontPageTitle();
-						break;
+				try {
+					console.log(e);
+					switch (e.newValue) {
+						case sync_oldSearchTopVisible:
+							updatePageTopVisible();
+							break;
+						case sync_categoryList:
+							updatePageCategoryList();
+							break;
+						case sync_favoriteList:
+							updatePageFavoriteList();
+							break;
+						case sync_categoryList_Extend:
+							updatePageCategoryListExtend();
+							break;
+						case sync_favoriteList_Extend:
+							updatePageFavoriteListExtend();
+							break;
+						case sync_googleTranslate_frontPage_title:
+							updateGoogleTranslateFrontPageTitle();
+							break;
+						case sync_setting_backgroundImage:
+							updateSettingBackgroundImage();
+							break;
+						case sync_setting_frontPageFontColor:
+							updateSettingFrontPageFontColor();
+							break;
+					}
+				} catch (error) {
+					removeDbSyncMessage();
 				}
-				// } catch (error) {
-				//     removeDbSyncMessage();
-				// }
 			}
 
 			// 头部搜索折叠隐藏
@@ -1629,18 +2256,15 @@ function mainPageCategory() {
 				indexDbInit(() => {
 					read(table_Settings, table_Settings_key_OldSearchDiv_Visible, result => {
 						var searchBoxDiv = document.getElementById("searchbox");
-						var hiddenOldDiv = document.getElementById("div_old_hidden_btn");
-						var showOldDiv = document.getElementById("div_old_show_btn");
+						var topVisibleDiv = document.getElementById("div_top_visible_btn");
 						if (result && result.value) {
 							// 显示
 							searchBoxDiv.children[0].style.display = "block";
-							hiddenOldDiv.style.display = "block";
-							showOldDiv.style.display = "none";
+							topVisibleDiv.innerText = "头部隐藏";
 						} else {
 							// 隐藏
 							searchBoxDiv.children[0].style.display = "none";
-							hiddenOldDiv.style.display = "none";
-							showOldDiv.style.display = "block";
+							topVisibleDiv.innerText = "头部显示";
 						}
 						removeDbSyncMessage();
 					}, () => {
@@ -1651,8 +2275,10 @@ function mainPageCategory() {
 
 			// 本地列表更新
 			function updatePageCategoryList() {
-
-				removeDbSyncMessage();
+				indexDbInit(() => {
+					categoryInit();
+					removeDbSyncMessage();
+				});
 			}
 
 			// 本地收藏更新
@@ -1696,14 +2322,43 @@ function mainPageCategory() {
 
 			// 本地列表折叠更新
 			function updatePageCategoryListExtend() {
+				indexDbInit(() => {
+					var ehTagExtendSpans = document.getElementsByClassName("category_extend_ehTag");
+					read(table_Settings, table_Settings_key_CategoryList_Extend, extendResult => {
+						if (extendResult) {
+							extendDiv(ehTagExtendSpans, extendResult.value);
+						} else {
+							extendDiv(ehTagExtendSpans, []);
+						};
+					}, () => {
+					});
 
-				removeDbSyncMessage();
+					var fetishExtendSpans = document.getElementsByClassName("category_extend_fetish");
+					read(table_Settings, table_Settings_key_CategoryList_Extend, extendResult => {
+						if (extendResult) {
+							extendDiv(fetishExtendSpans, extendResult.value);
+						} else {
+							extendDiv(fetishExtendSpans, []);
+						}
+					}, () => { });
+
+					// 清理通知
+					removeDbSyncMessage();
+				});
 			}
 
 			// 本地收藏折叠更新
 			function updatePageFavoriteListExtend() {
-
-				removeDbSyncMessage();
+				indexDbInit(() => {
+					// 退出编辑模式
+					editToFavorite();
+					// 设置收藏折叠
+					setFavoriteExpend();
+					// 更新按钮状态
+					updateFavoriteListBtnStatus();
+					// 清理通知
+					removeDbSyncMessage();
+				});
 			}
 
 			// 首页谷歌翻译标题
@@ -1716,6 +2371,30 @@ function mainPageCategory() {
 						removeDbSyncMessage();
 					}, () => { removeDbSyncMessage(); });
 				})
+			}
+
+			// 首页背景图片更新
+			function updateSettingBackgroundImage() {
+				indexDbInit(() => {
+					initBackground(() => {
+						if (backgroundFormDiv.style.display == "block") {
+							var bgDiv = document.getElementById("div_background_btn");
+							bgDiv.style.display = "none";
+						}
+					});
+				});
+			}
+
+			// 首页列表字体颜色
+			function updateSettingFrontPageFontColor() {
+				indexDbInit(() => {
+					initFontColor(() => {
+						if (listFontColorDiv.style.display == "block") {
+							var frontDiv = document.getElementById("div_fontColor_btn");
+							frontDiv.style.display = "none";
+						}
+					});
+				});
 			}
 
 			//#endregion
@@ -1731,6 +2410,9 @@ function mainPageCategory() {
 function detailPage() {
 	// 初始化用户配置信息
 	initUserSettings(() => {
+		// 头部数据更新
+		detailDataUpdate();
+
 		// 保证完整数据
 		tagDataDispose(() => {
 			detailPageTranslate();

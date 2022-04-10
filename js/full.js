@@ -1402,7 +1402,8 @@ func_eh_ex(() => {
 	}
 	
 	table .gt,
-	table .gtl {
+	table .gtl,
+	table .gtw {
 		height: 18px;
 		line-height: 18px;
 	}`;
@@ -2252,7 +2253,8 @@ func_eh_ex(() => {
 	}
 	
 	table .gt,
-	table .gtl {
+	table .gtl,
+	table .gtw {
 		height: 18px;
 		line-height: 18px;
 	}`;
@@ -2260,7 +2262,6 @@ func_eh_ex(() => {
 });
 
 //#endregion
-
 
 
 //#region step1.2.translateTopMenu.js 头部菜单翻译
@@ -2823,6 +2824,7 @@ function tagDataDispose(func_compelete) {
                                     detailDictCount++;
                                 }
                             }
+							continue;
                         }
 
                         // 过滤重新分类
@@ -4330,7 +4332,7 @@ function detailPageFavorite() {
 //#region main.js
 // 主方法
 
-//TODO 标记可用浏览器版本
+// 标记可用浏览器版本
 // 头部菜单汉化
 topMenuTranslateZh();
 
@@ -4352,7 +4354,7 @@ function mainPageCategory() {
 	// 首页框架搭建
 	frontPageHtml();
 
-	// TODO 消息通知提前，只要数据改变就应该马上通知，方便快速其他页面快速反应	
+	// 消息通知提前，只要数据改变就应该马上通知，方便快速其他页面快速反应	
 	// 初始化用户配置信息
 	initUserSettings(() => {
 		console.log('初始化用户配置信息完毕');
