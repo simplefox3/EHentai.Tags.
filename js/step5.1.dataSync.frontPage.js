@@ -24,6 +24,10 @@ window.onstorage = function (e) {
             break;
         case sync_setting_backgroundImage:
             updateSettingBackgroundImage();
+            break;
+        case sync_setting_frontPageFontColor:
+            updateSettingFrontPageFontColor();
+            break;
     }
     // } catch (error) {
     //     removeDbSyncMessage();
@@ -161,7 +165,19 @@ function updateSettingBackgroundImage() {
                 bgDiv.style.display = "none";
             }
         });
-    })
+    });
+}
+
+// 首页列表字体颜色
+function updateSettingFrontPageFontColor() {
+    indexDbInit(() => {
+        initFontColor(() => {
+            if (listFontColorDiv.style.display == "block") {
+                var frontDiv = document.getElementById("div_fontColor_btn");
+                frontDiv.style.display = "none";
+            }
+        });
+    });
 }
 
 //#endregion

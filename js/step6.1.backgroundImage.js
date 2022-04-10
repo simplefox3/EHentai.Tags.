@@ -64,38 +64,6 @@ function initBackground(func_compelete) {
 
 initBackground(() => { });
 
-
-// div头部拖拽事件
-var x = 0, y = 0;
-var left = 0, top = 0;
-var isMouseDown = false;
-// 鼠标按下事件
-backgroundFormTop.onmousedown = function (e) {
-    // 获取坐标xy
-    x = e.clientX;
-    y = e.clientY;
-
-    // 获取左和头的偏移量
-    left = backgroundFormDiv.offsetLeft;
-    top = backgroundFormDiv.offsetTop;
-
-    // 鼠标按下
-    isMouseDown = true;
-}
-// 鼠标移动
-window.onmousemove = function (e) {
-    if (!isMouseDown) return;
-    // 计算偏移量
-    var nLeft = e.clientX - (x - left);
-    var nTop = e.clientY - (y - top);
-    backgroundFormDiv.style.left = `${nLeft}px`;
-    backgroundFormDiv.style.top = `${nTop}px`;
-}
-// 鼠标抬起
-backgroundFormTop.onmouseup = function () {
-    isMouseDown = false;
-}
-
 // 点击上传图片
 bgUploadBtn.onclick = function () {
     bgUploadFile.click();

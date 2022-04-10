@@ -7,6 +7,13 @@ function frontPageTopStyleStep01() {
     searchBoxDiv.style.width = "auto";
     searchBoxDiv.style.border = "0";
 
+    // 头部添加字体颜色按钮
+    var fontColorDiv = document.createElement("div");
+    fontColorDiv.id = "div_fontColor_btn";
+    var fontColorText = document.createTextNode("字体颜色");
+    fontColorDiv.appendChild(fontColorText);
+    searchBoxDiv.appendChild(fontColorDiv);
+
     // 头部添加背景图片按钮
     var bgDiv = document.createElement("div");
     bgDiv.id = "div_background_btn";

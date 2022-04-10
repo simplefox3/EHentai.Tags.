@@ -141,7 +141,9 @@ const table_Settings_Key_FavoriteList_Extend = "f_favoriteListExtend";
 const table_Settings_Key_Bg_ImgBase64 = "f_bgImageBase64";
 const table_Settings_Key_Bg_Opacity = "f_bgOpacity";
 const table_Settings_Key_Bg_Mask = "f_bgMask";
-
+const table_Settings_key_FrontPageFontParentColor = "f_frontPageFontParentColor";
+const table_Settings_key_FrontPageFontSubColor = "f_frontPageFontSubColor";
+const table_Settings_Key_FrontPageFontSubHoverColor = "f_frontPageFontSubHoverColor";
 
 // fetishList 全部类别 - 父子信息表
 const table_fetishListSubItems = "t_fetishListSubItems";
@@ -176,6 +178,7 @@ const sync_favoriteList_Extend = 'syncFavoriteListExtend';
 const sync_googleTranslate_frontPage_title = 'syncGoogleTranslateFrontPageTitle';
 const sync_googleTranslate_detailPage_title = 'syncGoogleTranslateDetailPageTitle';
 const sync_setting_backgroundImage = 'syncSettingBackgroundImage';
+const sync_setting_frontPageFontColor = 'syncSettingFrontPageFontColor';
 
 //#endregion
 
@@ -186,6 +189,18 @@ const defaultSetting_Opacity = 0.5;
 // 默认遮罩浓度
 const defaultSetting_Mask = 0;
 
+// 默认父级字体颜色 - ex
+const defaultFontParentColor_EX = "#fadfc0";
+// 默认子级字体颜色 - ex
+const defaultFontSubColor_EX = "#f5cc9c";
+// 默认子级悬浮颜色 - ex
+const defaultFontSubHoverColor_EX = "#ffd700";
+// 默认父级字体颜色 - eh
+const defaultFontParentColor_EH = "#5c0d11";
+// 默认子级字体颜色 - eh
+const defaultFontSubColor_EH = "#5c0d11";
+// 默认子级悬浮颜色 - eh
+const defaultFontSubHoverColor_EH = "#ff4500";
 
 
 //#endregion

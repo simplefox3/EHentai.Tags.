@@ -368,7 +368,9 @@ const table_Settings_Key_FavoriteList_Extend = "f_favoriteListExtend";
 const table_Settings_Key_Bg_ImgBase64 = "f_bgImageBase64";
 const table_Settings_Key_Bg_Opacity = "f_bgOpacity";
 const table_Settings_Key_Bg_Mask = "f_bgMask";
-
+const table_Settings_key_FrontPageFontParentColor = "f_frontPageFontParentColor";
+const table_Settings_key_FrontPageFontSubColor = "f_frontPageFontSubColor";
+const table_Settings_Key_FrontPageFontSubHoverColor = "f_frontPageFontSubHoverColor";
 
 // fetishList 全部类别 - 父子信息表
 const table_fetishListSubItems = "t_fetishListSubItems";
@@ -403,6 +405,7 @@ const sync_favoriteList_Extend = 'syncFavoriteListExtend';
 const sync_googleTranslate_frontPage_title = 'syncGoogleTranslateFrontPageTitle';
 const sync_googleTranslate_detailPage_title = 'syncGoogleTranslateDetailPageTitle';
 const sync_setting_backgroundImage = 'syncSettingBackgroundImage';
+const sync_setting_frontPageFontColor = 'syncSettingFrontPageFontColor';
 
 //#endregion
 
@@ -413,6 +416,18 @@ const defaultSetting_Opacity = 0.5;
 // 默认遮罩浓度
 const defaultSetting_Mask = 0;
 
+// 默认父级字体颜色 - ex
+const defaultFontParentColor_EX = "#fadfc0";
+// 默认子级字体颜色 - ex
+const defaultFontSubColor_EX = "#f5cc9c";
+// 默认子级悬浮颜色 - ex
+const defaultFontSubHoverColor_EX = "#ffd700";
+// 默认父级字体颜色 - eh
+const defaultFontParentColor_EH = "#5c0d11";
+// 默认子级字体颜色 - eh
+const defaultFontSubColor_EH = "#5c0d11";
+// 默认子级悬浮颜色 - eh
+const defaultFontSubHoverColor_EH = "#ff4500";
 
 
 //#endregion
@@ -517,7 +532,7 @@ function func_eh_ex(ehFunc, exFunc) {
 
 //#endregion
 
-//#region step1.styleInject.js 样式注入
+//#region step1.1.styleInject.js 样式注入
 func_eh_ex(() => {
 	// e-hentai 样式 eh.css
 	const category_style = `#searchbox #div_background_btn,
@@ -1136,7 +1151,8 @@ func_eh_ex(() => {
 	styleInject(category_style);
 }, () => {
 	// exhentai 样式 ex.css
-	const category_style = `#searchbox #div_background_btn,
+	const category_style = `#searchbox #div_fontColor_btn,
+	#searchbox #div_background_btn,
 	#searchbox #div_top_visible_btn {
 		position: absolute;
 		top: 0;
@@ -1150,15 +1166,19 @@ func_eh_ex(() => {
 		font-size: 10px;
 	}
 	
+	#searchbox #div_fontColor_btn {
+		right: 140px;
+	}
+	
 	#searchbox #div_background_btn {
 		right: 70px;
-		border-left: 1px solid black;
 	}
 	
 	#searchbox #div_top_visible_btn {
 		right: 0;
 	}
 	
+	#searchbox #div_fontColor_btn:hover,
 	#searchbox #div_background_btn:hover,
 	#searchbox #div_top_visible_btn:hover {
 		background-color: #43464e;
@@ -1197,20 +1217,31 @@ func_eh_ex(() => {
 	
 	}
 	
-	#div_ee8413b2 #background_form {
+	
+	#div_ee8413b2 #background_form,
+	#div_ee8413b2 #frontPage_listFontColor {
 		border: 1px solid black;
 		width: 340px;
 		height: 270px;
 		background-color: #40454b;
 		position: absolute;
-		left: calc(50% - 170px);
-		top: 100px;
 		color: white;
 		padding-top: 30px;
 		display: none;
 	}
 	
-	#div_ee8413b2 #background_form #background_form_top {
+	#div_ee8413b2 #background_form {
+		left: calc(50% - 170px);
+		top: 100px;
+	}
+	
+	#div_ee8413b2 #frontPage_listFontColor {
+		left: calc(50% - 255px);
+		top: 190px;
+	}
+	
+	#div_ee8413b2 #background_form #background_form_top,
+	#div_ee8413b2 #frontPage_listFontColor #frontPage_listFontColor_top {
 		height: 30px;
 		width: 310px;
 		position: absolute;
@@ -1222,7 +1253,8 @@ func_eh_ex(() => {
 		display: none;
 	}
 	
-	#div_ee8413b2 #background_form #background_form_close {
+	#div_ee8413b2 #background_form #background_form_close,
+	#div_ee8413b2 #frontPage_listFontColor #frontPage_listFontColor_close {
 		float: right;
 		cursor: pointer;
 		text-align: center;
@@ -1237,12 +1269,14 @@ func_eh_ex(() => {
 		font-size: 17px;
 	}
 	
-	#div_ee8413b2 #background_form .background_form_item {
+	#div_ee8413b2 #background_form .background_form_item,
+	#div_ee8413b2 #frontPage_listFontColor .frontPage_listFontColor_item {
 		padding: 15px 0 15px 40px;
 		min-height: 30px;
 	}
 	
-	#div_ee8413b2 #background_form label {
+	#div_ee8413b2 #background_form label,
+	#div_ee8413b2 #frontPage_listFontColor label {
 		float: left;
 		height: 30px;
 		line-height: 30px;
@@ -1252,7 +1286,10 @@ func_eh_ex(() => {
 	#div_ee8413b2 #background_form #bgImg_save_btn,
 	#div_ee8413b2 #background_form #bgImg_clear_btn,
 	#div_ee8413b2 #background_form #bgImg_cancel_btn,
-	#div_ee8413b2 #background_form #bgUploadBtn {
+	#div_ee8413b2 #background_form #bgUploadBtn,
+	#div_ee8413b2 #frontPage_listFontColor #listFontColor_clear_btn,
+	#div_ee8413b2 #frontPage_listFontColor #listFontColor_save_btn,
+	#div_ee8413b2 #frontPage_listFontColor #listFontColor_cancel_btn {
 		border: 1px solid black;
 		width: 60px;
 		height: 30px;
@@ -1264,30 +1301,36 @@ func_eh_ex(() => {
 		float: left;
 	}
 	
-	#div_ee8413b2 #background_form #bgImg_clear_btn {
+	#div_ee8413b2 #background_form #bgImg_clear_btn,
+	#div_ee8413b2 #frontPage_listFontColor #listFontColor_clear_btn {
 		background-color: darkred;
 		margin-right: 8px;
 	}
 	
-	#div_ee8413b2 #background_form #bgImg_clear_btn:hover {
+	#div_ee8413b2 #background_form #bgImg_clear_btn:hover,
+	#div_ee8413b2 #frontPage_listFontColor #listFontColor_clear_btn:hover {
 		background-color: red;
 	}
 	
 	
-	#div_ee8413b2 #background_form #bgImg_save_btn {
+	#div_ee8413b2 #background_form #bgImg_save_btn,
+	#div_ee8413b2 #frontPage_listFontColor #listFontColor_save_btn {
 		background-color: darkgreen;
 		margin-right: 8px;
 	}
 	
-	#div_ee8413b2 #background_form #bgImg_save_btn:hover {
+	#div_ee8413b2 #background_form #bgImg_save_btn:hover,
+	#div_ee8413b2 #frontPage_listFontColor #listFontColor_save_btn:hover {
 		background-color: green;
 	}
 	
-	#div_ee8413b2 #background_form #bgImg_cancel_btn {
+	#div_ee8413b2 #background_form #bgImg_cancel_btn,
+	#div_ee8413b2 #frontPage_listFontColor #listFontColor_cancel_btn {
 		background-color: darkslateblue;
 	}
 	
-	#div_ee8413b2 #background_form #bgImg_cancel_btn:hover {
+	#div_ee8413b2 #background_form #bgImg_cancel_btn:hover,
+	#div_ee8413b2 #frontPage_listFontColor #bgImg_cancel_btn:hover {
 		background-color: slateblue;
 	}
 	
@@ -1297,27 +1340,70 @@ func_eh_ex(() => {
 	}
 	
 	#div_ee8413b2 #background_form #background_form_close:hover,
-	#div_ee8413b2 #background_form #bgUploadBtn:hover {
+	#div_ee8413b2 #background_form #bgUploadBtn:hover,
+	#div_ee8413b2 #frontPage_listFontColor #frontPage_listFontColor_close:hover {
 		background-color: #4e4e4e;
+	}
+	
+	#div_ee8413b2 #background_form #opacity_range,
+	#div_ee8413b2 #background_form #mask_range,
+	#div_ee8413b2 #frontPage_listFontColor #parent_color,
+	#div_ee8413b2 #frontPage_listFontColor #sub_color,
+	#div_ee8413b2 #frontPage_listFontColor #sub_hover_color {
+		float: left;
 	}
 	
 	#div_ee8413b2 #background_form #opacity_range,
 	#div_ee8413b2 #background_form #mask_range {
 		height: 27px;
 		margin-right: 10px;
-		float: left;
+	}
+	
+	#div_ee8413b2 #frontPage_listFontColor #parent_color,
+	#div_ee8413b2 #frontPage_listFontColor #sub_color,
+	#div_ee8413b2 #frontPage_listFontColor #sub_hover_color {
+		height: 30px;
+		width: 80px;
+		margin: 0 12px;
 	}
 	
 	#div_ee8413b2 #background_form #opacity_val,
-	#div_ee8413b2 #background_form #mask_val {
+	#div_ee8413b2 #background_form #mask_val,
+	#div_ee8413b2 #frontPage_listFontColor #parent_color_val,
+	#div_ee8413b2 #frontPage_listFontColor #sub_color_val,
+	#div_ee8413b2 #frontPage_listFontColor #sub_hover_color_val {
 		float: left;
-		width: 50px;
 		height: 30px;
 		line-height: 30px;
 		text-align: center;
 	}
 	
+	#div_ee8413b2 #background_form #opacity_val,
+	#div_ee8413b2 #background_form #mask_val {
+		width: 50px;
+	}
 	
+	#div_ee8413b2 #frontPage_listFontColor #parent_color_val,
+	#div_ee8413b2 #frontPage_listFontColor #sub_color_val,
+	#div_ee8413b2 #frontPage_listFontColor #sub_hover_color_val {
+		width: 80px;
+	}
+	
+	
+	#div_ee8413b2 #background_form #background_form_close,
+	#div_ee8413b2 #background_form #bgImg_save_btn,
+	#div_ee8413b2 #background_form #bgImg_clear_btn,
+	#div_ee8413b2 #background_form #bgImg_cancel_btn,
+	#div_ee8413b2 #background_form #bgUploadBtn,
+	#div_ee8413b2 #frontPage_listFontColor #frontPage_listFontColor_close,
+	#div_ee8413b2 #frontPage_listFontColor #listFontColor_clear_btn,
+	#div_ee8413b2 #frontPage_listFontColor #listFontColor_save_btn,
+	#div_ee8413b2 #frontPage_listFontColor #listFontColor_cancel_btn {
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
 	
 	#div_ee8413b2 #search_wrapper {
 		width: calc(100% - 20px);
@@ -1540,7 +1626,7 @@ func_eh_ex(() => {
 	#div_ee8413b2 #favorites_list .favorite_extend,
 	#div_ee8413b2 #favorites_edit_list .favorite_edit_clear {
 		margin: 3px 0 3px 10px;
-		border: 1px solid #F5CC9C;
+		border: 1px solid #fadfc0;
 		width: 13px;
 		display: inline-block;
 		text-align: center;
@@ -1548,7 +1634,7 @@ func_eh_ex(() => {
 		height: 13px;
 		font-size: 12px;
 		cursor: pointer;
-		color: #F5CC9C;
+		color: #fadfc0;
 	}
 	
 	.chooseTab {
@@ -1889,8 +1975,6 @@ func_eh_ex(() => {
 });
 
 //#endregion
-
-
 
 
 //#region step1.2.translateTopMenu.js 头部菜单翻译
@@ -3070,6 +3154,13 @@ function frontPageTopStyleStep01() {
 	searchBoxDiv.style.width = "auto";
 	searchBoxDiv.style.border = "0";
 
+	// 头部添加字体颜色按钮
+	var fontColorDiv = document.createElement("div");
+	fontColorDiv.id = "div_fontColor_btn";
+	var fontColorText = document.createTextNode("字体颜色");
+	fontColorDiv.appendChild(fontColorText);
+	searchBoxDiv.appendChild(fontColorDiv);
+
 	// 头部添加背景图片按钮
 	var bgDiv = document.createElement("div");
 	bgDiv.id = "div_background_btn";
@@ -3140,6 +3231,7 @@ function frontPageTopStyleStep02() {
 }
 
 //#endregion
+
 
 
 //#region step3.3.frontPageHtml.js 首页HTML 
@@ -3215,6 +3307,30 @@ const category_html = `
 		<div id="bgImg_clear_btn">重置 !</div>
 		<div id="bgImg_save_btn">保存 √</div>
 		<div id="bgImg_cancel_btn">取消 X</div>
+	</div>
+</div>
+<div id="frontPage_listFontColor">
+	<div id="frontPage_listFontColor_top"></div>
+	<div id="frontPage_listFontColor_close" title="关闭">X</div>
+	<div class="frontPage_listFontColor_item">
+		<label>父级字体颜色：</label>
+		<input type="color" id="parent_color" />
+		<div id="parent_color_val">#000000</div>
+	</div>
+	<div class="frontPage_listFontColor_item">
+		<label>子级字体颜色：</label>
+		<input type="color" id="sub_color" />
+		<div id="sub_color_val">#000000</div>
+	</div>
+	<div class="frontPage_listFontColor_item">
+		<label>子级悬浮颜色：</label>
+		<input type="color" id="sub_hover_color" />
+		<div id="sub_hover_color_val">#000000</div>
+	</div>
+	<div class="frontPage_listFontColor_item">
+		<div id="listFontColor_clear_btn">重置 !</div>
+		<div id="listFontColor_save_btn">保存 √</div>
+		<div id="listFontColor_cancel_btn">取消 X</div>
 	</div>
 </div>
 `;
@@ -3962,7 +4078,7 @@ function mainPageCategory() {
 		var favoriteRecover = document.getElementById("favorites_recover");
 		var favoriteUploadFiles = document.getElementById("favorite_upload_files");
 
-		// 背景图片包裹层div、头部div、上传图片按钮、不透明度、不透明度值、模糊程度、模糊程度值、保存按钮、取消按钮、关闭按钮
+		// 背景图片包裹层div、头部div、上传图片按钮、不透明度、不透明度值、模糊程度、模糊程度值、重置按钮、保存按钮、取消按钮、关闭按钮
 		var backgroundFormDiv = document.getElementById("background_form");
 		var backgroundFormTop = document.getElementById("background_form_top");
 		var bgUploadBtn = document.getElementById("bgUploadBtn");
@@ -3975,7 +4091,23 @@ function mainPageCategory() {
 		var bgImgSaveBtn = document.getElementById("bgImg_save_btn");
 		var bgImgCancelBtn = document.getElementById("bgImg_cancel_btn");
 		var bgImgCloseBtn = document.getElementById("background_form_close");
+
+		// 列表字体颜色包裹层div、头部div、父级字体调色板、父级字体颜色、子级字体调色板、子级字体颜色、子级悬浮调色板、子级悬浮颜色、重置按钮、保存按钮、取消按钮、关闭按钮
+		var listFontColorDiv = document.getElementById("frontPage_listFontColor");
+		var listFontColorTop = document.getElementById("frontPage_listFontColor_top");
+		var listFontColorParentColor = document.getElementById("parent_color");
+		var listFontColorParentColorVal = document.getElementById("parent_color_val");
+		var listFontColorSubColor = document.getElementById("sub_color");
+		var listFontColorSubColorVal = document.getElementById("sub_color_val");
+		var listFontColorSubHoverColor = document.getElementById("sub_hover_color");
+		var listFontColorSubHoverColorVal = document.getElementById("sub_hover_color_val");
+		var listFontColorClearBtn = document.getElementById("listFontColor_clear_btn");
+		var listFontColorSaveBtn = document.getElementById("listFontColor_save_btn");
+		var listFontColorCancelBtn = document.getElementById("listFontColor_cancel_btn");
+		var listFontColorCloseBtn = document.getElementById("frontPage_listFontColor_close");
 		//#endregion
+
+
 
 		//#region step6.1.backgroundImage.js 设置背景图片
 
@@ -4042,38 +4174,6 @@ function mainPageCategory() {
 		}
 
 		initBackground(() => { });
-
-
-		// div头部拖拽事件
-		var x = 0, y = 0;
-		var left = 0, top = 0;
-		var isMouseDown = false;
-		// 鼠标按下事件
-		backgroundFormTop.onmousedown = function (e) {
-			// 获取坐标xy
-			x = e.clientX;
-			y = e.clientY;
-
-			// 获取左和头的偏移量
-			left = backgroundFormDiv.offsetLeft;
-			top = backgroundFormDiv.offsetTop;
-
-			// 鼠标按下
-			isMouseDown = true;
-		}
-		// 鼠标移动
-		window.onmousemove = function (e) {
-			if (!isMouseDown) return;
-			// 计算偏移量
-			var nLeft = e.clientX - (x - left);
-			var nTop = e.clientY - (y - top);
-			backgroundFormDiv.style.left = `${nLeft}px`;
-			backgroundFormDiv.style.top = `${nTop}px`;
-		}
-		// 鼠标抬起
-		backgroundFormTop.onmouseup = function () {
-			isMouseDown = false;
-		}
 
 		// 点击上传图片
 		bgUploadBtn.onclick = function () {
@@ -4236,6 +4336,319 @@ function mainPageCategory() {
 					}, 500);
 				}
 			}, 50);
+		}
+
+		//#endregion
+
+		//#region step6.2.listFontColor.js 列表字体颜色设置
+
+		var defaultFrontParentColor;
+		var defaultFrontSubColor;
+		var defaultFrontSubHoverColor;
+
+		func_eh_ex(() => {
+			defaultFrontParentColor = defaultFontParentColor_EH;
+			defaultFrontSubColor = defaultFontSubColor_EH;
+			defaultFrontSubHoverColor = defaultFontSubHoverColor_EH;
+		}, () => {
+			defaultFrontParentColor = defaultFontParentColor_EX;
+			defaultFrontSubColor = defaultFontSubColor_EX;
+			defaultFrontSubHoverColor = defaultFontSubHoverColor_EX;
+		});
+
+		var t_parentColor = defaultFrontParentColor;
+		var t_subColor = defaultFrontSubColor;
+		var t_subHoverColor = defaultFrontSubHoverColor;
+
+		// 头部按钮点击事件
+		var frontDiv = document.getElementById("div_fontColor_btn");
+		frontDiv.onclick = function () {
+			listFontColorDiv.style.display = "block";
+			frontDiv.style.display = "none";
+		}
+
+		// 读取存储的值，读取完成前，隐藏头部按钮，读取完成在显示出来
+		function initFontColor(func_compelete) {
+			frontDiv.style.display = "none";
+			var completeParentColor = false;
+			var completeSubColor = false;
+			var completeSubHoverColor = false;
+			read(table_Settings, table_Settings_key_FrontPageFontParentColor, result => {
+				if (result && result.value) {
+					t_parentColor = result.value;
+				} else {
+					t_parentColor = defaultFrontParentColor;
+				}
+				// 设置父级颜色
+				setFontPrentColor(t_parentColor);
+				setDialogFontParentColor(t_parentColor);
+				completeParentColor = true;
+			}, () => { completeParentColor = true; });
+			read(table_Settings, table_Settings_key_FrontPageFontSubColor, result => {
+				if (result && result.value) {
+					t_subColor = result.value;
+				} else {
+					t_subColor = defaultFrontSubColor;
+				}
+				// 设置子级颜色
+				setFontSubColor(t_subColor);
+				setDialogFontSubColor(t_subColor);
+				completeSubColor = true;
+			}, () => { completeSubColor = true; });
+			read(table_Settings, table_Settings_Key_FrontPageFontSubHoverColor, result => {
+				if (result && result.value) {
+					t_subHoverColor = result.value;
+				} else {
+					t_subHoverColor = defaultFrontSubHoverColor;
+				}
+				// 设置子级悬浮颜色
+				setFontSubHoverColor(t_subHoverColor);
+				setDialogFontSubHoverColor(t_subHoverColor);
+				completeSubHoverColor = true;
+			}, () => { completeSubHoverColor = true; });
+
+			var tInit = setInterval(() => {
+				if (completeParentColor && completeSubColor && completeSubHoverColor) {
+					tInit && clearInterval(tInit);
+					frontDiv.style.display = "block";
+					func_compelete();
+				}
+			}, 50);
+		}
+
+		initFontColor(() => { });
+
+		// 父级颜色
+		listFontColorParentColor.onchange = function () {
+			t_parentColor = listFontColorParentColor.value;
+			listFontColorParentColorVal.innerText = t_parentColor;
+			setFontPrentColor(t_parentColor);
+		}
+		// 设置父级颜色效果
+		function setFontPrentColor(parentColor) {
+			var style = document.createElement('style');
+			style.innerHTML = `#div_ee8413b2 #category_all_div h4, 
+    #div_ee8413b2 #favorites_list h4, 
+    #div_ee8413b2 #favorites_edit_list h4
+    {color:${parentColor}}
+    
+    #div_ee8413b2 #category_all_div .category_extend, 
+    #div_ee8413b2 #favorites_list .favorite_extend, 
+    #div_ee8413b2 #favorites_edit_list .favorite_edit_clear
+    {border: 1px solid ${parentColor}; color:${parentColor};}`;
+			document.head.appendChild(style);
+		}
+
+		// 设置弹窗页父级颜色数值
+		function setDialogFontParentColor(parentColor) {
+			listFontColorParentColor.value = parentColor;
+			listFontColorParentColorVal.innerText = parentColor;
+		}
+
+		// 子级颜色
+		listFontColorSubColor.onchange = function () {
+			t_subColor = listFontColorSubColor.value;
+			listFontColorSubColorVal.innerText = t_subColor;
+			setFontSubColor(t_subColor);
+		}
+		// 设置子级颜色效果
+		function setFontSubColor(subColor) {
+			var style = document.createElement('style');
+			style.innerHTML = `#div_ee8413b2 #category_all_div .c_item, 
+    #div_ee8413b2 #category_favorites_div #favorites_list .c_item
+    {color:${subColor}}`;
+			document.head.appendChild(style);
+		}
+		// 设置弹窗页子级颜色数值
+		function setDialogFontSubColor(subColor) {
+			listFontColorSubColor.value = subColor;
+			listFontColorSubColorVal.innerText = subColor;
+		}
+
+		// 子级悬浮颜色
+		listFontColorSubHoverColor.onchange = function () {
+			t_subHoverColor = listFontColorSubHoverColor.value;
+			listFontColorSubHoverColorVal.innerText = t_subHoverColor;
+			setFontSubHoverColor(t_subHoverColor);
+		}
+		// 设置子级悬浮颜色效果
+		function setFontSubHoverColor(subHoverColor) {
+			var style = document.createElement('style');
+			style.innerHTML = `#div_ee8413b2 #category_all_div .c_item:hover,
+    #div_ee8413b2 #category_favorites_div #favorites_list .c_item:hover
+    {color:${subHoverColor}}`;
+			document.head.appendChild(style);
+		}
+
+		// 设置弹窗页子级悬浮颜色数值
+		function setDialogFontSubHoverColor(subHoverColor) {
+			listFontColorSubHoverColor.value = subHoverColor;
+			listFontColorSubHoverColorVal.innerText = subHoverColor;
+		}
+
+		// 点击关闭 + 取消关闭
+		function closeFontColorDialog() {
+			// 初始化设置
+			initFontColor(() => {
+				listFontColorDiv.style.display = "none";
+				frontDiv.style.display = "block";
+			});
+		}
+		listFontColorCancelBtn.onclick = closeFontColorDialog;
+		listFontColorCloseBtn.onclick = closeFontColorDialog;
+
+
+		// 重置
+		listFontColorClearBtn.onclick = function () {
+			var confirmResult = confirm("是否重置字体颜色相关参数?");
+			if (confirmResult) {
+				listFontColorClearBtn.innerText = "重置中...";
+				var clearcomplete1 = false;
+				var clearcomplete2 = false;
+				var clearcomplete3 = false;
+				remove(table_Settings, table_Settings_key_FrontPageFontParentColor, () => {
+					t_parentColor = defaultFrontParentColor;
+					setFontPrentColor(t_parentColor);
+					setDialogFontParentColor(t_parentColor);
+					clearcomplete1 = true;
+				}, () => { clearcomplete1 = true; });
+				remove(table_Settings, table_Settings_key_FrontPageFontSubColor, () => {
+					t_subColor = defaultFrontSubColor;
+					setFontSubColor(t_subColor);
+					setDialogFontSubColor(t_subColor);
+					clearcomplete2 = true;
+				}, () => { clearcomplete2 = true; });
+				remove(table_Settings, table_Settings_Key_FrontPageFontSubHoverColor, () => {
+					t_subHoverColor = defaultFrontSubHoverColor;
+					setFontSubHoverColor(t_subHoverColor);
+					setDialogFontSubHoverColor(t_subHoverColor);
+					clearcomplete3 = true;
+				}, () => { clearcomplete3 = true; });
+
+				var tClear = setInterval(() => {
+					if (clearcomplete1 && clearcomplete2 && clearcomplete3) {
+						tClear && clearInterval(tClear);
+						setDbSyncMessage(sync_setting_frontPageFontColor);
+						setTimeout(function () {
+							listFontColorClearBtn.innerText = "重置成功";
+						}, 250);
+						setTimeout(function () {
+							listFontColorClearBtn.innerText = "重置 !";
+						}, 500);
+					}
+				}, 50);
+			}
+		}
+
+		// 保存
+		listFontColorSaveBtn.onclick = function () {
+			listFontColorSaveBtn.innerText = "保存中...";
+
+			// 存储
+			var complete1 = false;
+			var complete2 = false;
+			var complete3 = false;
+
+			// 父级颜色
+			var settings_Key_FrontPageFontParentColor = {
+				item: table_Settings_key_FrontPageFontParentColor,
+				value: t_parentColor
+			};
+			update(table_Settings, settings_Key_FrontPageFontParentColor, () => { complete1 = true; }, () => { complete1 = true; });
+
+			// 子级颜色
+			var settings_Key_FrontPageFontSubColor = {
+				item: table_Settings_key_FrontPageFontSubColor,
+				value: t_subColor
+			};
+			update(table_Settings, settings_Key_FrontPageFontSubColor, () => { complete2 = true; }, () => { complete2 = true; });
+
+			// 子级悬浮颜色
+			var settings_Key_FrontPageFontSubHoverColor = {
+				item: table_Settings_Key_FrontPageFontSubHoverColor,
+				value: t_subHoverColor
+			};
+			update(table_Settings, settings_Key_FrontPageFontSubHoverColor, () => { complete3 = true; }, () => { complete3 = true; });
+
+			var t = setInterval(() => {
+				if (complete1 && complete2 && complete3) {
+					t && clearInterval(t);
+					setDbSyncMessage(sync_setting_frontPageFontColor);
+					setTimeout(function () {
+						listFontColorSaveBtn.innerText = "保存成功";
+					}, 250);
+					setTimeout(function () {
+						listFontColorSaveBtn.innerText = "保存 √";
+					}, 500);
+				}
+			}, 50);
+		}
+
+		//#endregion
+
+
+		//#region step6.3.drugDialog.js 鼠标拖拽设置对话框
+
+		var x = 0, y = 0;
+		var left = 0, top = 0;
+		var isMouseDown = false;
+
+		var x1 = 0, y1 = 0;
+		var left1 = 0, top1 = 0;
+		var isMouseDown1 = false;
+
+		// 背景对话框 鼠标按下事件
+		backgroundFormTop.onmousedown = function (e) {
+			// 获取坐标xy
+			x = e.clientX;
+			y = e.clientY;
+
+			// 获取左和头的偏移量
+			left = backgroundFormDiv.offsetLeft;
+			top = backgroundFormDiv.offsetTop;
+
+			// 鼠标按下
+			isMouseDown = true;
+		}
+
+		// 字体对话框 鼠标按下事件
+		listFontColorTop.onmousedown = function (e) {
+			//获取坐标x1,y1
+			x1 = e.clientX;
+			y1 = e.clientY;
+
+			// 获取左和头的偏移量
+			left1 = listFontColorDiv.offsetLeft;
+			top1 = listFontColorDiv.offsetTop;
+
+			// 鼠标按下
+			isMouseDown1 = true;
+		}
+
+		// 鼠标移动
+		window.onmousemove = function (e) {
+			if (isMouseDown) {
+				var nLeft = e.clientX - (x - left);
+				var nTop = e.clientY - (y - top);
+				backgroundFormDiv.style.left = `${nLeft}px`;
+				backgroundFormDiv.style.top = `${nTop}px`;
+			}
+
+			if (isMouseDown1) {
+				var nLeft1 = e.clientX - (x1 - left1);
+				var nTop1 = e.clientY - (y1 - top1);
+				listFontColorDiv.style.left = `${nLeft1}px`;
+				listFontColorDiv.style.top = `${nTop1}px`;
+			}
+		}
+
+		// 鼠标抬起
+		backgroundFormTop.onmouseup = function () {
+			isMouseDown = false;
+		}
+
+		listFontColorDiv.onmouseup = function () {
+			isMouseDown1 = false;
 		}
 
 		//#endregion
@@ -5827,6 +6240,10 @@ function mainPageCategory() {
 						break;
 					case sync_setting_backgroundImage:
 						updateSettingBackgroundImage();
+						break;
+					case sync_setting_frontPageFontColor:
+						updateSettingFrontPageFontColor();
+						break;
 				}
 				// } catch (error) {
 				//     removeDbSyncMessage();
@@ -5964,11 +6381,22 @@ function mainPageCategory() {
 							bgDiv.style.display = "none";
 						}
 					});
-				})
+				});
+			}
+
+			// 首页列表字体颜色
+			function updateSettingFrontPageFontColor() {
+				indexDbInit(() => {
+					initFontColor(() => {
+						if (listFontColorDiv.style.display == "block") {
+							var frontDiv = document.getElementById("div_fontColor_btn");
+							frontDiv.style.display = "none";
+						}
+					});
+				});
 			}
 
 			//#endregion
-
 
 		});
 	});

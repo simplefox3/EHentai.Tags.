@@ -73,6 +73,30 @@ const category_html = `
 		<div id="bgImg_cancel_btn">取消 X</div>
 	</div>
 </div>
+<div id="frontPage_listFontColor">
+	<div id="frontPage_listFontColor_top"></div>
+	<div id="frontPage_listFontColor_close" title="关闭">X</div>
+	<div class="frontPage_listFontColor_item">
+		<label>父级字体颜色：</label>
+		<input type="color" id="parent_color" />
+		<div id="parent_color_val">#000000</div>
+	</div>
+	<div class="frontPage_listFontColor_item">
+		<label>子级字体颜色：</label>
+		<input type="color" id="sub_color" />
+		<div id="sub_color_val">#000000</div>
+	</div>
+	<div class="frontPage_listFontColor_item">
+		<label>子级悬浮颜色：</label>
+		<input type="color" id="sub_hover_color" />
+		<div id="sub_hover_color_val">#000000</div>
+	</div>
+	<div class="frontPage_listFontColor_item">
+		<div id="listFontColor_clear_btn">重置 !</div>
+		<div id="listFontColor_save_btn">保存 √</div>
+		<div id="listFontColor_cancel_btn">取消 X</div>
+	</div>
+</div>
 `;
 
 function frontPageHtml() {

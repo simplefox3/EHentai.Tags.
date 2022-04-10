@@ -47,7 +47,7 @@ var favoriteExport = document.getElementById("favorites_export");
 var favoriteRecover = document.getElementById("favorites_recover");
 var favoriteUploadFiles = document.getElementById("favorite_upload_files");
 
-// 背景图片包裹层div、头部div、上传图片按钮、不透明度、不透明度值、模糊程度、模糊程度值、保存按钮、取消按钮、关闭按钮
+// 背景图片包裹层div、头部div、上传图片按钮、不透明度、不透明度值、模糊程度、模糊程度值、重置按钮、保存按钮、取消按钮、关闭按钮
 var backgroundFormDiv = document.getElementById("background_form");
 var backgroundFormTop = document.getElementById("background_form_top");
 var bgUploadBtn = document.getElementById("bgUploadBtn");
@@ -60,4 +60,18 @@ var bgImgClearBtn = document.getElementById("bgImg_clear_btn");
 var bgImgSaveBtn = document.getElementById("bgImg_save_btn");
 var bgImgCancelBtn = document.getElementById("bgImg_cancel_btn");
 var bgImgCloseBtn = document.getElementById("background_form_close");
+
+// 列表字体颜色包裹层div、头部div、父级字体调色板、父级字体颜色、子级字体调色板、子级字体颜色、子级悬浮调色板、子级悬浮颜色、重置按钮、保存按钮、取消按钮、关闭按钮
+var listFontColorDiv = document.getElementById("frontPage_listFontColor");
+var listFontColorTop = document.getElementById("frontPage_listFontColor_top");
+var listFontColorParentColor = document.getElementById("parent_color");
+var listFontColorParentColorVal = document.getElementById("parent_color_val");
+var listFontColorSubColor = document.getElementById("sub_color");
+var listFontColorSubColorVal = document.getElementById("sub_color_val");
+var listFontColorSubHoverColor = document.getElementById("sub_hover_color");
+var listFontColorSubHoverColorVal = document.getElementById("sub_hover_color_val");
+var listFontColorClearBtn = document.getElementById("listFontColor_clear_btn");
+var listFontColorSaveBtn = document.getElementById("listFontColor_save_btn");
+var listFontColorCancelBtn = document.getElementById("listFontColor_cancel_btn");
+var listFontColorCloseBtn = document.getElementById("frontPage_listFontColor_close");
 //#endregion
