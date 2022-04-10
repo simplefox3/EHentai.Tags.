@@ -336,7 +336,7 @@ function fetishListDataInit(update_func, local_func) {
                         item: table_Settings_key_FetishListVersion,
                         value: version
                     };
-                    update(table_Settings, settings_fetishList_version, () => { }, error => { });
+                    update(table_Settings, settings_fetishList_version, () => { }, () => { });
                 });
             } else {
                 local_func();
@@ -360,7 +360,7 @@ function ehTagDataInit(update_func, local_func) {
                         item: table_Settings_key_EhTagVersion,
                         value: version
                     };
-                    update(table_Settings, settings_ehTag_version, () => { }, error => { });
+                    update(table_Settings, settings_ehTag_version, () => { }, () => { });
                 });
             } else {
                 local_func();
@@ -443,12 +443,18 @@ function tagDataDispose(func_compelete) {
             var complete4 = false;
             var complete5 = false;
             var complete6 = false;
+            var complete7 = false;
 
             var isFetishUpdate = false;
             var isEhTagUpdate = false;
 
+            var updateDataTip = document.getElementById("data_update_tip");
+
             // 获取并更新恋物的父子项、父级信息，详情页父级信息
             fetishListDataInit(newData => {
+
+                // 显示更新提示
+                updateDataTip.style.display = "block";
 
                 // 存在更新
                 isFetishUpdate = true;
@@ -464,7 +470,7 @@ function tagDataDispose(func_compelete) {
                     item: table_Settings_key_FetishList_ParentEnArray,
                     value: newData.parent_en_array
                 };
-                update(table_Settings, settings_fetishList_parentEnArray, () => { complete2 = true; }, error => { complete2 = true; });
+                update(table_Settings, settings_fetishList_parentEnArray, () => { complete2 = true; }, () => { complete2 = true; });
 
                 // 生成页面 html，并保存
                 var categoryFetishListHtml = ``;
@@ -495,7 +501,7 @@ function tagDataDispose(func_compelete) {
                     item: table_Settings_key_FetishList_Html,
                     value: categoryFetishListHtml
                 };
-                update(table_Settings, settings_fetish_html, () => { complete3 = true; }, error => { complete3 = true; });
+                update(table_Settings, settings_fetish_html, () => { complete3 = true; }, () => { complete3 = true; });
 
             }, () => {
                 complete1 = true;
@@ -504,11 +510,14 @@ function tagDataDispose(func_compelete) {
                 console.log('fet', "没有新数据");
             });
 
-            // TODO 如果 EhTag 版本更新，这尝试更新用户收藏（可能没有翻译过的标签进行翻译）
+            // 如果 EhTag 版本更新，这尝试更新用户收藏（可能没有翻译过的标签进行翻译）
             // 获取并更新EhTag的父子项、父级信息
             ehTagDataInit(newData => {
                 // 更新本地数据库 indexDB
                 // 存储完成之后，更新版本号
+
+                // 显示更新提示
+                updateDataTip.style.display = "block";
 
                 // 存在更新
                 isEhTagUpdate = true;
@@ -568,7 +577,7 @@ function tagDataDispose(func_compelete) {
 
                 // 批量添加父子项
                 batchAdd(table_EhTagSubItems, table_EhTagSubItems_key, psDict, psDictCount, () => {
-                    complete4 = true;
+                    complete5 = true;
                     console.log("批量添加完成");
                 });
 
@@ -578,7 +587,7 @@ function tagDataDispose(func_compelete) {
                 };
 
                 // 更新父级信息
-                update(table_Settings, settings_ehTag_parentEnArray, () => { complete5 = true; }, error => { complete5 = true; });
+                update(table_Settings, settings_ehTag_parentEnArray, () => { complete6 = true; }, () => { complete6 = true; });
 
                 // 生成页面 html
                 var categoryEhTagHtml = ``;
@@ -609,12 +618,13 @@ function tagDataDispose(func_compelete) {
                     item: table_Settings_key_EhTag_Html,
                     value: categoryEhTagHtml
                 };
-                update(table_Settings, settings_ehTag_html, () => { complete6 = true; }, error => { complete6 = true; });
+                update(table_Settings, settings_ehTag_html, () => { complete7 = true; }, () => { complete7 = true; });
 
             }, () => {
                 complete4 = true;
                 complete5 = true;
                 complete6 = true;
+                complete7 = true;
                 console.log('ehtag', "没有新数据");
             });
 
@@ -726,11 +736,30 @@ function tagDataDispose(func_compelete) {
             }
 
             var t = setInterval(() => {
-                if (complete1 && complete2 && complete3 && complete4 && complete5 && complete6) {
+                if (isFetishUpdate || isEhTagUpdate) {
+                    var step = 0;
+                    if (complete1) step += 10;
+                    if (complete2) step += 10;
+                    if (complete3) step += 10;
+                    if (complete4) step += 10;
+                    if (complete5) step += 10;
+                    if (complete6) step += 10;
+                    if (complete7) step += 10;
+                    updateDataTip.innerText = `词库升级中 ${step}%`;
+                }
+
+                if (complete1 && complete2 && complete3 && complete4 && complete5 && complete6 && complete7) {
                     t && clearInterval(t);
                     if (isFetishUpdate || isEhTagUpdate) {
                         // 通知本地列表更新
                         setDbSyncMessage(sync_categoryList);
+
+                        // 隐藏更新提示
+                        updateDataTip.innerText = `词库升级完成`;
+                        setTimeout(() => {
+                            updateDataTip.style.display = "none";
+                            updateDataTip.innerText = "词库升级中...";
+                        }, 500);
                     }
 
                     // 看看是否需要更新用户收藏表数据
@@ -808,7 +837,7 @@ function initUserSettings(func_compelete) {
             update(table_Settings, settings_translateCategoryFontPage, () => {
                 removeGoogleTranslateCategoryFontPage();
                 complete3 = true;
-            }, error => { complete3 = true; });
+            }, () => { complete3 = true; });
         } else {
             complete3 = true;
         }
@@ -824,7 +853,7 @@ function initUserSettings(func_compelete) {
             update(table_Settings, settings_translateCategoryDetailPage, () => {
                 removeGoogleTranslateCategoryDetail();
                 complete4 = true;
-            }, error => { complete4 = true; });
+            }, () => { complete4 = true; });
         } else {
             complete4 = true;
         }
@@ -839,7 +868,7 @@ function initUserSettings(func_compelete) {
             update(table_Settings, settings_favoriteListDict, () => {
                 removeFavoriteDicts();
                 complete5 = true;
-            }, error => { complete5 = true; });
+            }, () => { complete5 = true; });
         } else {
             complete5 = true;
         }

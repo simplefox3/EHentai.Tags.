@@ -7,6 +7,13 @@ function frontPageTopStyleStep01() {
     searchBoxDiv.style.width = "auto";
     searchBoxDiv.style.border = "0";
 
+    // 头部添加词库更新提示
+    var dataUpdateDiv = document.createElement("div");
+    dataUpdateDiv.id = "data_update_tip";
+    var dataUpdateText = document.createTextNode("词库升级中...");
+    dataUpdateDiv.appendChild(dataUpdateText);
+    searchBoxDiv.appendChild(dataUpdateDiv);
+
     // 头部添加字体颜色按钮
     var fontColorDiv = document.createElement("div");
     fontColorDiv.id = "div_fontColor_btn";

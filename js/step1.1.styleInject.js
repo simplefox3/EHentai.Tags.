@@ -1,7 +1,38 @@
 //#region step1.1.styleInject.js 样式注入
 func_eh_ex(() => {
 	// e-hentai 样式 eh.css
-	const category_style = `#searchbox #div_fontColor_btn,
+	const category_style = `#searchbox #data_update_tip,
+	#gd2 #data_update_tip {
+		position: absolute;
+		width: 100px;
+		height: 20px;
+		line-height: 20px;
+		text-align: center;
+		vertical-align: middle;
+		font-size: 10px;
+		border: 1px solid #5c0d12;
+		margin-top: -1px;
+		margin-left: -1px;
+		background-color: #edebdf;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+		display: none;
+	}
+	
+	#searchbox #data_update_tip {
+		top: 0;
+		left: 0;
+	}
+	
+	#gd2 #data_update_tip {
+		top: 2px;
+		right: 15px;
+	}
+	
+	
+	#searchbox #div_fontColor_btn,
 	#searchbox #div_background_btn,
 	#searchbox #div_top_visible_btn {
 		position: absolute;
@@ -264,7 +295,7 @@ func_eh_ex(() => {
 	
 	#div_ee8413b2 #search_wrapper {
 		width: calc(100% - 20px);
-		min-height: 50px;   
+		min-height: 50px;
 		border: 1px solid #5c0d12;
 		margin: 0 auto;
 		padding: 10px;
@@ -839,7 +870,34 @@ func_eh_ex(() => {
 	styleInject(category_style);
 }, () => {
 	// exhentai 样式 ex.css
-	const category_style = `#searchbox #div_fontColor_btn,
+	const category_style = `#searchbox #data_update_tip,
+	#gd2 #data_update_tip {
+		position: absolute;
+		width: 100px;
+		height: 20px;
+		line-height: 20px;
+		text-align: center;
+		vertical-align: middle;
+		font-size: 10px;
+		background-color: #34353b;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+		display: none;
+	}
+	
+	#searchbox #data_update_tip {
+		top: 0;
+		left: 0;
+	}
+	
+	#gd2 #data_update_tip {
+		top: 2px;
+		right: 15px;
+	}
+	
+	#searchbox #div_fontColor_btn,
 	#searchbox #div_background_btn,
 	#searchbox #div_top_visible_btn {
 		position: absolute;

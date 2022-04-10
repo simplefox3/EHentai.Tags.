@@ -1,9 +1,19 @@
 //#region step4.1.detailTranslate.js 详情页翻译
 
+// 头部添加词库更新提示
+function detailDataUpdate() {
+    var dataUpdateDiv = document.createElement("div");
+    dataUpdateDiv.id = "data_update_tip";
+    var dataUpdateText = document.createTextNode("词库升级中...");
+    dataUpdateDiv.appendChild(dataUpdateText);
+    var gd2Div = document.getElementById("gd2");
+    gd2Div.appendChild(dataUpdateDiv);
+}
+
 // 详情页翻译
 function detailPageTranslate() {
 
-    // 首页添加 Meta
+    // 详情页添加 Meta
     var meta = document.createElement("meta");
     meta.httpEquiv = "Content-Security-Policy";
     meta.content = "upgrade-insecure-requests";
@@ -40,7 +50,7 @@ function detailPageTranslate() {
 
     // 语言
     trList[3].firstChild.innerText = "语言:";
-    var language = trList[3].lastChild.innerText.toLowerCase().replace(/(\s*$)/g,"");
+    var language = trList[3].lastChild.innerText.toLowerCase().replace(/(\s*$)/g, "");
     readByIndex(table_EhTagSubItems, table_EhTagSubItems_index_subEn, language, result => {
         trList[3].lastChild.innerText = result.sub_zh;
     }, () => { });

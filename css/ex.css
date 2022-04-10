@@ -1,4 +1,31 @@
-﻿#searchbox #div_fontColor_btn,
+﻿#searchbox #data_update_tip,
+#gd2 #data_update_tip {
+    position: absolute;
+    width: 100px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 10px;
+    background-color: #34353b;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    display: none;
+}
+
+#searchbox #data_update_tip {
+    top: 0;
+    left: 0;
+}
+
+#gd2 #data_update_tip {
+    top: 2px;
+    right: 15px;
+}
+
+#searchbox #div_fontColor_btn,
 #searchbox #div_background_btn,
 #searchbox #div_top_visible_btn {
     position: absolute;
