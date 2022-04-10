@@ -1,7 +1,8 @@
 //#region step1.1.styleInject.js 样式注入
 func_eh_ex(() => {
 	// e-hentai 样式 eh.css
-	const category_style = `#searchbox #div_background_btn,
+	const category_style = `#searchbox #div_fontColor_btn,
+	#searchbox #div_background_btn,
 	#searchbox #div_top_visible_btn {
 		position: absolute;
 		top: 0;
@@ -18,17 +19,23 @@ func_eh_ex(() => {
 		margin-right: -1px;
 	}
 	
-	#searchbox #div_background_btn {
-		right: 0;
+	#searchbox #div_fontColor_btn {
+		right: 140px;
 	}
 	
-	#searchbox #div_top_visible_btn {
+	#searchbox #div_background_btn {
 		right: 70px;
 	}
 	
+	#searchbox #div_top_visible_btn {
+		right: 0;
+	}
+	
+	#searchbox #div_fontColor_btn:hover,
 	#searchbox #div_background_btn:hover,
 	#searchbox #div_top_visible_btn:hover {
-		background-color: #e0ded3;
+		background-color: #5c0d12a1;
+		color: #e3e0d1;
 	}
 	
 	#div_ee8413b2 {
@@ -37,12 +44,227 @@ func_eh_ex(() => {
 		margin-top: 10px;
 		position: relative;
 		z-index: 3;
+		background-color: #e3e0d1;
+	}
+	
+	#div_ee8413b2_bg::before {
+		background-size: 100%;
+		opacity: 0.5;
+	}
+	
+	#div_ee8413b2_bg {
+		z-index: -9999;
+		overflow: hidden;
+		position: absolute;
+		width: 100%;
+		height: 100%;
+	}
+	
+	#div_ee8413b2_bg::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		filter: blur(2px);
+	
+	}
+	
+	#div_ee8413b2 #background_form,
+	#div_ee8413b2 #frontPage_listFontColor {
+		border: 1px solid #5c0d12;
+		width: 340px;
+		height: 270px;
+		background-color: #e3e0d1;
+		position: absolute;
+		color: #5c0d12;
+		padding-top: 30px;
+		display: none;
+	}
+	
+	#div_ee8413b2 #background_form {
+		left: calc(50% - 170px);
+		top: 100px;
+	}
+	
+	#div_ee8413b2 #frontPage_listFontColor {
+		left: calc(50% - 255px);
+		top: 190px;
+	}
+	
+	#div_ee8413b2 #background_form #background_form_top,
+	#div_ee8413b2 #frontPage_listFontColor #frontPage_listFontColor_top {
+		height: 30px;
+		width: 310px;
+		position: absolute;
+		top: 0;
+		cursor: move;
+	}
+	
+	#div_ee8413b2 #background_form #bg_upload_file {
+		display: none;
+	}
+	
+	#div_ee8413b2 #background_form #background_form_close,
+	#div_ee8413b2 #frontPage_listFontColor #frontPage_listFontColor_close {
+		float: right;
+		cursor: pointer;
+		text-align: center;
+		border-left: 1px solid black;
+		border-bottom: 1px solid black;
+		width: 30px;
+		height: 30px;
+		line-height: 30px;
+		position: absolute;
+		right: 0;
+		top: 0;
+		font-size: 17px;
+		color: #5c0d12;
+	}
+	
+	#div_ee8413b2 #background_form .background_form_item,
+	#div_ee8413b2 #frontPage_listFontColor .frontPage_listFontColor_item {
+		padding: 15px 0 15px 40px;
+		min-height: 30px;
+	}
+	
+	#div_ee8413b2 #background_form label,
+	#div_ee8413b2 #frontPage_listFontColor label {
+		float: left;
+		height: 30px;
+		line-height: 30px;
+		min-width: 90px;
+	}
+	
+	#div_ee8413b2 #background_form #bgImg_save_btn,
+	#div_ee8413b2 #background_form #bgImg_clear_btn,
+	#div_ee8413b2 #background_form #bgImg_cancel_btn,
+	#div_ee8413b2 #background_form #bgUploadBtn,
+	#div_ee8413b2 #frontPage_listFontColor #listFontColor_clear_btn,
+	#div_ee8413b2 #frontPage_listFontColor #listFontColor_save_btn,
+	#div_ee8413b2 #frontPage_listFontColor #listFontColor_cancel_btn {
+		border: 1px solid black;
+		width: 60px;
+		height: 30px;
+		text-align: center;
+		line-height: 30px;
+		padding: 0 10px;
+		background-color: #3a3939;
+		cursor: pointer;
+		float: left;
+		color: #e3e0d1;
+	}
+	
+	#div_ee8413b2 #background_form #bgImg_clear_btn,
+	#div_ee8413b2 #frontPage_listFontColor #listFontColor_clear_btn {
+		background-color: darkred;
+		margin-right: 8px;
+	}
+	
+	#div_ee8413b2 #background_form #bgImg_clear_btn:hover,
+	#div_ee8413b2 #frontPage_listFontColor #listFontColor_clear_btn:hover {
+		background-color: red;
+	}
+	
+	
+	#div_ee8413b2 #background_form #bgImg_save_btn,
+	#div_ee8413b2 #frontPage_listFontColor #listFontColor_save_btn {
+		background-color: darkgreen;
+		margin-right: 8px;
+	}
+	
+	#div_ee8413b2 #background_form #bgImg_save_btn:hover,
+	#div_ee8413b2 #frontPage_listFontColor #listFontColor_save_btn:hover {
+		background-color: green;
+	}
+	
+	#div_ee8413b2 #background_form #bgImg_cancel_btn,
+	#div_ee8413b2 #frontPage_listFontColor #listFontColor_cancel_btn {
+		background-color: darkslateblue;
+	}
+	
+	#div_ee8413b2 #background_form #bgImg_cancel_btn:hover,
+	#div_ee8413b2 #frontPage_listFontColor #bgImg_cancel_btn:hover {
+		background-color: slateblue;
+	}
+	
+	#div_ee8413b2 #background_form #bgUploadBtn {
+		width: 100px;
+		margin-left: 5px;
+		background-color: #5c0d12;
+	}
+	
+	#div_ee8413b2 #background_form #background_form_close:hover,
+	#div_ee8413b2 #background_form #bgUploadBtn:hover,
+	#div_ee8413b2 #frontPage_listFontColor #frontPage_listFontColor_close:hover {
+		background-color: #5c0d12a1;
+		color: #e3e0d1;
+	}
+	
+	#div_ee8413b2 #background_form #opacity_range,
+	#div_ee8413b2 #background_form #mask_range,
+	#div_ee8413b2 #frontPage_listFontColor #parent_color,
+	#div_ee8413b2 #frontPage_listFontColor #sub_color,
+	#div_ee8413b2 #frontPage_listFontColor #sub_hover_color {
+		float: left;
+	}
+	
+	#div_ee8413b2 #background_form #opacity_range,
+	#div_ee8413b2 #background_form #mask_range {
+		height: 27px;
+		margin-right: 10px;
+	}
+	
+	#div_ee8413b2 #frontPage_listFontColor #parent_color,
+	#div_ee8413b2 #frontPage_listFontColor #sub_color,
+	#div_ee8413b2 #frontPage_listFontColor #sub_hover_color {
+		height: 30px;
+		width: 80px;
+		margin: 0 12px;
+	}
+	
+	#div_ee8413b2 #background_form #opacity_val,
+	#div_ee8413b2 #background_form #mask_val,
+	#div_ee8413b2 #frontPage_listFontColor #parent_color_val,
+	#div_ee8413b2 #frontPage_listFontColor #sub_color_val,
+	#div_ee8413b2 #frontPage_listFontColor #sub_hover_color_val {
+		float: left;
+		height: 30px;
+		line-height: 30px;
+		text-align: center;
+	}
+	
+	#div_ee8413b2 #background_form #opacity_val,
+	#div_ee8413b2 #background_form #mask_val {
+		width: 50px;
+	}
+	
+	#div_ee8413b2 #frontPage_listFontColor #parent_color_val,
+	#div_ee8413b2 #frontPage_listFontColor #sub_color_val,
+	#div_ee8413b2 #frontPage_listFontColor #sub_hover_color_val {
+		width: 80px;
+	}
+	
+	
+	#div_ee8413b2 #background_form #background_form_close,
+	#div_ee8413b2 #background_form #bgImg_save_btn,
+	#div_ee8413b2 #background_form #bgImg_clear_btn,
+	#div_ee8413b2 #background_form #bgImg_cancel_btn,
+	#div_ee8413b2 #background_form #bgUploadBtn,
+	#div_ee8413b2 #frontPage_listFontColor #frontPage_listFontColor_close,
+	#div_ee8413b2 #frontPage_listFontColor #listFontColor_clear_btn,
+	#div_ee8413b2 #frontPage_listFontColor #listFontColor_save_btn,
+	#div_ee8413b2 #frontPage_listFontColor #listFontColor_cancel_btn {
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
 	}
 	
 	#div_ee8413b2 #search_wrapper {
 		width: calc(100% - 20px);
-		min-height: 50px;
-		background-color: #e3e0d1;
+		min-height: 50px;   
 		border: 1px solid #5c0d12;
 		margin: 0 auto;
 		padding: 10px;
@@ -272,7 +494,8 @@ func_eh_ex(() => {
 	}
 	
 	.chooseTab {
-		background-color: #f2efdf;
+		background-color: #5c0d12;
+		color: #e3e0d1;
 	}
 	
 	#div_ee8413b2 #category_all_div #category_editor,
@@ -394,7 +617,6 @@ func_eh_ex(() => {
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list::-webkit-scrollbar-track {
-		background-color: #cdcaba;
 		border-radius: 10px;
 	}
 	
@@ -450,7 +672,8 @@ func_eh_ex(() => {
 	#div_ee8413b2 #favorites_editor #favorites_cancel:hover,
 	#div_ee8413b2 #favorites_editor #favorites_export:hover,
 	#div_ee8413b2 #favorites_editor #favorites_recover:hover {
-		background-color: rgba(255, 246, 246, 0.397);
+		background-color: #5c0d12a1;
+		color: #e3e0d1;
 	}
 	
 	#div_ee8413b2 #category_list .category_extend:hover,
@@ -459,7 +682,6 @@ func_eh_ex(() => {
 	#div_ee8413b2 #category_list .c_item:hover,
 	#div_ee8413b2 #favorites_list .c_item:hover {
 		transform: scale(2);
-		background-color: #e3e0d1;
 	}
 	
 	#dms #googleTranslateDiv {

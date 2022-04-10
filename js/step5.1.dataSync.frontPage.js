@@ -1,37 +1,37 @@
 //#region step5.1.dataSync.frontPage.js 首页数据同步
 
 window.onstorage = function (e) {
-    // try {
-    console.log(e);
-    switch (e.newValue) {
-        case sync_oldSearchTopVisible:
-            updatePageTopVisible();
-            break;
-        case sync_categoryList:
-            updatePageCategoryList();
-            break;
-        case sync_favoriteList:
-            updatePageFavoriteList();
-            break;
-        case sync_categoryList_Extend:
-            updatePageCategoryListExtend();
-            break;
-        case sync_favoriteList_Extend:
-            updatePageFavoriteListExtend();
-            break;
-        case sync_googleTranslate_frontPage_title:
-            updateGoogleTranslateFrontPageTitle();
-            break;
-        case sync_setting_backgroundImage:
-            updateSettingBackgroundImage();
-            break;
-        case sync_setting_frontPageFontColor:
-            updateSettingFrontPageFontColor();
-            break;
+    try {
+        console.log(e);
+        switch (e.newValue) {
+            case sync_oldSearchTopVisible:
+                updatePageTopVisible();
+                break;
+            case sync_categoryList:
+                updatePageCategoryList();
+                break;
+            case sync_favoriteList:
+                updatePageFavoriteList();
+                break;
+            case sync_categoryList_Extend:
+                updatePageCategoryListExtend();
+                break;
+            case sync_favoriteList_Extend:
+                updatePageFavoriteListExtend();
+                break;
+            case sync_googleTranslate_frontPage_title:
+                updateGoogleTranslateFrontPageTitle();
+                break;
+            case sync_setting_backgroundImage:
+                updateSettingBackgroundImage();
+                break;
+            case sync_setting_frontPageFontColor:
+                updateSettingFrontPageFontColor();
+                break;
+        }
+    } catch (error) {
+        removeDbSyncMessage();
     }
-    // } catch (error) {
-    //     removeDbSyncMessage();
-    // }
 }
 
 // 头部搜索折叠隐藏
