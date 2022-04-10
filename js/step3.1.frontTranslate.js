@@ -242,6 +242,9 @@ function mainPageTranslate() {
 					// 父子项
 					item.innerText = `${result.parent_zh}:${result.sub_zh}`;
 				}
+				if (result.sub_desc) {
+					item.title = `${item.title}\r\n${result.sub_desc}`;
+				}
 			} else {
 				// 没有找到，翻译父项，子项保留
 				if (rightSelect.value != "e") {
@@ -252,6 +255,9 @@ function mainPageTranslate() {
 						read(table_detailParentItems, parent_en, result => {
 							if (result) {
 								item.innerText = `${result.name}:${sub_en}`;
+								if (result.sub_desc) {
+									item.title = `${item.title}\r\n${result.sub_desc}`;
+								}
 							}
 						}, () => { });
 					}
@@ -274,6 +280,9 @@ function mainPageTranslate() {
 			read(table_EhTagSubItems, ps_en, result => {
 				if (result) {
 					item.innerText = result.sub_zh;
+					if (result.sub_desc) {
+						item.title = `${item.title}\r\n${result.sub_desc}`;
+					}
 				}
 			}, () => { });
 

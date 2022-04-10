@@ -56,6 +56,7 @@ var opacityRange = document.getElementById("opacity_range");
 var opacityVal = document.getElementById("opacity_val");
 var maskRange = document.getElementById("mask_range");
 var maskVal = document.getElementById("mask_val");
+var bgImgClearBtn = document.getElementById("bgImg_clear_btn");
 var bgImgSaveBtn = document.getElementById("bgImg_save_btn");
 var bgImgCancelBtn = document.getElementById("bgImg_cancel_btn");
 var bgImgCloseBtn = document.getElementById("background_form_close");

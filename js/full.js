@@ -365,6 +365,10 @@ const table_Settings_key_TranslateDetailPageTitles = "f_translateDetailPageTitle
 const table_Settings_key_FavoriteList = "f_favoriteList";
 const table_Settings_key_FavoriteList_Html = "f_favoriteListHtml";
 const table_Settings_Key_FavoriteList_Extend = "f_favoriteListExtend";
+const table_Settings_Key_Bg_ImgBase64 = "f_bgImageBase64";
+const table_Settings_Key_Bg_Opacity = "f_bgOpacity";
+const table_Settings_Key_Bg_Mask = "f_bgMask";
+
 
 // fetishList 全部类别 - 父子信息表
 const table_fetishListSubItems = "t_fetishListSubItems";
@@ -398,10 +402,25 @@ const sync_categoryList_Extend = 'syncCategoryListExtend';
 const sync_favoriteList_Extend = 'syncFavoriteListExtend';
 const sync_googleTranslate_frontPage_title = 'syncGoogleTranslateFrontPageTitle';
 const sync_googleTranslate_detailPage_title = 'syncGoogleTranslateDetailPageTitle';
+const sync_setting_backgroundImage = 'syncSettingBackgroundImage';
 
 //#endregion
 
+//#region 背景图片、字体颜色默认值
+
+// 默认不透明度
+const defaultSetting_Opacity = 0.5;
+// 默认遮罩浓度
+const defaultSetting_Mask = 0;
+
+
+
 //#endregion
+
+
+//#endregion
+
+
 
 //#region step0.localstorage.js localstorage 数据方法，迁入 indexdb，如无特殊需要，删除之前存储的数据
 
@@ -508,11 +527,14 @@ func_eh_ex(() => {
 		width: 70px;
 		height: 20px;
 		line-height: 20px;
-		background-color: #34353b;
+		background-color: #e3e0d1;
 		text-align: center;
 		vertical-align: middle;
 		cursor: pointer;
 		font-size: 10px;
+		border: 1px solid #5c0d12;
+		margin-top: -1px;
+		margin-right: -1px;
 	}
 	
 	#searchbox #div_background_btn {
@@ -521,12 +543,11 @@ func_eh_ex(() => {
 	
 	#searchbox #div_top_visible_btn {
 		right: 70px;
-		border-right: 1px solid black;
 	}
 	
 	#searchbox #div_background_btn:hover,
 	#searchbox #div_top_visible_btn:hover {
-		background-color: #43464e;
+		background-color: #e0ded3;
 	}
 	
 	#div_ee8413b2 {
@@ -537,104 +558,17 @@ func_eh_ex(() => {
 		z-index: 3;
 	}
 	
-	#div_ee8413b2 #background_form {
-		border: 1px solid black;
-		width: 340px;
-		height: 270px;
-		background-color: #40454b;
-		position: absolute;
-		left: calc(50% - 170px);
-		top: 100px;
-		color: white;
-		padding-top: 30px;
-		display: none;
-	}
-	
-	#div_ee8413b2 #background_form #background_form_close{
-		float: right;
-		cursor: pointer;
-		text-align: center;
-		border-left: 1px solid black;
-		border-bottom: 1px solid black;
-		width:30px;
-		height: 30px;
-		line-height: 30px;
-		position: absolute;
-		right: 0;
-		top: 0;
-	}
-	
-	#div_ee8413b2 #background_form .background_form_item {
-		padding: 15px 0 15px 40px;
-		min-height: 30px;
-	}
-	
-	#div_ee8413b2 #background_form label {
-		float: left;
-		height: 30px;
-		line-height: 30px;
-		min-width: 90px;
-	}
-	
-	#div_ee8413b2 #background_form #bgImg_save_btn,
-	#div_ee8413b2 #background_form #bgImg_cancel_btn,
-	#div_ee8413b2 #background_form #bgUploadBtn {
-		border: 1px solid black;
-		width: 60px;
-		height: 30px;
-		text-align: center;
-		line-height: 30px;
-		padding: 0 10px;
-		background-color: #3a3939;
-		cursor: pointer;
-		float: left;
-	}
-	
-	#div_ee8413b2 #background_form #bgUploadBtn{
-		width: 100px;
-		margin-left: 5px;
-	}
-	
-	#div_ee8413b2 #background_form #bgImg_save_btn {
-		margin-right: 30px;
-		margin-left: 20px;
-	}
-	
-	#div_ee8413b2 #background_form #bgUploadBtn:hover {
-		background-color: #4e4e4e;
-	}
-	
-	#div_ee8413b2 #background_form #opacity_range,
-	#div_ee8413b2 #background_form #mask_range{
-		height: 27px;
-		margin-right: 10px;
-		float: left;
-	}
-	
-	#div_ee8413b2 #background_form #opacity_val,
-	#div_ee8413b2 #background_form #mask_val{
-		float: left;
-		width: 50px;
-		height: 30px;
-		line-height: 30px;
-		text-align: center;
-	}
-	
-	
-	
 	#div_ee8413b2 #search_wrapper {
 		width: calc(100% - 20px);
 		min-height: 50px;
-		background-color: #40454B;
-		border: 1px solid black;
+		background-color: #e3e0d1;
+		border: 1px solid #5c0d12;
 		margin: 0 auto;
 		padding: 10px;
-		color: #F1F1F1;
 	}
 	
 	#div_ee8413b2 #search_wrapper #search_close {
-		background-color: #40454B;
-		border: 1px solid #f1f1f1;
+		border: 1px solid #5c0d12;
 		border-left: 0;
 		float: left;
 		margin-right: -11px;
@@ -660,7 +594,7 @@ func_eh_ex(() => {
 		width: 100px;
 		height: 48px;
 		line-height: 48px;
-		border: 1px solid #F1F1F1;
+		border: 1px solid #5c0d12;
 		text-align: center;
 		vertical-align: middle;
 		float: left;
@@ -676,7 +610,7 @@ func_eh_ex(() => {
 		width: 100px;
 		height: 48px;
 		line-height: 48px;
-		border: 1px solid #F1F1F1;
+		border: 1px solid #5c0d12;
 		text-align: center;
 		vertical-align: middle;
 		float: right;
@@ -689,19 +623,19 @@ func_eh_ex(() => {
 		width: 100px;
 		height: 48px;
 		line-height: 48px;
-		border: 1px solid #f1f1f145;
+		border: 1px solid #5c0d1245;
 		text-align: center;
 		vertical-align: middle;
 		float: right;
 		cursor: not-allowed;
 		font-size: 18px;
-		color: #f1f1f145;
+		color: #5c0d1245;
 	}
 	
 	#div_ee8413b2 #search_top #category_search_input {
 		width: calc(100% - 392px);
 		height: 48px;
-		border: 1px solid #F1F1F1;
+		border: 1px solid #5c0d12;
 		float: left;
 		margin: 0 10px 0 40px;
 	}
@@ -730,7 +664,7 @@ func_eh_ex(() => {
 		margin-left: -15px;
 		cursor: pointer;
 		display: inline-block;
-		color: #40454b;
+		color: #e3e0d1;
 	}
 	
 	.user_input_null_backcolor {
@@ -790,7 +724,7 @@ func_eh_ex(() => {
 	}
 	
 	#div_ee8413b2 #category_search_input #category_enter_button {
-		border-left: 1px solid #F1F1F1;
+		border-left: 1px solid #5c0d12;
 	}
 	
 	#div_ee8413b2 #category_search_input #input_clear {
@@ -804,7 +738,7 @@ func_eh_ex(() => {
 	#div_ee8413b2 #search_wrapper #category_favorites_div,
 	#div_ee8413b2 #search_wrapper #category_all_div {
 		width: calc(100% - 2px);
-		border: 1px solid #F1F1F1;
+		border: 1px solid #5c0d12;
 		margin-top: 10px;
 		overflow: hidden;
 	}
@@ -824,7 +758,7 @@ func_eh_ex(() => {
 	#div_ee8413b2 #favorites_edit_list h4 {
 		padding: 0;
 		margin: 10px;
-		color: #fadfc0;
+		color: #5c0d11;
 	}
 	
 	#div_ee8413b2 #category_all_div .c_item,
@@ -833,19 +767,19 @@ func_eh_ex(() => {
 		font-size: 15px;
 		cursor: pointer;
 		display: inline-block;
-		color: #F5CC9C;
+		color: #5c0d11;
 	}
 	
 	#div_ee8413b2 #category_all_div .c_item:hover,
 	#div_ee8413b2 #category_favorites_div #favorites_list .c_item:hover {
-		color: gold;
+		color: #ff4500;
 	}
 	
 	#div_ee8413b2 #category_all_div .category_extend,
 	#div_ee8413b2 #favorites_list .favorite_extend,
 	#div_ee8413b2 #favorites_edit_list .favorite_edit_clear {
 		margin: 3px 0 3px 10px;
-		border: 1px solid #F5CC9C;
+		border: 1px solid #5c0d11;
 		width: 13px;
 		display: inline-block;
 		text-align: center;
@@ -853,11 +787,11 @@ func_eh_ex(() => {
 		height: 13px;
 		font-size: 12px;
 		cursor: pointer;
-		color: #F5CC9C;
+		color: #5c0d11;
 	}
 	
 	.chooseTab {
-		background-color: #7b7e85c2;
+		background-color: #f2efdf;
 	}
 	
 	#div_ee8413b2 #category_all_div #category_editor,
@@ -874,8 +808,8 @@ func_eh_ex(() => {
 	#div_ee8413b2 #favorites_editor #favorites_clear,
 	#div_ee8413b2 #favorites_editor #favorites_save,
 	#div_ee8413b2 #favorites_editor #favorites_cancel {
-		border-bottom: 1px solid #F1F1F1;
-		border-right: 1px solid #F1F1F1;
+		border-bottom: 1px solid #5c0d12;
+		border-right: 1px solid #5c0d12;
 		width: 49.5px;
 		float: left;
 		text-align: center;
@@ -886,8 +820,8 @@ func_eh_ex(() => {
 	
 	#div_ee8413b2 #favorites_editor #favorites_export,
 	#div_ee8413b2 #favorites_editor #favorites_recover {
-		border-bottom: 1px solid #F1F1F1;
-		border-left: 1px solid #F1F1F1;
+		border-bottom: 1px solid #5c0d12;
+		border-left: 1px solid #5c0d12;
 		width: 49.5px;
 		float: right;
 		text-align: center;
@@ -903,9 +837,9 @@ func_eh_ex(() => {
 	#div_ee8413b2 #category_search_input #category_user_input_recommend {
 		width: calc(100% - 48px);
 		margin-left: -1px;
-		border: 1px solid #F1F1F1;
+		border: 1px solid #5c0d12;
 		border-top: 0;
-		background-color: #40454B;
+		background-color: #e3e0d1;
 		max-height: 500px;
 		overflow-y: scroll;
 		position: relative;
@@ -914,15 +848,15 @@ func_eh_ex(() => {
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items {
 		font-size: 15px;
 		padding: 5px;
+		font-weight: bold;
 		cursor: pointer;
-		color: #ffde74;
 		min-height: 20px;
 		line-height: 20px;
 		overflow: auto;
 	}
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items:first-child {
-		border-top: 1px solid #f1f1f1;
+		border-top: 1px solid #5c0d12;
 	}
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items:not(:first-child) {
@@ -930,7 +864,7 @@ func_eh_ex(() => {
 	}
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items:hover {
-		background-color: #7b7e85c2;
+		background-color: #c5c3b8;
 	}
 	
 	#div_ee8413b2 #search_top #search_close,
@@ -979,7 +913,7 @@ func_eh_ex(() => {
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list::-webkit-scrollbar-track {
-		background-color: #2d2e32;
+		background-color: #cdcaba;
 		border-radius: 10px;
 	}
 	
@@ -988,7 +922,7 @@ func_eh_ex(() => {
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar-thumb,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar-thumb,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list::-webkit-scrollbar-thumb {
-		background-color: #a5a5a5;
+		background-color: #b5a297;
 		border-radius: 10px;
 	}
 	
@@ -1044,12 +978,12 @@ func_eh_ex(() => {
 	#div_ee8413b2 #category_list .c_item:hover,
 	#div_ee8413b2 #favorites_list .c_item:hover {
 		transform: scale(2);
-		background-color: #40454b;
+		background-color: #e3e0d1;
 	}
 	
 	#dms #googleTranslateDiv {
 		float: left;
-		background-color: #34353b;
+		background-color: #edebdf;
 		padding: 2px 3px 6px 7px;
 		margin-left: 10px;
 		width: 120px;
@@ -1076,8 +1010,12 @@ func_eh_ex(() => {
 		background-color: darkred !important;
 	}
 	
+	.div_ee8413b2_category_checked a {
+		color: white;
+	}
+	
 	#gd5 #googleTranslateDiv {
-		background-color: #34353b;
+		background-color: #edebdf;
 		padding: 2px 3px 6px 7px;
 		margin-left: 10px;
 		width: 120px;
@@ -1108,7 +1046,7 @@ func_eh_ex(() => {
 		font-weight: bold;
 		font-size: 13px;
 		border: 1px solid #8d8d8d;
-		background-color: #34353b;
+		background-color: #edebdf;
 		border-radius: 3px;
 		text-align: center;
 		vertical-align: middle;
@@ -1135,7 +1073,7 @@ func_eh_ex(() => {
 	}
 	
 	#nb div a:hover {
-		color: gold;
+		color: red;
 	}
 	
 	#dms>div>select {
@@ -1153,12 +1091,12 @@ func_eh_ex(() => {
 	}
 	
 	table.itg tr:not(:first-child):hover {
-		background-color: #4f535b;
+		background-color: #e0ded3;
 	}
 	
 	table.itg tr:first-child:hover,
 	div.itg .gl1t:hover {
-		background-color: #4f535b;
+		background-color: #e0ded3;
 	}
 	
 	div#gdf a {
@@ -1185,8 +1123,15 @@ func_eh_ex(() => {
 		border-radius: 10px;
 	}
 	
+	#gmid #gd5 .g3,
 	#gmid #gd5 .g2 {
-		padding-bottom: 15px;
+		padding-bottom: 10px;
+	}
+	
+	table .gt,
+	table .gtl {
+		height: 18px;
+		line-height: 18px;
 	}`;
 	styleInject(category_style);
 }, () => {
@@ -1289,6 +1234,7 @@ func_eh_ex(() => {
 		position: absolute;
 		right: 0;
 		top: 0;
+		font-size: 17px;
 	}
 	
 	#div_ee8413b2 #background_form .background_form_item {
@@ -1932,6 +1878,12 @@ func_eh_ex(() => {
 	
 	#gmid #gd5 .g2 {
 		padding-bottom: 15px;
+	}
+	
+	table .gt,
+	table .gtl {
+		height: 18px;
+		line-height: 18px;
 	}`;
 	styleInject(category_style);
 });
@@ -3057,6 +3009,9 @@ function mainPageTranslate() {
 					// 父子项
 					item.innerText = `${result.parent_zh}:${result.sub_zh}`;
 				}
+				if (result.sub_desc) {
+					item.title = `${item.title}\r\n${result.sub_desc}`;
+				}
 			} else {
 				// 没有找到，翻译父项，子项保留
 				if (rightSelect.value != "e") {
@@ -3067,6 +3022,9 @@ function mainPageTranslate() {
 						read(table_detailParentItems, parent_en, result => {
 							if (result) {
 								item.innerText = `${result.name}:${sub_en}`;
+								if (result.sub_desc) {
+									item.title = `${item.title}\r\n${result.sub_desc}`;
+								}
 							}
 						}, () => { });
 					}
@@ -3089,6 +3047,9 @@ function mainPageTranslate() {
 			read(table_EhTagSubItems, ps_en, result => {
 				if (result) {
 					item.innerText = result.sub_zh;
+					if (result.sub_desc) {
+						item.title = `${item.title}\r\n${result.sub_desc}`;
+					}
 				}
 			}, () => { });
 
@@ -3097,6 +3058,8 @@ function mainPageTranslate() {
 }
 
 //#endregion
+
+
 
 //#region step3.2.frontPageTopStyle 首页头部搜索显示隐藏
 
@@ -3240,8 +3203,8 @@ const category_html = `
 	</div>
 	<div class="background_form_item">
 		<label>不透明度：</label>
-		<input id="opacity_range" type="range" max="1" min="0.1" id="range" step="0.1" value="0.1">
-		<div id="opacity_val">0.1</div>
+		<input id="opacity_range" type="range" max="1" min="0.1" id="range" step="0.1" value="0.5">
+		<div id="opacity_val">0.5</div>
 	</div>
 	<div class="background_form_item">
 		<label>模糊程度：</label>
@@ -3249,24 +3212,25 @@ const category_html = `
 		<div id="mask_val">0</div>
 	</div>
 	<div class="background_form_item">
-		<div id="bgImg_clear_btn">清空 !</div>
+		<div id="bgImg_clear_btn">重置 !</div>
 		<div id="bgImg_save_btn">保存 √</div>
-		<div id="bgImg_cancel_btn">取消 ×</div>
+		<div id="bgImg_cancel_btn">取消 X</div>
 	</div>
 </div>
 `;
 
 function frontPageHtml() {
-    // 基本框架代码插入，先创建包裹层div，然后构造包裹层内容
-    var webdiv = document.createElement("div");
-    webdiv.id = "div_ee8413b2";
-    var searchBoxDiv = document.getElementById("searchbox");
-    searchBoxDiv.appendChild(webdiv);
-    //searchBoxDiv.insertBefore(webdiv, searchBoxDiv.children[0]);
-    webdiv.innerHTML = category_html;
+	// 基本框架代码插入，先创建包裹层div，然后构造包裹层内容
+	var webdiv = document.createElement("div");
+	webdiv.id = "div_ee8413b2";
+	var searchBoxDiv = document.getElementById("searchbox");
+	searchBoxDiv.appendChild(webdiv);
+	//searchBoxDiv.insertBefore(webdiv, searchBoxDiv.children[0]);
+	webdiv.innerHTML = category_html;
 }
 
 //#endregion
+
 
 
 //#region step4.1.detailTranslate.js 详情页翻译
@@ -3687,7 +3651,7 @@ function detailPageFavorite() {
 			read(table_EhTagSubItems, a.dataset.ps_en, result => {
 				if (result) {
 					a.innerText = result.sub_zh;
-					a.title = `[${result.sub_en}] ${result.sub_desc}`;
+					a.title = `${result.sub_en}\r\n${result.sub_desc}`;
 				}
 			}, () => { });
 		}
@@ -3914,6 +3878,7 @@ function detailPageFavorite() {
 //#endregion
 
 
+
 //#region main.js
 // 主方法
 
@@ -4006,6 +3971,7 @@ function mainPageCategory() {
 		var opacityVal = document.getElementById("opacity_val");
 		var maskRange = document.getElementById("mask_range");
 		var maskVal = document.getElementById("mask_val");
+		var bgImgClearBtn = document.getElementById("bgImg_clear_btn");
 		var bgImgSaveBtn = document.getElementById("bgImg_save_btn");
 		var bgImgCancelBtn = document.getElementById("bgImg_cancel_btn");
 		var bgImgCloseBtn = document.getElementById("background_form_close");
@@ -4013,15 +3979,69 @@ function mainPageCategory() {
 
 		//#region step6.1.backgroundImage.js 设置背景图片
 
+		var t_imgBase64 = ''; // 背景图片
+		var t_opacity = defaultSetting_Opacity; // 透明度
+		var t_mask = defaultSetting_Mask; // 遮罩浓度
+
+
 		// 头部按钮点击事件
 		var bgDiv = document.getElementById("div_background_btn");
 		bgDiv.onclick = function () {
 			backgroundFormDiv.style.display = "block";
 			bgDiv.style.display = "none";
-
-			// TODO 读取存储设置值
 		}
 
+		// 读取存储设置值，读取完成前，隐藏头部按钮，读取完成在显示出来
+		function initBackground(func_compelete) {
+			bgDiv.style.display = "none";
+			var completeGetImg = false;
+			var completeGetOpacity = false;
+			var completeGetMask = false;
+			read(table_Settings, table_Settings_Key_Bg_ImgBase64, result => {
+				if (result && result.value) {
+					t_imgBase64 = result.value;
+				} else {
+					t_imgBase64 = '';
+				}
+				// 设置页面背景
+				setListBackgroundImage(t_imgBase64);
+				completeGetImg = true;
+			}, () => { completeGetImg = true; });
+			read(table_Settings, table_Settings_Key_Bg_Opacity, result => {
+				if (result && result.value) {
+					t_opacity = result.value;
+				} else {
+					t_opacity = defaultSetting_Opacity;
+				}
+				// 设置背景不透明度
+				setListOpacity(t_opacity);
+				// 设置弹窗不透明度数值
+				setDialogOpacityValue(t_opacity);
+				completeGetOpacity = true;
+			}, () => { completeGetOpacity = true; });
+			read(table_Settings, table_Settings_Key_Bg_Mask, result => {
+				if (result && result.value) {
+					t_mask = result.value;
+				} else {
+					t_mask = defaultSetting_Mask;
+				}
+				// 设置背景遮罩浓度
+				setListMask(t_mask);
+				// 设置弹窗遮罩浓度数值
+				setDialogMaskValue(t_mask);
+				completeGetMask = true;
+			}, () => { completeGetMask = true; });
+
+			var tInit = setInterval(() => {
+				if (completeGetImg && completeGetOpacity && completeGetMask) {
+					tInit && clearInterval(tInit);
+					bgDiv.style.display = "block";
+					func_compelete();
+				}
+			}, 50);
+		}
+
+		initBackground(() => { });
 
 
 		// div头部拖拽事件
@@ -4059,9 +4079,6 @@ function mainPageCategory() {
 		bgUploadBtn.onclick = function () {
 			bgUploadFile.click();
 		}
-
-		var imgBase64 = '';
-
 		bgUploadFile.onchange = function () {
 			var resultFile = bgUploadFile.files[0];
 			if (resultFile) {
@@ -4070,13 +4087,8 @@ function mainPageCategory() {
 				reader.onload = function (e) {
 					var fileContent = e.target.result;
 					console.log(fileContent);
-
-					var arr = fileContent.split(",");
-					imgBase64 = arr[1];
-					var bg = 'url(' + 'data:image/png;base64,' + imgBase64 + ') 0 / cover';
-					var style = document.createElement('style');
-					style.innerHTML = `#div_ee8413b2_bg::before{background:${bg}}`;
-					document.head.appendChild(style);
+					t_imgBase64 = fileContent;
+					setListBackgroundImage(t_imgBase64);
 
 					// 上传置空
 					bgUploadFile.value = "";
@@ -4084,26 +4096,146 @@ function mainPageCategory() {
 			}
 		}
 
-		var t_opacity = 0;
+		// 设置列表背景图片
+		function setListBackgroundImage(imageBase64) {
+			var bg = `url(${imageBase64}) 0 / cover`;
+			var style = document.createElement('style');
+			style.innerHTML = `#div_ee8413b2_bg::before{background:${bg}}`;
+			document.head.appendChild(style);
+		}
+
 
 		// 不透明度
 		opacityRange.oninput = function () {
 			t_opacity = opacityRange.value;
 			opacityVal.innerText = t_opacity;
+			setListOpacity(t_opacity);
+		}
+		// 设置不透明度效果
+		function setListOpacity(opacityValue) {
 			var style = document.createElement('style');
-			style.innerHTML = `#div_ee8413b2_bg::before{opacity:${t_opacity}}`;
+			style.innerHTML = `#div_ee8413b2_bg::before{opacity:${opacityValue}}`;
 			document.head.appendChild(style);
 		}
+		// 设置弹窗不透明度数值
+		function setDialogOpacityValue(opacityValue) {
+			opacityRange.value = opacityValue;
+			opacityVal.innerText = opacityValue;
+		}
 
-		var t_mask = 0;
 
 		// 遮罩浓度
 		maskRange.oninput = function () {
 			t_mask = maskRange.value;
 			maskVal.innerText = t_mask;
+			setListMask(t_mask);
+		}
+		// 设置遮罩浓度效果
+		function setListMask(maskValue) {
 			var style = document.createElement('style');
-			style.innerHTML = `#div_ee8413b2_bg::before{filter:blur(${t_mask}px)}`;
+			style.innerHTML = `#div_ee8413b2_bg::before{filter:blur(${maskValue}px)}`;
 			document.head.appendChild(style);
+		}
+		// 设置弹窗遮罩浓度数值
+		function setDialogMaskValue(maskValue) {
+			maskRange.value = maskValue;
+			maskVal.innerText = maskValue;
+		}
+
+		// 点击关闭 + 取消关闭
+		function closeBgSetDialog() {
+			// 初始化设置
+			initBackground(() => {
+				backgroundFormDiv.style.display = "none";
+				bgDiv.style.display = "block";
+			});
+		}
+		bgImgCancelBtn.onclick = closeBgSetDialog;
+		bgImgCloseBtn.onclick = closeBgSetDialog;
+
+		// 重置
+		bgImgClearBtn.onclick = function () {
+			var confirmResult = confirm("是否删除背景图片，重置相关参数?");
+			if (confirmResult) {
+				bgImgClearBtn.innerText = "重置中...";
+				var clearcomplete1 = false;
+				var clearcomplete2 = false;
+				var clearcomplete3 = false;
+				remove(table_Settings, table_Settings_Key_Bg_ImgBase64, () => {
+					t_imgBase64 = '';
+					setListBackgroundImage(t_imgBase64);
+					clearcomplete1 = true;
+				}, () => { clearcomplete1 = true; });
+				remove(table_Settings, table_Settings_Key_Bg_Opacity, () => {
+					t_opacity = defaultSetting_Opacity;
+					setListOpacity(t_opacity);
+					setDialogOpacityValue(t_opacity);
+					clearcomplete2 = true;
+				}, () => { clearcomplete2 = true; });
+				remove(table_Settings, table_Settings_Key_Bg_Mask, () => {
+					t_mask = defaultSetting_Mask;
+					setListMask(t_mask);
+					setDialogMaskValue(t_mask);
+					clearcomplete3 = true;
+				}, () => { clearcomplete3 = true; });
+
+				var tClear = setInterval(() => {
+					if (clearcomplete1 && clearcomplete2 && clearcomplete3) {
+						tClear && clearInterval(tClear);
+						setDbSyncMessage(sync_setting_backgroundImage);
+						setTimeout(function () {
+							bgImgClearBtn.innerText = "重置成功";
+						}, 250);
+						setTimeout(function () {
+							bgImgClearBtn.innerText = "重置 !";
+						}, 500);
+					}
+				}, 50);
+			}
+		}
+
+		// 保存
+		bgImgSaveBtn.onclick = function () {
+			bgImgSaveBtn.innerText = "保存中...";
+
+			// 存储
+			var complete1 = false;
+			var complete2 = false;
+			var complete3 = false;
+
+			// 背景图片
+			var settings_Key_Bg_ImgBase64 = {
+				item: table_Settings_Key_Bg_ImgBase64,
+				value: t_imgBase64
+			};
+			update(table_Settings, settings_Key_Bg_ImgBase64, () => { complete1 = true }, () => { complete1 = true });
+
+			// 不透明度
+			var settings_Key_Bg_Opacity = {
+				item: table_Settings_Key_Bg_Opacity,
+				value: t_opacity
+			};
+			update(table_Settings, settings_Key_Bg_Opacity, () => { complete2 = true }, () => { complete2 = true });
+
+			// 遮罩浓度
+			var settings_Key_Bg_Mask = {
+				item: table_Settings_Key_Bg_Mask,
+				value: t_mask
+			};
+			update(table_Settings, settings_Key_Bg_Mask, () => { complete3 = true }, () => { complete3 = true });
+
+			var t = setInterval(() => {
+				if (complete1 && complete2 && complete3) {
+					t && clearInterval(t);
+					setDbSyncMessage(sync_setting_backgroundImage);
+					setTimeout(function () {
+						bgImgSaveBtn.innerText = "保存成功";
+					}, 250);
+					setTimeout(function () {
+						bgImgSaveBtn.innerText = "保存 √";
+					}, 500);
+				}
+			}, 50);
 		}
 
 		//#endregion
@@ -5693,6 +5825,8 @@ function mainPageCategory() {
 					case sync_googleTranslate_frontPage_title:
 						updateGoogleTranslateFrontPageTitle();
 						break;
+					case sync_setting_backgroundImage:
+						updateSettingBackgroundImage();
 				}
 				// } catch (error) {
 				//     removeDbSyncMessage();
@@ -5821,7 +5955,20 @@ function mainPageCategory() {
 				})
 			}
 
+			// 首页背景图片更新
+			function updateSettingBackgroundImage() {
+				indexDbInit(() => {
+					initBackground(() => {
+						if (backgroundFormDiv.style.display == "block") {
+							var bgDiv = document.getElementById("div_background_btn");
+							bgDiv.style.display = "none";
+						}
+					});
+				})
+			}
+
 			//#endregion
+
 
 		});
 	});

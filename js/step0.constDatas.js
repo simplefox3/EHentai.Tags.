@@ -138,6 +138,10 @@ const table_Settings_key_TranslateDetailPageTitles = "f_translateDetailPageTitle
 const table_Settings_key_FavoriteList = "f_favoriteList";
 const table_Settings_key_FavoriteList_Html = "f_favoriteListHtml";
 const table_Settings_Key_FavoriteList_Extend = "f_favoriteListExtend";
+const table_Settings_Key_Bg_ImgBase64 = "f_bgImageBase64";
+const table_Settings_Key_Bg_Opacity = "f_bgOpacity";
+const table_Settings_Key_Bg_Mask = "f_bgMask";
+
 
 // fetishList 全部类别 - 父子信息表
 const table_fetishListSubItems = "t_fetishListSubItems";
@@ -171,7 +175,20 @@ const sync_categoryList_Extend = 'syncCategoryListExtend';
 const sync_favoriteList_Extend = 'syncFavoriteListExtend';
 const sync_googleTranslate_frontPage_title = 'syncGoogleTranslateFrontPageTitle';
 const sync_googleTranslate_detailPage_title = 'syncGoogleTranslateDetailPageTitle';
+const sync_setting_backgroundImage = 'syncSettingBackgroundImage';
 
 //#endregion
+
+//#region 背景图片、字体颜色默认值
+
+// 默认不透明度
+const defaultSetting_Opacity = 0.5;
+// 默认遮罩浓度
+const defaultSetting_Mask = 0;
+
+
+
+//#endregion
+
 
 //#endregion

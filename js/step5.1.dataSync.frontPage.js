@@ -22,6 +22,8 @@ window.onstorage = function (e) {
         case sync_googleTranslate_frontPage_title:
             updateGoogleTranslateFrontPageTitle();
             break;
+        case sync_setting_backgroundImage:
+            updateSettingBackgroundImage();
     }
     // } catch (error) {
     //     removeDbSyncMessage();
@@ -147,6 +149,18 @@ function updateGoogleTranslateFrontPageTitle() {
             translateMainPageTitleDisplay();
             removeDbSyncMessage();
         }, () => { removeDbSyncMessage(); });
+    })
+}
+
+// 首页背景图片更新
+function updateSettingBackgroundImage() {
+    indexDbInit(() => {
+        initBackground(() => {
+            if (backgroundFormDiv.style.display == "block") {
+                var bgDiv = document.getElementById("div_background_btn");
+                bgDiv.style.display = "none";
+            }
+        });
     })
 }
 

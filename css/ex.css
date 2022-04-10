@@ -96,6 +96,7 @@
     position: absolute;
     right: 0;
     top: 0;
+    font-size: 17px;
 }
 
 #div_ee8413b2 #background_form .background_form_item {
@@ -739,4 +740,10 @@ div#gdf a {
 
 #gmid #gd5 .g2 {
     padding-bottom: 15px;
+}
+
+table .gt,
+table .gtl {
+    height: 18px;
+    line-height: 18px;
 }

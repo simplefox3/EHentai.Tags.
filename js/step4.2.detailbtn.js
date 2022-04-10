@@ -300,7 +300,7 @@ function detailPageFavorite() {
             read(table_EhTagSubItems, a.dataset.ps_en, result => {
                 if (result) {
                     a.innerText = result.sub_zh;
-                    a.title = `[${result.sub_en}] ${result.sub_desc}`;
+                    a.title = `${result.sub_en}\r\n${result.sub_desc}`;
                 }
             }, () => { });
         }

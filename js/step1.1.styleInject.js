@@ -8,11 +8,14 @@ func_eh_ex(() => {
 		width: 70px;
 		height: 20px;
 		line-height: 20px;
-		background-color: #34353b;
+		background-color: #e3e0d1;
 		text-align: center;
 		vertical-align: middle;
 		cursor: pointer;
 		font-size: 10px;
+		border: 1px solid #5c0d12;
+		margin-top: -1px;
+		margin-right: -1px;
 	}
 	
 	#searchbox #div_background_btn {
@@ -21,12 +24,11 @@ func_eh_ex(() => {
 	
 	#searchbox #div_top_visible_btn {
 		right: 70px;
-		border-right: 1px solid black;
 	}
 	
 	#searchbox #div_background_btn:hover,
 	#searchbox #div_top_visible_btn:hover {
-		background-color: #43464e;
+		background-color: #e0ded3;
 	}
 	
 	#div_ee8413b2 {
@@ -37,104 +39,17 @@ func_eh_ex(() => {
 		z-index: 3;
 	}
 	
-	#div_ee8413b2 #background_form {
-		border: 1px solid black;
-		width: 340px;
-		height: 270px;
-		background-color: #40454b;
-		position: absolute;
-		left: calc(50% - 170px);
-		top: 100px;
-		color: white;
-		padding-top: 30px;
-		display: none;
-	}
-	
-	#div_ee8413b2 #background_form #background_form_close{
-		float: right;
-		cursor: pointer;
-		text-align: center;
-		border-left: 1px solid black;
-		border-bottom: 1px solid black;
-		width:30px;
-		height: 30px;
-		line-height: 30px;
-		position: absolute;
-		right: 0;
-		top: 0;
-	}
-	
-	#div_ee8413b2 #background_form .background_form_item {
-		padding: 15px 0 15px 40px;
-		min-height: 30px;
-	}
-	
-	#div_ee8413b2 #background_form label {
-		float: left;
-		height: 30px;
-		line-height: 30px;
-		min-width: 90px;
-	}
-	
-	#div_ee8413b2 #background_form #bgImg_save_btn,
-	#div_ee8413b2 #background_form #bgImg_cancel_btn,
-	#div_ee8413b2 #background_form #bgUploadBtn {
-		border: 1px solid black;
-		width: 60px;
-		height: 30px;
-		text-align: center;
-		line-height: 30px;
-		padding: 0 10px;
-		background-color: #3a3939;
-		cursor: pointer;
-		float: left;
-	}
-	
-	#div_ee8413b2 #background_form #bgUploadBtn{
-		width: 100px;
-		margin-left: 5px;
-	}
-	
-	#div_ee8413b2 #background_form #bgImg_save_btn {
-		margin-right: 30px;
-		margin-left: 20px;
-	}
-	
-	#div_ee8413b2 #background_form #bgUploadBtn:hover {
-		background-color: #4e4e4e;
-	}
-	
-	#div_ee8413b2 #background_form #opacity_range,
-	#div_ee8413b2 #background_form #mask_range{
-		height: 27px;
-		margin-right: 10px;
-		float: left;
-	}
-	
-	#div_ee8413b2 #background_form #opacity_val,
-	#div_ee8413b2 #background_form #mask_val{
-		float: left;
-		width: 50px;
-		height: 30px;
-		line-height: 30px;
-		text-align: center;
-	}
-	
-	
-	
 	#div_ee8413b2 #search_wrapper {
 		width: calc(100% - 20px);
 		min-height: 50px;
-		background-color: #40454B;
-		border: 1px solid black;
+		background-color: #e3e0d1;
+		border: 1px solid #5c0d12;
 		margin: 0 auto;
 		padding: 10px;
-		color: #F1F1F1;
 	}
 	
 	#div_ee8413b2 #search_wrapper #search_close {
-		background-color: #40454B;
-		border: 1px solid #f1f1f1;
+		border: 1px solid #5c0d12;
 		border-left: 0;
 		float: left;
 		margin-right: -11px;
@@ -160,7 +75,7 @@ func_eh_ex(() => {
 		width: 100px;
 		height: 48px;
 		line-height: 48px;
-		border: 1px solid #F1F1F1;
+		border: 1px solid #5c0d12;
 		text-align: center;
 		vertical-align: middle;
 		float: left;
@@ -176,7 +91,7 @@ func_eh_ex(() => {
 		width: 100px;
 		height: 48px;
 		line-height: 48px;
-		border: 1px solid #F1F1F1;
+		border: 1px solid #5c0d12;
 		text-align: center;
 		vertical-align: middle;
 		float: right;
@@ -189,19 +104,19 @@ func_eh_ex(() => {
 		width: 100px;
 		height: 48px;
 		line-height: 48px;
-		border: 1px solid #f1f1f145;
+		border: 1px solid #5c0d1245;
 		text-align: center;
 		vertical-align: middle;
 		float: right;
 		cursor: not-allowed;
 		font-size: 18px;
-		color: #f1f1f145;
+		color: #5c0d1245;
 	}
 	
 	#div_ee8413b2 #search_top #category_search_input {
 		width: calc(100% - 392px);
 		height: 48px;
-		border: 1px solid #F1F1F1;
+		border: 1px solid #5c0d12;
 		float: left;
 		margin: 0 10px 0 40px;
 	}
@@ -230,7 +145,7 @@ func_eh_ex(() => {
 		margin-left: -15px;
 		cursor: pointer;
 		display: inline-block;
-		color: #40454b;
+		color: #e3e0d1;
 	}
 	
 	.user_input_null_backcolor {
@@ -290,7 +205,7 @@ func_eh_ex(() => {
 	}
 	
 	#div_ee8413b2 #category_search_input #category_enter_button {
-		border-left: 1px solid #F1F1F1;
+		border-left: 1px solid #5c0d12;
 	}
 	
 	#div_ee8413b2 #category_search_input #input_clear {
@@ -304,7 +219,7 @@ func_eh_ex(() => {
 	#div_ee8413b2 #search_wrapper #category_favorites_div,
 	#div_ee8413b2 #search_wrapper #category_all_div {
 		width: calc(100% - 2px);
-		border: 1px solid #F1F1F1;
+		border: 1px solid #5c0d12;
 		margin-top: 10px;
 		overflow: hidden;
 	}
@@ -324,7 +239,7 @@ func_eh_ex(() => {
 	#div_ee8413b2 #favorites_edit_list h4 {
 		padding: 0;
 		margin: 10px;
-		color: #fadfc0;
+		color: #5c0d11;
 	}
 	
 	#div_ee8413b2 #category_all_div .c_item,
@@ -333,19 +248,19 @@ func_eh_ex(() => {
 		font-size: 15px;
 		cursor: pointer;
 		display: inline-block;
-		color: #F5CC9C;
+		color: #5c0d11;
 	}
 	
 	#div_ee8413b2 #category_all_div .c_item:hover,
 	#div_ee8413b2 #category_favorites_div #favorites_list .c_item:hover {
-		color: gold;
+		color: #ff4500;
 	}
 	
 	#div_ee8413b2 #category_all_div .category_extend,
 	#div_ee8413b2 #favorites_list .favorite_extend,
 	#div_ee8413b2 #favorites_edit_list .favorite_edit_clear {
 		margin: 3px 0 3px 10px;
-		border: 1px solid #F5CC9C;
+		border: 1px solid #5c0d11;
 		width: 13px;
 		display: inline-block;
 		text-align: center;
@@ -353,11 +268,11 @@ func_eh_ex(() => {
 		height: 13px;
 		font-size: 12px;
 		cursor: pointer;
-		color: #F5CC9C;
+		color: #5c0d11;
 	}
 	
 	.chooseTab {
-		background-color: #7b7e85c2;
+		background-color: #f2efdf;
 	}
 	
 	#div_ee8413b2 #category_all_div #category_editor,
@@ -374,8 +289,8 @@ func_eh_ex(() => {
 	#div_ee8413b2 #favorites_editor #favorites_clear,
 	#div_ee8413b2 #favorites_editor #favorites_save,
 	#div_ee8413b2 #favorites_editor #favorites_cancel {
-		border-bottom: 1px solid #F1F1F1;
-		border-right: 1px solid #F1F1F1;
+		border-bottom: 1px solid #5c0d12;
+		border-right: 1px solid #5c0d12;
 		width: 49.5px;
 		float: left;
 		text-align: center;
@@ -386,8 +301,8 @@ func_eh_ex(() => {
 	
 	#div_ee8413b2 #favorites_editor #favorites_export,
 	#div_ee8413b2 #favorites_editor #favorites_recover {
-		border-bottom: 1px solid #F1F1F1;
-		border-left: 1px solid #F1F1F1;
+		border-bottom: 1px solid #5c0d12;
+		border-left: 1px solid #5c0d12;
 		width: 49.5px;
 		float: right;
 		text-align: center;
@@ -403,9 +318,9 @@ func_eh_ex(() => {
 	#div_ee8413b2 #category_search_input #category_user_input_recommend {
 		width: calc(100% - 48px);
 		margin-left: -1px;
-		border: 1px solid #F1F1F1;
+		border: 1px solid #5c0d12;
 		border-top: 0;
-		background-color: #40454B;
+		background-color: #e3e0d1;
 		max-height: 500px;
 		overflow-y: scroll;
 		position: relative;
@@ -414,15 +329,15 @@ func_eh_ex(() => {
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items {
 		font-size: 15px;
 		padding: 5px;
+		font-weight: bold;
 		cursor: pointer;
-		color: #ffde74;
 		min-height: 20px;
 		line-height: 20px;
 		overflow: auto;
 	}
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items:first-child {
-		border-top: 1px solid #f1f1f1;
+		border-top: 1px solid #5c0d12;
 	}
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items:not(:first-child) {
@@ -430,7 +345,7 @@ func_eh_ex(() => {
 	}
 	
 	#div_ee8413b2 #category_search_input #category_user_input_recommend .category_user_input_recommend_items:hover {
-		background-color: #7b7e85c2;
+		background-color: #c5c3b8;
 	}
 	
 	#div_ee8413b2 #search_top #search_close,
@@ -479,7 +394,7 @@ func_eh_ex(() => {
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar-track,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list::-webkit-scrollbar-track {
-		background-color: #2d2e32;
+		background-color: #cdcaba;
 		border-radius: 10px;
 	}
 	
@@ -488,7 +403,7 @@ func_eh_ex(() => {
 	#div_ee8413b2 #category_all_div #category_list::-webkit-scrollbar-thumb,
 	#div_ee8413b2 #category_favorites_div #favorites_list::-webkit-scrollbar-thumb,
 	#div_ee8413b2 #category_favorites_div #favorites_edit_list::-webkit-scrollbar-thumb {
-		background-color: #a5a5a5;
+		background-color: #b5a297;
 		border-radius: 10px;
 	}
 	
@@ -544,12 +459,12 @@ func_eh_ex(() => {
 	#div_ee8413b2 #category_list .c_item:hover,
 	#div_ee8413b2 #favorites_list .c_item:hover {
 		transform: scale(2);
-		background-color: #40454b;
+		background-color: #e3e0d1;
 	}
 	
 	#dms #googleTranslateDiv {
 		float: left;
-		background-color: #34353b;
+		background-color: #edebdf;
 		padding: 2px 3px 6px 7px;
 		margin-left: 10px;
 		width: 120px;
@@ -576,8 +491,12 @@ func_eh_ex(() => {
 		background-color: darkred !important;
 	}
 	
+	.div_ee8413b2_category_checked a {
+		color: white;
+	}
+	
 	#gd5 #googleTranslateDiv {
-		background-color: #34353b;
+		background-color: #edebdf;
 		padding: 2px 3px 6px 7px;
 		margin-left: 10px;
 		width: 120px;
@@ -608,7 +527,7 @@ func_eh_ex(() => {
 		font-weight: bold;
 		font-size: 13px;
 		border: 1px solid #8d8d8d;
-		background-color: #34353b;
+		background-color: #edebdf;
 		border-radius: 3px;
 		text-align: center;
 		vertical-align: middle;
@@ -635,7 +554,7 @@ func_eh_ex(() => {
 	}
 	
 	#nb div a:hover {
-		color: gold;
+		color: red;
 	}
 	
 	#dms>div>select {
@@ -653,12 +572,12 @@ func_eh_ex(() => {
 	}
 	
 	table.itg tr:not(:first-child):hover {
-		background-color: #4f535b;
+		background-color: #e0ded3;
 	}
 	
 	table.itg tr:first-child:hover,
 	div.itg .gl1t:hover {
-		background-color: #4f535b;
+		background-color: #e0ded3;
 	}
 	
 	div#gdf a {
@@ -685,8 +604,15 @@ func_eh_ex(() => {
 		border-radius: 10px;
 	}
 	
+	#gmid #gd5 .g3,
 	#gmid #gd5 .g2 {
-		padding-bottom: 15px;
+		padding-bottom: 10px;
+	}
+	
+	table .gt,
+	table .gtl {
+		height: 18px;
+		line-height: 18px;
 	}`;
 	styleInject(category_style);
 }, () => {
@@ -789,6 +715,7 @@ func_eh_ex(() => {
 		position: absolute;
 		right: 0;
 		top: 0;
+		font-size: 17px;
 	}
 	
 	#div_ee8413b2 #background_form .background_form_item {
@@ -1432,6 +1359,12 @@ func_eh_ex(() => {
 	
 	#gmid #gd5 .g2 {
 		padding-bottom: 15px;
+	}
+	
+	table .gt,
+	table .gtl {
+		height: 18px;
+		line-height: 18px;
 	}`;
 	styleInject(category_style);
 });

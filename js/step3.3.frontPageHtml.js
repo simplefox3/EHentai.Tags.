@@ -59,8 +59,8 @@ const category_html = `
 	</div>
 	<div class="background_form_item">
 		<label>不透明度：</label>
-		<input id="opacity_range" type="range" max="1" min="0.1" id="range" step="0.1" value="0.1">
-		<div id="opacity_val">0.1</div>
+		<input id="opacity_range" type="range" max="1" min="0.1" id="range" step="0.1" value="0.5">
+		<div id="opacity_val">0.5</div>
 	</div>
 	<div class="background_form_item">
 		<label>模糊程度：</label>
@@ -68,9 +68,9 @@ const category_html = `
 		<div id="mask_val">0</div>
 	</div>
 	<div class="background_form_item">
-		<div id="bgImg_clear_btn">清空 !</div>
+		<div id="bgImg_clear_btn">重置 !</div>
 		<div id="bgImg_save_btn">保存 √</div>
-		<div id="bgImg_cancel_btn">取消 ×</div>
+		<div id="bgImg_cancel_btn">取消 X</div>
 	</div>
 </div>
 `;
