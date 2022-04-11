@@ -473,6 +473,8 @@ function tagDataDispose(func_compelete) {
                     // 批量添加父子项
                     batchAdd(table_fetishListSubItems, table_fetishListSubItems_key, newData.data, newData.count, () => {
                         complete1 = true;
+                        complete2 = true;
+                        complete3 = true;
                         complete8 = true;
                         complete9 = true;
                         console.log('批量添加完成');
@@ -502,6 +504,7 @@ function tagDataDispose(func_compelete) {
                                 newItem.sub_desc != v.sub_desc) {
                                 // 更新
                                 updateDataDict[k] = newItem;
+                                updateDataDict[k].ps_en = `${newItem.parent_en}:${newItem.sub_en}`;
                                 updateDataCount++;
                             }
                         } else {
@@ -572,7 +575,7 @@ function tagDataDispose(func_compelete) {
                         }
 
                         var t9 = setInterval(() => {
-                            if (updateDataCount == updateIndex) {
+                            if (removeKeyCount == removeIndex) {
                                 t9 && clearInterval(t9);
                                 complete9 = true;
                             }
@@ -692,6 +695,8 @@ function tagDataDispose(func_compelete) {
                     // 批量添加父子项
                     batchAdd(table_EhTagSubItems, table_EhTagSubItems_key, psDict, psDictCount, () => {
                         complete5 = true;
+                        complete10 = true;
+                        complete11 = true;
                         console.log("批量添加完成");
                     });
                 }, () => {
@@ -719,6 +724,7 @@ function tagDataDispose(func_compelete) {
                                 newItem.sub_desc != v.sub_desc) {
                                 // 更新
                                 updateDataDict[k] = newItem;
+                                updateDataDict[k].ps_en = `${newItem.parent_en}:${newItem.sub_en}`;
                                 updateDataCount++;
                             }
                         } else {
@@ -787,7 +793,7 @@ function tagDataDispose(func_compelete) {
                         }
 
                         var t11 = setInterval(() => {
-                            if (updateDataCount == updateIndex) {
+                            if (removeKeyCount == removeIndex) {
                                 t11 && clearInterval(t11);
                                 complete11 = true;
                             }
@@ -847,6 +853,8 @@ function tagDataDispose(func_compelete) {
                 complete5 = true;
                 complete6 = true;
                 complete7 = true;
+                complete10 = true;
+                complete11 = true;
                 console.log('ehtag', "没有新数据");
             });
 
