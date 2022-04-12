@@ -872,3 +872,9 @@ table .gtw {
     height: 18px;
     line-height: 18px;
 }
+
+.headMenu_check {
+    border-top: 2px solid #f1f1f1;
+    padding-top: 6px !important;
+    margin-top: -8px;
+}

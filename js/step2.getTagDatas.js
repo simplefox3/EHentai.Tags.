@@ -709,7 +709,7 @@ function tagDataDispose(func_compelete) {
                     var insertDataDict = {};
                     var insertDataCount = 0;
 
-                    var newEhTagData = psDict.data;
+                    var newEhTagData = psDict;
                     readAll(table_EhTagSubItems, (k, v) => {
                         if (newEhTagData[k]) {
                             // 记录到相同键表
