@@ -893,6 +893,12 @@ func_eh_ex(() => {
 	table .gtw {
 		height: 18px;
 		line-height: 18px;
+	}
+	
+	.headMenu_check {
+		border-top: 2px solid #070101;
+		padding-top: 8px !important;
+		margin-top: -8px;
 	}`;
 	styleInject(category_style);
 }, () => {
