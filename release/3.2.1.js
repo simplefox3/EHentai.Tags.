@@ -4766,7 +4766,7 @@ else {
 		case '/':
 			mainPageCategory();	// 首页
 			break;
-		case '/watched':	// 已观看
+		case '/watched':	// 个性化
 			break;
 		case '/popular':	// 热门
 			popularPage();

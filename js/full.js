@@ -235,7 +235,7 @@ function urlEncode(str) {
 
 const fontMenusData = {
 	"Front Page": "首页",
-	"Watched": "已观看",
+	"Watched": "个性化",
 	"Popular": "热门",
 	"Torrents": "种子",
 	"Favorites": "收藏",
@@ -328,13 +328,13 @@ const dbVersionKey = "categoryVersion";
 const dbCategoryListHtmlKey = "categoryListHtml";
 
 // 全部列表折叠
-const dbCategoryListExpendKey = "categoryListExpendArray";
+const dbCategoryListExpendKey = "categoryListExpendArray"; 
 
 // 本地收藏折叠
-const dbFavoriteListExpendKey = "favoriteListExpendArray";
+const dbFavoriteListExpendKey = "favoriteListExpendArray"; 
 
 // 本地收藏列表
-const dbFavoriteKey = "favoriteDict";
+const dbFavoriteKey = "favoriteDict"; 
 
 // 头部搜索菜单显示隐藏
 const dbOldSearchDivVisibleKey = "oldSearchDivVisibleKey";
@@ -4777,7 +4777,12 @@ function popularPage() {
 //#endregion
 
 
-
+//TODO 我的标签和本地标签的导入、导出，我的标签翻译
+//TODO 收藏页面的标签、标题翻译
+//TODO 种子页面标题翻译
+//TODO 喜爱标签、标题翻译，和首页一样的功能
+//TODO 排行榜翻译
+//TODO 悬赏标题翻译
 
 // 主方法
 
