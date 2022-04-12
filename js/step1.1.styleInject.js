@@ -2,7 +2,8 @@
 func_eh_ex(() => {
 	// e-hentai 样式 eh.css
 	const category_style = `#searchbox #data_update_tip,
-	#gd2 #data_update_tip {
+	#gd2 #data_update_tip,
+	.t_popular_toppane #data_update_tip {
 		position: absolute;
 		width: 100px;
 		height: 20px;
@@ -29,6 +30,19 @@ func_eh_ex(() => {
 	#gd2 #data_update_tip {
 		top: 2px;
 		right: 15px;
+	}
+	
+	.t_popular_toppane {
+		padding: 10px 0;
+	}
+	
+	.t_popular_dms div select {
+		margin-top: -6px;
+	}
+	
+	.t_popular_toppane #data_update_tip {
+		top: 16px;
+		left: 180px;
 	}
 	
 	
@@ -715,19 +729,28 @@ func_eh_ex(() => {
 		transform: scale(2);
 	}
 	
-	#dms #googleTranslateDiv {
+	#dms #googleTranslateDiv,
+	.t_popular_toppane #googleTranslateDiv {
 		float: left;
 		background-color: #edebdf;
 		padding: 2px 3px 6px 7px;
 		margin-left: 10px;
 		width: 120px;
 		position: absolute;
-		margin-top: -13px;
 		border: 1px solid #8d8d8d;
 		border-radius: 3px;
 	}
 	
-	#dms #translateLabel {
+	#dms #googleTranslateDiv {
+		margin-top: -13px;
+	}
+	
+	.t_popular_toppane #googleTranslateDiv {
+		margin-top: -30px;
+	}
+	
+	#dms #translateLabel,
+	.t_popular_toppane #translateLabel {
 		padding-left: 5px;
 		font-weight: bold;
 		font-size: 13px;
@@ -736,7 +759,9 @@ func_eh_ex(() => {
 	
 	#dms,
 	#dms #googleTranslateCheckbox,
-	#dms #translateLabel {
+	#dms #translateLabel,
+	.t_popular_toppane #googleTranslateDiv,
+	.t_popular_toppane #translateLabel {
 		cursor: pointer;
 	}
 	
@@ -793,7 +818,8 @@ func_eh_ex(() => {
 	#gd5 #googleTranslateDiv:hover,
 	#div_ee8413b2_detail_clearBtn:hover,
 	#div_ee8413b2_detail_addFavoriteBtn:hover,
-	#div_ee8413b2_detail_searchBtn:hover {
+	#div_ee8413b2_detail_searchBtn:hover,
+	.t_popular_toppane #googleTranslateDiv:hover {
 		background-color: rgba(255, 246, 246, 0.397);
 	}
 	
@@ -872,7 +898,8 @@ func_eh_ex(() => {
 }, () => {
 	// exhentai 样式 ex.css
 	const category_style = `#searchbox #data_update_tip,
-	#gd2 #data_update_tip {
+	#gd2 #data_update_tip,
+	.t_popular_toppane #data_update_tip {
 		position: absolute;
 		width: 100px;
 		height: 20px;
@@ -896,6 +923,19 @@ func_eh_ex(() => {
 	#gd2 #data_update_tip {
 		top: 2px;
 		right: 15px;
+	}
+	
+	.t_popular_toppane {
+		padding: 10px 0;
+	}
+	
+	.t_popular_dms div select {
+		margin-top: -6px;
+	}
+	
+	.t_popular_toppane #data_update_tip {
+		top: 16px;
+		left: 180px;
 	}
 	
 	#searchbox #div_fontColor_btn,
@@ -1571,19 +1611,28 @@ func_eh_ex(() => {
 		transform: scale(2);
 	}
 	
-	#dms #googleTranslateDiv {
+	#dms #googleTranslateDiv,
+	.t_popular_toppane #googleTranslateDiv {
 		float: left;
 		background-color: #34353b;
 		padding: 2px 3px 6px 7px;
 		margin-left: 10px;
 		width: 120px;
 		position: absolute;
-		margin-top: -13px;
 		border: 1px solid #8d8d8d;
 		border-radius: 3px;
 	}
 	
-	#dms #translateLabel {
+	#dms #googleTranslateDiv {
+		margin-top: -13px;
+	}
+	
+	.t_popular_toppane #googleTranslateDiv {
+		margin-top: -30px;
+	}
+	
+	#dms #translateLabel,
+	.t_popular_toppane #translateLabel {
 		padding-left: 5px;
 		font-weight: bold;
 		font-size: 13px;
@@ -1592,7 +1641,9 @@ func_eh_ex(() => {
 	
 	#dms,
 	#dms #googleTranslateCheckbox,
-	#dms #translateLabel {
+	#dms #translateLabel,
+	.t_popular_toppane #googleTranslateDiv,
+	.t_popular_toppane #translateLabel {
 		cursor: pointer;
 	}
 	
@@ -1645,7 +1696,8 @@ func_eh_ex(() => {
 	#gd5 #googleTranslateDiv:hover,
 	#div_ee8413b2_detail_clearBtn:hover,
 	#div_ee8413b2_detail_addFavoriteBtn:hover,
-	#div_ee8413b2_detail_searchBtn:hover {
+	#div_ee8413b2_detail_searchBtn:hover,
+	.t_popular_toppane #googleTranslateDiv:hover {
 		background-color: rgba(255, 246, 246, 0.397);
 	}
 	

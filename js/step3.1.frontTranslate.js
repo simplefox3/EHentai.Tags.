@@ -64,63 +64,8 @@ function translateMainPageTitleDisplay() {
 	}
 }
 
-function mainPageTranslate() {
-	// 首页添加 Meta
-	var meta = document.createElement("meta");
-	meta.httpEquiv = "Content-Security-Policy";
-	meta.content = "upgrade-insecure-requests";
-	document.getElementsByTagName("head")[0].appendChild(meta);
-
-	// 展示总数量
-	var ip = document.getElementsByClassName("ip");
-	if (ip.length > 0) {
-		var ipElement = ip[0];
-		var totalCount = ipElement.innerText.replace("Showing ", "").replace(" results", "");
-		ipElement.innerText = `共 ${totalCount} 条记录`;
-	}
-
-	// 预览下拉框
-	var dms = document.getElementById("dms");
-	if (!dms) {
-		// 没有搜索到记录
-		var iw = document.getElementById("iw");
-		if (iw) {
-			getGoogleTranslate(iw.innerText, function (data) {
-
-				var sentences = data.sentences;
-				var longtext = '';
-				for (const i in sentences) {
-					if (Object.hasOwnProperty.call(sentences, i)) {
-						const sentence = sentences[i];
-						longtext += sentence.trans;
-					}
-				}
-
-				iw.innerText = longtext;
-			});
-		}
-
-		var ido = document.getElementsByClassName("ido");
-		if (ido.length > 0) {
-			var nullInfo = ido[0].lastChild.lastChild;
-			if (nullInfo) {
-				getGoogleTranslate(nullInfo.innerText, function (data) {
-
-					var sentences = data.sentences;
-					var longtext = '';
-					for (const i in sentences) {
-						if (Object.hasOwnProperty.call(sentences, i)) {
-							const sentence = sentences[i];
-							longtext += sentence.trans;
-						}
-					}
-					nullInfo.innerText = longtext;
-				});
-			}
-		}
-
-		return;
-	}
+// 下拉列表翻译
+function dropDownlistTranslate() {
 	var select = dms.querySelectorAll("select");
 	if (select.length > 0) {
 		var selectElement = select[0];
@@ -132,33 +77,10 @@ function mainPageTranslate() {
 			}
 		}
 	}
+}
 
-	// 表格头部左侧添加勾选 谷歌机翻
-	var translateDiv = document.createElement("div");
-	translateDiv.id = "googleTranslateDiv";
-	var translateCheckbox = document.createElement("input");
-	translateCheckbox.setAttribute("type", "checkbox");
-	translateCheckbox.id = "googleTranslateCheckbox";
-	translateDiv.appendChild(translateCheckbox);
-	var translateLabel = document.createElement("label");
-	translateLabel.setAttribute("for", translateCheckbox.id);
-	translateLabel.id = "translateLabel";
-	translateLabel.innerText = "谷歌机翻 : 标题";
-
-	translateDiv.appendChild(translateLabel);
-	translateCheckbox.addEventListener("click", translateMainPageTitle);
-	var dms = document.getElementById("dms");
-	dms.insertBefore(translateDiv, dms.lastChild);
-
-	// 读取是否选中
-	read(table_Settings, table_Settings_key_TranslateFrontPageTitles, result => {
-		if (result && result.value) {
-			translateCheckbox.setAttribute("checked", true);
-			translateMainPageTitleDisplay();
-		}
-	}, () => { });
-
-	// 表头
+// 表头翻译
+function tableHeadTranslate() {
 	var table = document.getElementsByClassName("itg");
 	if (table.length > 0) {
 		var theads = table[0].querySelectorAll("th");
@@ -172,8 +94,10 @@ function mainPageTranslate() {
 			}
 		}
 	}
+}
 
-	// 作品类型
+// 作品类型翻译
+function bookTypeTranslate() {
 	var cs = document.getElementsByClassName("cs");
 	for (const i in cs) {
 		if (Object.hasOwnProperty.call(cs, i)) {
@@ -212,7 +136,10 @@ function mainPageTranslate() {
 			}
 		}
 	}
+}
 
+// 表格标签翻译
+function tableTagTranslate() {
 	// 父项
 	var tc = document.getElementsByClassName("tc");
 	for (const i in tc) {
@@ -228,6 +155,7 @@ function mainPageTranslate() {
 	}
 
 	// 父项:子项，偶尔出现单个子项
+	var select = dms.querySelectorAll("select");
 	var rightSelect = select[0];
 	var gt = document.getElementsByClassName("gt");
 	function translate(gt, i) {
@@ -288,6 +216,103 @@ function mainPageTranslate() {
 
 		}
 	}
+}
+
+
+function mainPageTranslate() {
+	// 首页添加 Meta
+	var meta = document.createElement("meta");
+	meta.httpEquiv = "Content-Security-Policy";
+	meta.content = "upgrade-insecure-requests";
+	document.getElementsByTagName("head")[0].appendChild(meta);
+
+	// 展示总数量
+	var ip = document.getElementsByClassName("ip");
+	if (ip.length > 0) {
+		var ipElement = ip[0];
+		var totalCount = ipElement.innerText.replace("Showing ", "").replace(" results", "");
+		ipElement.innerText = `共 ${totalCount} 条记录`;
+	}
+
+	// 预览下拉框
+	var dms = document.getElementById("dms");
+	if (!dms) {
+		// 没有搜索到记录
+		var iw = document.getElementById("iw");
+		if (iw) {
+			getGoogleTranslate(iw.innerText, function (data) {
+
+				var sentences = data.sentences;
+				var longtext = '';
+				for (const i in sentences) {
+					if (Object.hasOwnProperty.call(sentences, i)) {
+						const sentence = sentences[i];
+						longtext += sentence.trans;
+					}
+				}
+
+				iw.innerText = longtext;
+			});
+		}
+
+		var ido = document.getElementsByClassName("ido");
+		if (ido.length > 0) {
+			var nullInfo = ido[0].lastChild.lastChild;
+			if (nullInfo) {
+				getGoogleTranslate(nullInfo.innerText, function (data) {
+
+					var sentences = data.sentences;
+					var longtext = '';
+					for (const i in sentences) {
+						if (Object.hasOwnProperty.call(sentences, i)) {
+							const sentence = sentences[i];
+							longtext += sentence.trans;
+						}
+					}
+					nullInfo.innerText = longtext;
+				});
+			}
+		}
+
+		return;
+	}
+
+	// 翻译下拉菜单
+	dropDownlistTranslate();
+
+	// 表格头部左侧添加勾选 谷歌机翻
+	var translateDiv = document.createElement("div");
+	translateDiv.id = "googleTranslateDiv";
+	var translateCheckbox = document.createElement("input");
+	translateCheckbox.setAttribute("type", "checkbox");
+	translateCheckbox.id = "googleTranslateCheckbox";
+	translateDiv.appendChild(translateCheckbox);
+	var translateLabel = document.createElement("label");
+	translateLabel.setAttribute("for", translateCheckbox.id);
+	translateLabel.id = "translateLabel";
+	translateLabel.innerText = "谷歌机翻 : 标题";
+
+	translateDiv.appendChild(translateLabel);
+	translateCheckbox.addEventListener("click", translateMainPageTitle);
+	var dms = document.getElementById("dms");
+	dms.insertBefore(translateDiv, dms.lastChild);
+
+	// 读取是否选中
+	read(table_Settings, table_Settings_key_TranslateFrontPageTitles, result => {
+		if (result && result.value) {
+			translateCheckbox.setAttribute("checked", true);
+			translateMainPageTitleDisplay();
+		}
+	}, () => { });
+
+	// 表头翻译
+	tableHeadTranslate();
+
+	// 作品类型翻译
+	bookTypeTranslate();
+
+	// 表格标签翻译
+	tableTagTranslate();
 }
 
 //#endregion
