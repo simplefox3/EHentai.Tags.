@@ -1782,6 +1782,20 @@ func_eh_ex(() => {
 		border-top: 2px solid #f1f1f1;
 		padding-top: 6px !important;
 		margin-top: -8px;
+	}
+	
+	.t_favorite_ido .nosel {
+		border-radius: 10px;
+		margin-top: 20px !important;
+		padding-top: 20px;
+		padding-left: 30px;
+		height: 65px;
+		border: 1px solid #C2C1C1;
+	}
+	
+	.t_favorite_ido .nosel .fp:last-child {
+		background-color: #4f535b;
+		top: -87px;
 	}`;
 	styleInject(category_style);
 });

@@ -1,0 +1,13 @@
+/* ex 头部菜单 */
+#nb {
+    font-size: 17px;
+    padding-top: 8px;
+}
+
+#nb>div {
+    background-image: none;
+}
+
+#nb div a:hover {
+    color: gold;
+}

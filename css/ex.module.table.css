@@ -1,0 +1,22 @@
+/* ex 作品列表 */
+table.itg>tbody>tr>th {
+    text-align: center;
+    font-size: 13px;
+}
+
+table td.tc {
+    min-width: 30px;
+}
+
+table.itg tr:not(:first-child):hover {
+    background-color: #4f535b;
+}
+
+table.itg tr:first-child:hover,
+div.itg .gl1t:hover {
+    background-color: #4f535b;
+}
+
+div#gdf a {
+    text-decoration: underline;
+}
