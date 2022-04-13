@@ -4,7 +4,7 @@
 
 const fontMenusData = {
 	"Front Page": "首页",
-	"Watched": "喜爱标签",
+	"Watched": "偏好",
 	"Popular": "热门",
 	"Torrents": "种子",
 	"Favorites": "收藏",

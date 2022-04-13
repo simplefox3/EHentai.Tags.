@@ -235,7 +235,7 @@ function urlEncode(str) {
 
 const fontMenusData = {
 	"Front Page": "首页",
-	"Watched": "个性化",
+	"Watched": "偏好",
 	"Popular": "热门",
 	"Torrents": "种子",
 	"Favorites": "收藏",
@@ -438,6 +438,7 @@ const defaultFontSubHoverColor_EH = "#ff4500";
 
 
 //#endregion
+
 
 //#region step0.localstorage.js localstorage 数据方法，迁入 indexdb，如无特殊需要，删除之前存储的数据
 
