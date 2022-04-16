@@ -31,6 +31,7 @@ const category_html = `
                 <div id="category_list_fetishList"></div>
                 <div id="category_list_ehTag"></div>
             </div>
+			<div id="category_loading_div">💕 请等待一小会儿，马上就好 💕</div>
 		</div>
 		<div id="category_favorites_div">
 			<div id="favorites_editor">

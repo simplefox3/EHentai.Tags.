@@ -1,6 +1,18 @@
 //#region step3.7.search.js 搜索框功能
 
 // 进入页面，根据地址栏信息生成搜索栏标签
+function readSearchParentAndInput(parentEn, subEn) {
+    read(table_detailParentItems, parentEn, result => {
+        if (result) {
+            addItemToInput(result.row, result.name, subEn, subEn, '');
+        } else {
+            addItemToInput(parentEn, parentEn, subEn, subEn, '');
+        }
+    }, () => {
+        addItemToInput(parentEn, parentEn, subEn, subEn, '');
+    });
+}
+
 var f_searchs = GetQueryString("f_search");
 if (f_searchs) {
     var searchArray = f_searchs.split("\"+\"");
@@ -17,15 +29,25 @@ if (f_searchs) {
                     var subEn = itemArray[1];
                     // 从EhTag中查询，看是否存在
                     read(table_EhTagSubItems, items, ehTagData => {
-                        addItemToInput(ehTagData.parent_en, ehTagData.parent_zh, ehTagData.sub_en, ehTagData.sub_zh, ehTagData.sub_desc);
+                        if (ehTagData) {
+                            addItemToInput(ehTagData.parent_en, ehTagData.parent_zh, ehTagData.sub_en, ehTagData.sub_zh, ehTagData.sub_desc);
+                        } else {
+                            // 尝试翻译父级
+                            readSearchParentAndInput(parentEn, subEn);
+                        }
                     }, () => {
-                        addItemToInput(parentEn, subEn, subEn, subEn, '');
+                        // 尝试翻译父级
+                        readSearchParentAndInput(parentEn, subEn);
                     });
                 }
                 else {
                     // 从恋物列表中查询，看是否存在
                     readByIndex(table_fetishListSubItems, table_fetishListSubItems_index_subEn, itemArray[0], fetishData => {
-                        addItemToInput(fetishData.parent_en, fetishData.parent_zh, fetishData.sub_en, fetishData.sub_zh, fetishData.sub_desc);
+                        if (fetishData) {
+                            addItemToInput(fetishData.parent_en, fetishData.parent_zh, fetishData.sub_en, fetishData.sub_zh, fetishData.sub_desc);
+                        } else {
+                            addItemToInput("userCustom", "自定义", itemArray[0], itemArray[0], '');
+                        }
                     }, () => {
                         // 用户自定义搜索关键字
                         addItemToInput("userCustom", "自定义", itemArray[0], itemArray[0], '');

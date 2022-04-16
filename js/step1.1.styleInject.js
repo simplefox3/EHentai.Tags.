@@ -92,6 +92,14 @@ func_eh_ex(() => {
 		background-color: #e3e0d1;
 	}
 	
+	#div_ee8413b2 #category_loading_div{
+		height: 527px;
+		width: 100%;
+		line-height: 527px;
+		text-align: center;
+		font-size: 20px;
+	}
+	
 	#div_ee8413b2_bg::before {
 		background-size: 100%;
 		opacity: 0.5;
@@ -544,6 +552,11 @@ func_eh_ex(() => {
 	}
 	
 	#div_ee8413b2 #category_all_div #category_editor,
+	#div_ee8413b2 #category_all_div #category_list {
+		display: none;
+	}
+	
+	#div_ee8413b2 #category_all_div #category_editor,
 	#div_ee8413b2 #category_favorites_div #favorites_editor {
 		width: 100%;
 		height: 25px;
@@ -674,6 +687,7 @@ func_eh_ex(() => {
 		border-radius: 10px;
 	}
 	
+	#div_ee8413b2 #category_loading_div,
 	#div_ee8413b2 #search_top #search_close,
 	#div_ee8413b2 #search_top #category_all_button,
 	#div_ee8413b2 #search_top #category_favorites_button,
@@ -984,6 +998,14 @@ func_eh_ex(() => {
 		position: relative;
 		z-index: 3;
 		background-color: #40454B;
+	}
+	
+	#div_ee8413b2 #category_loading_div {
+		height: 527px;
+		width: 100%;
+		line-height: 527px;
+		text-align: center;
+		font-size: 20px;
 	}
 	
 	#div_ee8413b2_bg::before {
@@ -1435,6 +1457,12 @@ func_eh_ex(() => {
 	}
 	
 	#div_ee8413b2 #category_all_div #category_editor,
+	#div_ee8413b2 #category_all_div #category_list {
+		display: none;
+	}
+	
+	
+	#div_ee8413b2 #category_all_div #category_editor,
 	#div_ee8413b2 #category_favorites_div #favorites_editor {
 		width: 100%;
 		height: 25px;
@@ -1563,6 +1591,7 @@ func_eh_ex(() => {
 		border-radius: 10px;
 	}
 	
+	#div_ee8413b2 #category_loading_div,
 	#div_ee8413b2 #search_top #search_close,
 	#div_ee8413b2 #search_top #category_all_button,
 	#div_ee8413b2 #search_top #category_favorites_button,

@@ -330,13 +330,7 @@ function fetishListDataInit(update_func, local_func) {
             // 和本地的版本号进行比较，如果不同就进行更新
             if (!localVersion || version != localVersion.value) {
                 getFetishListTranslate(version, json => {
-                    update_func(json);
-                    // 更新版本号
-                    var settings_fetishList_version = {
-                        item: table_Settings_key_FetishListVersion,
-                        value: version
-                    };
-                    update(table_Settings, settings_fetishList_version, () => { }, () => { });
+                    update_func(json, version);
                 });
             } else {
                 local_func();
@@ -354,13 +348,7 @@ function ehTagDataInit(update_func, local_func) {
             // 和本地的版本号进行比较，如果不同就进行更新
             if (!localVersion || version != localVersion.value) {
                 getEhTagTranslate(version, json => {
-                    update_func(json.data);
-                    // 更新版本号
-                    var settings_ehTag_version = {
-                        item: table_Settings_key_EhTagVersion,
-                        value: version
-                    };
-                    update(table_Settings, settings_ehTag_version, () => { }, () => { });
+                    update_func(json.data, version);
                 });
             } else {
                 local_func();
@@ -455,7 +443,7 @@ function tagDataDispose(func_compelete) {
             var updateDataTip = document.getElementById("data_update_tip");
 
             // 获取并更新恋物的父子项、父级信息，详情页父级信息
-            fetishListDataInit(newData => {
+            fetishListDataInit((newData, newVersion) => {
 
                 // 显示更新提示
                 updateDataTip.style.display = "block";
@@ -463,123 +451,12 @@ function tagDataDispose(func_compelete) {
                 // 存在更新
                 isFetishUpdate = true;
 
-                // 判断储存中是否存在数据，如果为空直接添加
-                // 存在数据时，遍历取数据，如果键相同，比对剩余字段是否相同，相同则跳过，不同则更新数据，同时记录到相同字典
-                // 如果键不同，说明该键已经废弃，记录到废弃键字典
-                // 遍历新数据，根据相同字典过滤，保留不同键的数据，为新增数据
-
-                checkTableEmpty(table_fetishListSubItems, () => {
-                    // 表数据为空
-                    // 批量添加父子项
+                // 直接清空存储库，然后批量添加，这样速度最快
+                clearTable(table_fetishListSubItems, () => {
+                    complete1 = true;
                     batchAdd(table_fetishListSubItems, table_fetishListSubItems_key, newData.data, newData.count, () => {
-                        complete1 = true;
                         complete2 = true;
-                        complete3 = true;
-                        complete8 = true;
-                        complete9 = true;
                         console.log('批量添加完成');
-                    });
-                }, () => {
-                    // 表存在数据
-                    var updateDataDict = {};
-                    var updateDataCount = 0;
-                    var commonKeyDict = {};
-                    var removeKeyDict = {};
-                    var removeKeyCount = 0;
-                    var insertDataDict = {};
-                    var insertDataCount = 0;
-
-                    var newFetishData = newData.data;
-                    readAll(table_fetishListSubItems, (k, v) => {
-                        if (newFetishData[k]) {
-                            // 记录到相同键表
-                            commonKeyDict[k] = 1;
-
-                            var newItem = newFetishData[k];
-                            // 存在，判断是否需要更新
-                            if (newItem.parent_en != v.parent_en ||
-                                newItem.parent_zh != v.parent_zh ||
-                                newItem.sub_en != v.sub_en ||
-                                newItem.sub_zh != v.sub_zh ||
-                                newItem.sub_desc != v.sub_desc) {
-                                // 更新
-                                updateDataDict[k] = newItem;
-                                updateDataDict[k].ps_en = `${newItem.parent_en}:${newItem.sub_en}`;
-                                updateDataCount++;
-                            }
-                        } else {
-                            // 不存在，删除
-                            removeKeyDict[k] = 1;
-                            removeKeyCount++;
-                        }
-                    }, () => {
-                        // 过滤新增数据
-                        if (checkDictNull(commonKeyDict)) {
-                            // 没有相同的数据，说明全部需要新增
-                            insertDataDict = newFetishData;
-                            insertDataCount = newData.count;
-                        } else {
-                            for (const key in newFetishData) {
-                                if (Object.hasOwnProperty.call(newFetishData, key)) {
-                                    const item = newFetishData[key];
-                                    if (!commonKeyDict[key]) {
-                                        // 新增数据
-                                        insertDataDict[key] = item;
-                                        insertDataCount++;
-                                    }
-                                }
-                            }
-                        }
-
-                        // 新增数据
-
-                        if (insertDataCount > 0) {
-                            batchAdd(table_fetishListSubItems, table_fetishListSubItems_key, insertDataDict, insertDataCount, () => {
-                                complete1 = true;
-                            });
-                        } else {
-                            complete1 = true;
-                        }
-
-                        // 更新数据
-                        var updateIndex = 0;
-                        if (updateDataCount > 0) {
-                            for (const updateKey in updateDataDict) {
-                                if (Object.hasOwnProperty.call(updateDataDict, updateKey)) {
-                                    const item = updateDataDict[updateKey];
-                                    update(table_fetishListSubItems, item, () => { updateIndex++; }, () => { updateIndex++; });
-                                }
-                            }
-
-                        } else {
-                            complete8 = true;
-                        }
-
-                        var t8 = setInterval(() => {
-                            if (updateDataCount == updateIndex) {
-                                t8 && clearInterval(t8);
-                                complete8 = true;
-                            }
-                        }, 50);
-
-                        // 删除数据
-                        var removeIndex = 0;
-                        if (removeKeyCount > 0) {
-                            for (const removeKey in removeKeyDict) {
-                                if (Object.hasOwnProperty.call(removeKeyDict, removeKey)) {
-                                    remove(table_fetishListSubItems, removeKey, () => { removeIndex++; }, () => { removeIndex++; });
-                                }
-                            }
-                        } else {
-                            complete9 = true;
-                        }
-
-                        var t9 = setInterval(() => {
-                            if (removeKeyCount == removeIndex) {
-                                t9 && clearInterval(t9);
-                                complete9 = true;
-                            }
-                        }, 50);
                     });
                 });
 
@@ -588,7 +465,7 @@ function tagDataDispose(func_compelete) {
                     item: table_Settings_key_FetishList_ParentEnArray,
                     value: newData.parent_en_array
                 };
-                update(table_Settings, settings_fetishList_parentEnArray, () => { complete2 = true; }, () => { complete2 = true; });
+                update(table_Settings, settings_fetishList_parentEnArray, () => { complete3 = true; }, () => { complete3 = true; });
 
                 // 生成页面 html，并保存
                 var categoryFetishListHtml = ``;
@@ -619,20 +496,27 @@ function tagDataDispose(func_compelete) {
                     item: table_Settings_key_FetishList_Html,
                     value: categoryFetishListHtml
                 };
-                update(table_Settings, settings_fetish_html, () => { complete3 = true; }, () => { complete3 = true; });
+                update(table_Settings, settings_fetish_html, () => { complete4 = true; }, () => { complete4 = true; });
+
+                // 更新版本号
+                var settings_fetishList_version = {
+                    item: table_Settings_key_FetishListVersion,
+                    value: newVersion
+                };
+                update(table_Settings, settings_fetishList_version, () => { complete5 = true; }, () => { complete5 = true; });
 
             }, () => {
                 complete1 = true;
                 complete2 = true;
                 complete3 = true;
-                complete8 = true;
-                complete9 = true;
+                complete4 = true;
+                complete5 = true;
                 console.log('fet', "没有新数据");
             });
 
             // 如果 EhTag 版本更新，这尝试更新用户收藏（可能没有翻译过的标签进行翻译）
             // 获取并更新EhTag的父子项、父级信息
-            ehTagDataInit(newData => {
+            ehTagDataInit((newData, newVersion) => {
                 // 更新本地数据库 indexDB
                 // 存储完成之后，更新版本号
 
@@ -690,122 +574,18 @@ function tagDataDispose(func_compelete) {
                     }
                 }
 
-                checkTableEmpty(table_EhTagSubItems, () => {
-                    // 表数据为空
-                    // 批量添加父子项
+                // 直接清空存储库，然后批量添加，这样速度最快
+                clearTable(table_EhTagSubItems, () => {
+                    complete6 = true;
                     batchAdd(table_EhTagSubItems, table_EhTagSubItems_key, psDict, psDictCount, () => {
-                        complete5 = true;
-                        complete10 = true;
-                        complete11 = true;
+                        complete7 = true;
                         console.log("批量添加完成");
                     });
-                }, () => {
-                    // 表存在数据
-                    var updateDataDict = {};
-                    var updateDataCount = 0;
-                    var commonKeyDict = {};
-                    var removeKeyDict = {};
-                    var removeKeyCount = 0;
-                    var insertDataDict = {};
-                    var insertDataCount = 0;
-
-                    var newEhTagData = psDict;
-                    readAll(table_EhTagSubItems, (k, v) => {
-                        if (newEhTagData[k]) {
-                            // 记录到相同键表
-                            commonKeyDict[k] = 1;
-
-                            var newItem = newEhTagData[k];
-                            // 存在，判断是否需要更新
-                            if (newItem.parent_en != v.parent_en ||
-                                newItem.parent_zh != v.parent_zh ||
-                                newItem.sub_en != v.sub_en ||
-                                newItem.sub_zh != v.sub_zh ||
-                                newItem.sub_desc != v.sub_desc) {
-                                // 更新
-                                updateDataDict[k] = newItem;
-                                updateDataDict[k].ps_en = `${newItem.parent_en}:${newItem.sub_en}`;
-                                updateDataCount++;
-                            }
-                        } else {
-                            // 不存在，删除
-                            removeKeyDict[k] = 1;
-                            removeKeyCount++;
-                        }
-                    }, () => {
-                        // 过滤新增数据
-                        if (checkDictNull(commonKeyDict)) {
-                            // 没有相同的数据，说明全部需要新增
-                            insertDataDict = newEhTagData;
-                            insertDataCount = psDictCount;
-                        } else {
-                            for (const key in newEhTagData) {
-                                if (Object.hasOwnProperty.call(newEhTagData, key)) {
-                                    const item = newEhTagData[key];
-                                    if (!commonKeyDict[key]) {
-                                        // 新增数据
-                                        insertDataDict[key] = item;
-                                        insertDataCount++;
-                                    }
-                                }
-                            }
-                        }
-
-                        // 新增数据
-                        if (insertDataCount > 0) {
-                            batchAdd(table_EhTagSubItems, table_EhTagSubItems_key, insertDataDict, insertDataCount, () => {
-                                complete5 = true;
-                            })
-                        } else {
-                            complete5 = true;
-                        }
-
-                        // 更新数据
-                        var updateIndex = 0;
-                        if (updateDataCount > 0) {
-                            for (const updateKey in updateDataDict) {
-                                if (Object.hasOwnProperty.call(updateDataDict, updateKey)) {
-                                    const item = updateDataDict[updateKey];
-                                    update(table_EhTagSubItems, item, () => { updateIndex++; }, () => { updateIndex++; });
-                                }
-                            }
-                        } else {
-                            complete10 = true;
-                        }
-
-                        var t10 = setInterval(() => {
-                            if (updateDataCount == updateIndex) {
-                                t10 && clearInterval(t10);
-                                complete10 = true;
-                            }
-                        }, 50);
-
-                        // 删除数据
-                        var removeIndex = 0;
-                        if (removeKeyCount > 0) {
-                            for (const removeKey in removeKeyDict) {
-                                if (Object.hasOwnProperty.call(removeKeyDict, removeKey)) {
-                                    remove(table_EhTagSubItems, removeKey, () => { removeIndex++; }, () => { removeIndex++; });
-                                }
-                            }
-                        } else {
-                            complete11 = true;
-                        }
-
-                        var t11 = setInterval(() => {
-                            if (removeKeyCount == removeIndex) {
-                                t11 && clearInterval(t11);
-                                complete11 = true;
-                            }
-                        }, 50);
-
-                    })
                 });
-
 
                 // 批量添加详情页父级信息
                 batchAdd(table_detailParentItems, table_detailParentItems_key, detailDict, detailDictCount, () => {
-                    complete4 = true;
+                    complete8 = true;
                     console.log("批量添加完成");
                 });
 
@@ -815,7 +595,7 @@ function tagDataDispose(func_compelete) {
                 };
 
                 // 更新父级信息
-                update(table_Settings, settings_ehTag_parentEnArray, () => { complete6 = true; }, () => { complete6 = true; });
+                update(table_Settings, settings_ehTag_parentEnArray, () => { complete9 = true; }, () => { complete9 = true; });
 
                 // 生成页面 html
                 var categoryEhTagHtml = ``;
@@ -846,13 +626,20 @@ function tagDataDispose(func_compelete) {
                     item: table_Settings_key_EhTag_Html,
                     value: categoryEhTagHtml
                 };
-                update(table_Settings, settings_ehTag_html, () => { complete7 = true; }, () => { complete7 = true; });
+                update(table_Settings, settings_ehTag_html, () => { complete10 = true; }, () => { complete10 = true; });
+
+                // 更新版本号
+                var settings_ehTag_version = {
+                    item: table_Settings_key_EhTagVersion,
+                    value: newVersion
+                };
+                update(table_Settings, settings_ehTag_version, () => { complete11 = true; }, () => { complete11 = true; });
 
             }, () => {
-                complete4 = true;
-                complete5 = true;
                 complete6 = true;
                 complete7 = true;
+                complete8 = true;
+                complete9 = true;
                 complete10 = true;
                 complete11 = true;
                 console.log('ehtag', "没有新数据");
@@ -972,12 +759,12 @@ function tagDataDispose(func_compelete) {
                     if (complete2) step += 10;
                     if (complete3) step += 10;
                     if (complete4) step += 10;
-                    if (complete5) step += 10;
+                    if (complete5) step += 5;
                     if (complete6) step += 10;
                     if (complete7) step += 10;
-                    if (complete8) step += 5;
-                    if (complete9) step += 5;
-                    if (complete10) step += 5;
+                    if (complete8) step += 10;
+                    if (complete9) step += 10;
+                    if (complete10) step += 10;
                     if (complete11) step += 5;
                     updateDataTip.innerText = `词库升级中 ${step}%`;
                 }

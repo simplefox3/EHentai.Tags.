@@ -129,41 +129,69 @@ function cItemJsonSearchInput(cItems) {
 
 // 初始化本地列表页面
 function categoryInit() {
+    var complete1 = false;
+    var complete2 = false;
+    var complete3 = false;
+    var complete4 = false;
+
     // 恋物列表模块
     read(table_Settings, table_Settings_key_FetishList_Html, result => {
         // 生成 html 代码
         categoryList_fetishDiv.innerHTML = result.value;
+
         // 读取折叠并设置
         var extendSpans = document.getElementsByClassName("category_extend_fetish");
         read(table_Settings, table_Settings_key_CategoryList_Extend, extendResult => {
             if (extendResult) {
                 extendDiv(extendSpans, extendResult.value);
             }
-        }, () => { });
+            complete2 = true;
+        }, () => { complete2 = true; });
         // 单个展开折叠
         parentItemsExtend(extendSpans);
         // 具体小项点击加入搜索框
         var cItems = document.getElementsByClassName("c_item_fetish");
         cItemJsonSearchInput(cItems);
-    }, () => { });
+        complete1 = true;
+    }, () => {
+        complete1 = true;
+        complete2 = true;
+    });
 
     // EhTag列表模块
     read(table_Settings, table_Settings_key_EhTag_Html, result => {
         // 生成 html 代码
         categoryList_ehTagDiv.innerHTML = result.value;
+
         // 读取折叠并设置
         var extendSpans = document.getElementsByClassName("category_extend_ehTag");
         read(table_Settings, table_Settings_key_CategoryList_Extend, extendResult => {
             if (extendResult) {
                 extendDiv(extendSpans, extendResult.value);
             }
-        }, () => { });
+            complete4 = true;
+        }, () => { complete4 = true; });
         // 单个展开折叠
         parentItemsExtend(extendSpans);
         // 具体小项点击加入搜索框
         var cItems = document.getElementsByClassName("c_item_ehTag");
         cItemJsonSearchInput(cItems);
-    }, () => { });
+        complete3 = true;
+    }, () => {
+        complete3 = true;
+        complete4 = true;
+    });
+
+    var t = setInterval(() => {
+        if (complete1 && complete2 && complete3 && complete4) {
+            t && clearInterval(t);
+            // 隐藏等待div
+            categoryLoadingDiv.style.display = "none";
+            // 展示列表
+            categoryEditor.style.display = "block";
+            categoryListDiv.style.display = "block";
+        }
+    }, 10);
 }
 categoryInit();
 

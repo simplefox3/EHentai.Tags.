@@ -17,14 +17,16 @@ var addFavoritesBtn = document.getElementById("category_addFavorites_button");
 var addFavoritesDisabledBtn = document.getElementById("category_addFavorites_button_disabled");
 var searchCloseBtn = document.getElementById("search_close");
 
-// 展示区包裹层div、全部类别Div、收藏Div、类别列表div、类别_恋物列表div、类别_ehtag列表div、收藏列表div
+// 展示区包裹层div、全部类别Div、收藏Div、类别列表div、类别_恋物列表div、类别_ehtag列表div、收藏列表div、加载词库等待div
 var displayDiv = document.getElementById("display_div");
 var categoryDisplayDiv = document.getElementById("category_all_div");
 var favoritesDisplayDiv = document.getElementById("category_favorites_div");
+var categoryEditor = document.getElementById("category_editor");
 var categoryListDiv = document.getElementById("category_list");
 var categoryList_fetishDiv = document.getElementById("category_list_fetishList");
 var categoryList_ehTagDiv = document.getElementById("category_list_ehTag");
 var favoriteListDiv = document.getElementById("favorites_list");
+var categoryLoadingDiv = document.getElementById("category_loading_div");
 
 // [标签 + 收藏] 全部展开按钮、标签全部折叠按钮、标签展开折叠按钮、标签
 var allExtend = document.getElementById("all_expand");
